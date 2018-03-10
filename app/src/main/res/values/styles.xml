@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
+		<item name="@android:windowActionBar">@color/colorPrimaryDark</item> 
+		
+		<!--<item name="android:windowBackground">@color/colorPrimaryDark</item>
+		  theme UI controls like checkboxes and text fields -->
+		<item name="android:colorAccent">@color/accent</item>
+	</style>
+</resources>
