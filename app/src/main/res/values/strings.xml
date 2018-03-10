@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">exeption</string>
+    <string name="hello_world">Hello world!</string>
+	<string-array name="cats_array_ru">
+		<item>Васька</item>
+		<item>Барсик</item>
+		<item>Мурзик</item>
+		<item>Рыжик</item>
+		<item>Кот Бегемот</item>
+		<item>Кот Матроскин</item>
+		<item>Бублик (у Экслера)</item>
+		<item>Дорофей (у Димона)</item>
+	</string-array>
+</resources>
