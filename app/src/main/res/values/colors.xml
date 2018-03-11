@@ -7,4 +7,6 @@
 	<color name="colorRed">#a90000</color>
 	<color name="colorGreen">#00a900</color>
 	<color name="colorAccent">#FF4081</color>
+	<color name="colorTabl">#eeeeee</color>
+	<color name="colorTablGran">#000099</color>
 </resources>
