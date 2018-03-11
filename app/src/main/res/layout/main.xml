@@ -122,7 +122,37 @@
 		</HorizontalScrollView>
 
 	</ScrollView>
+	
+	<!--   скрол таблицы-->
+	<ScrollView
+		android:id="@+id/scrollvert"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_above="@id/scroll"
+		>
 
+		
+
+			<LinearLayout
+				android:id="@+id/layout_tabl"
+				android:layout_height="wrap_content"
+				android:layout_width="600dp"
+				android:orientation="vertical"
+				>
+				<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+					android:id="@+id/table"
+					android:layout_width="fill_parent" android:layout_height="fill_parent"
+					android:background="@color/colorTablGran"
+					android:stretchColumns="0,1,2,3,4,5">
+				
+				
+				</TableLayout>
+
+			</LinearLayout>
+
+		
+
+	</ScrollView>
 </RelativeLayout>
 	<!-- The navigation drawer -->
     <ListView
