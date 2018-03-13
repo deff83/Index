@@ -28,6 +28,10 @@ public class MainActivity extends Activity
     private ListView mDrawerListView;
 	//
 	String textr;
+	int vCoin;
+	String buy;
+	String sale;
+	Integer del;
 	BroadcastReceiver br;
 	private RelativeLayout interceptor;
 	private AlarmManager am;
@@ -42,7 +46,9 @@ public class MainActivity extends Activity
 	EditText price_edit2;
 	TextView price_pluse;
 	LinearLayout llt;
+	//поля таблицы
 	TableLayout tableLayout;
+	TableLayout tableLayout2;
 	//LayoutInflater inflater;
 	int str_schet;
 	OnClickListener getButtonText;
@@ -51,18 +57,23 @@ public class MainActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
 		count_coin2 = 0;
-      count_tabl2 = 0;
-	str_schet = 0;
-			pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+    	count_tabl2 = 0;
+		str_schet = 0;
+		buy = "покупка";
+		sale = "продажа";
+		del = 0;
+		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
 		editor = pref.edit();
 		editor.putInt("count_coin",0);
-			editor.putInt("activity_true", 1);
-		editor.putInt("tabl_hight", 20);
+		editor.putInt("activity_true", 1);
+		editor.putInt("tabl_hight", 50);
 		editor.putInt("res", 0);
-
+		editor.putInt("col_izm", 1);
+		editor.putInt("del", 0);
 		editor.commit();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+		
 		//кнопка акшнбара
 		//final ActionBar actionBar = getSupportActionBar();
 		//actionBar.setHomeAsUpIndicator(R.drawable.ic_launcher);
@@ -79,21 +90,31 @@ public class MainActivity extends Activity
 		getButtonText = new OnClickListener() {
 		 @Override
 		 public void onClick(View v) {
-		 int buttonId = v.getId() - 1000;
+			 
+			 v.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_d));
+			 
+			 int buttonId = v.getId() - 1000;
 			 editor.putString(buttonId + "10002", "1");
-	for (int j = 0; j < count_coin; j++){
-	if (buttonId != j){
-		editor.putString(j + "10002", "0");
-	}
-	editor.commit();
-}
-}
-};
-//таблица цен
+			 for (int j = 0; j < count_coin; j++){
+					if (buttonId != j){
+							editor.putString(j + "10002", "0");
+					}
+					editor.commit();
+			 }
+		 }
+		 };
+		//таблица цен
 		tableLayout = (TableLayout) findViewById(R.id.table);
+		//таблица заявок
+		tableLayout2 = (TableLayout) findViewById(R.id.table2);
+		tabl_z();
+		editor.putInt("col_izm", 0);
 		//код обработки кнопок
 		final Button btnStart = (Button) findViewById(R.id.button_start);
         final Button btnStop = (Button) findViewById(R.id.button_stop);
+		//инициализация кнопок покупки продажи
+		final Button btnZ_Start = (Button) findViewById(R.id.zayvka_start);
+        final Button btnZ_Stop = (Button) findViewById(R.id.zayvka_stop);
 		//инициализация полей нижней цены
 		price_edit = (EditText) findViewById(R.id.price_edit);
 		price_minuse = (TextView) findViewById(R.id.price_minus);
@@ -139,7 +160,22 @@ public class MainActivity extends Activity
 		//вешаем на каждый edit один слушатель
 		price_edit.setOnTouchListener(on_touch_listener);
 		price_edit2.setOnTouchListener(on_touch_listener);
-		    // запуск службы, нажатие на кнопку старт
+		//слушатель кнопки купить
+		btnZ_Start.setOnClickListener(new  View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					
+					
+					}});
+		//слушатель кнопки продать
+		btnZ_Stop.setOnClickListener(new  View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					editor.putInt("del", 1);
+					editor.commit();
+					
+					}});
+		// запуск службы, нажатие на кнопку старт
         btnStart.setOnClickListener(new  View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
@@ -198,7 +234,7 @@ public class MainActivity extends Activity
 			coin_prices(coin_price);
 			String list_price = intent.getStringExtra("list_price");
 			tabl_price(list_price);
-
+			tabl_z();
 				Double price_intent = intent.getDoubleExtra("price", 0.0);
 				String price_intent_string = price_intent.toString();
 				TextView text_balance = (TextView) findViewById(R.id.text2);
@@ -374,15 +410,87 @@ public class MainActivity extends Activity
 					String xv = pref.getString("tabl_prod" + i, "");
 					tv.setText(xx);
 					tv2.setText(xv);
-					TextView tv_notes = (TextView) tr.findViewById(R.id.col2);
+					//функция сравнения номера заявки
+					String offerid = pref.getString("tabl_offerid" + i, "0");
+					String offerid_prod = pref.getString("tabl_offerid_prod" + i, "0");
+										TextView tv_notes = (TextView) tr.findViewById(R.id.col2);
 					TextView tv2_notes = (TextView) tr.findViewById(R.id.col5);
 					String xx_notes = pref.getString("tabl_notes" + i, "");
 					String xv_notes = pref.getString("tabl_notes_prod" + i, "");
 					tv_notes.setText(xx_notes);
 					tv2_notes.setText(xv_notes);
+					//
+					if (offerid.equals("0")){
+						tv.setTypeface(null);
+						tv.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+						tv_notes.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+						
+					} else{
+						tv.setTypeface(null, Typeface.BOLD);
+						tv.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+						tv_notes.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+					}
+					if (offerid_prod.equals("0")){
+						tv2.setTypeface(null);
+						tv2.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+						tv2_notes.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+					}else{
+						tv2.setTypeface(null, Typeface.BOLD);
+						tv2.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+						tv2_notes.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+					}
 		}
 		//вывод какой-нибуть величины после обработки функции вывода таблицы
 		Toast.makeText(this, list_price, Toast.LENGTH_SHORT).show();
+	}
+	public void tabl_z(){
+		int col_izm = pref.getInt("col_izm", 0);
+		int col_z = pref.getInt("col_z", 0);
+		if (col_izm == 1){
+			tableLayout2.removeAllViews();
+			TableRow tr2;
+			
+			for (int i = 0; i < col_z; i++){
+				LayoutInflater inflate = LayoutInflater.from(this);
+				tr2 = (TableRow) inflate.inflate(R.layout.tabl2_row, null);
+				TextView toolidtw;
+				TextView offeridtw;
+				TextView nametw;
+				TextView kindtw;
+				TextView pricetw;
+				TextView notestw;
+				
+					toolidtw = (TextView) tr2.findViewById(R.id.colm1);
+					offeridtw = (TextView) tr2.findViewById(R.id.colm2);
+					nametw = (TextView) tr2.findViewById(R.id.colm3);
+					kindtw = (TextView) tr2.findViewById(R.id.colm4);
+					pricetw = (TextView) tr2.findViewById(R.id.colm5);
+					notestw = (TextView) tr2.findViewById(R.id.colm6);
+					vCoin = 60;
+					
+					int offerid =pref.getInt("my_offer" + vCoin + "_" + i + "offerid", 0);
+					String name =pref.getString("my_offer" + vCoin + "_" + i + "name", "");
+					int kind =pref.getInt("my_offer" + vCoin + "_" + i + "kind", 0);
+					String price =pref.getString("my_offer" + vCoin + "_" + i + "price", "");
+					int notes =pref.getInt("my_offer" + vCoin + "_" + i + "notes", 0);
+					if ( kind == 0){
+						
+						kindtw.setText(sale);
+					}
+					if (kind == 1){
+						kindtw.setText(buy);
+					}
+					toolidtw.setText(String.valueOf(vCoin));
+					offeridtw.setText(String.valueOf(offerid));
+					nametw.setText(name);
+					
+					pricetw.setText(price.toString());
+					notestw.setText(String.valueOf(notes));
+				tableLayout2.addView(tr2);
+			}
+			editor.putInt("col_izm", 0);
+			editor.commit();
+		}
 	}
 
 }

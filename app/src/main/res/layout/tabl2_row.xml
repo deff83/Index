@@ -2,47 +2,47 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 >
-	<TextView android:id="@+id/col3" android:text=""
-		android:background="@color/colorTabl" android:layout_margin="0dip"
-		
+	<TextView android:id="@+id/colm1" android:text=""
+		android:background="@color/colorTabl" android:layout_margin="1dip"
+
 		android:layout_height="match_parent"
 		android:gravity = "right"
-		
+
 	/>
-	<TextView android:id="@+id/col1" android:text=""
+	<TextView android:id="@+id/colm2" android:text=""
 		android:background="@color/colorTabl" android:layout_margin="1dip"
 		android:layout_width = "100dp"
 		android:layout_height="match_parent"
 		android:gravity = "right"
-		
+
 	/>
-	<TextView android:id="@+id/col2" android:text=""
+	<TextView android:id="@+id/colm3" android:text=""
 		android:background="@color/colorTabl" android:layout_margin="1dip"
 		android:layout_width = "30dp"
 		android:layout_height="match_parent"
 		android:gravity = "right"
-		
+
 	/>
-	<TextView android:id="@+id/col4" android:text=""
+	<TextView android:id="@+id/colm4" android:text=""
 		android:background="@color/colorTabl" android:layout_margin="1dip"
 		android:layout_width = "100dp"
 		android:layout_height="match_parent"
 		android:gravity = "right"
-	
+
 	/>
-	<TextView android:id="@+id/col5" android:text="" 
+	<TextView android:id="@+id/colm5" android:text="" 
 		android:background="@color/colorTabl" android:layout_margin="1dip"
 		android:layout_width = "30dp"
 		android:layout_height="match_parent"
 		android:gravity = "right"
-		
+
 	/>
-	<TextView android:id="@+id/col6" android:text=""
-		android:background="@color/colorTabl" android:layout_margin="0dip"
-		
+	<TextView android:id="@+id/colm6" android:text=""
+		android:background="@color/colorTabl" android:layout_margin="1dip"
+
 		android:layout_height="match_parent"
 		android:gravity = "right"
-		
+
 	/>
-	
+
 </TableRow>
