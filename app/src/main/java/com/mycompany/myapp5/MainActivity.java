@@ -32,19 +32,16 @@ public class MainActivity extends Activity
 	String buy;
 	String sale;
 	Integer del;
-	BroadcastReceiver br;
+	static BroadcastReceiver br;
+	static IntentFilter intFilt;
+	static Intent i;
 	private RelativeLayout interceptor;
 	private AlarmManager am;
 	private PendingIntent pi;
 	SharedPreferences pref;
 	Context context = null;
 	SharedPreferences.Editor editor = null;
-	//поля нижней цены
-	EditText price_edit;
-	TextView price_minuse;
-	//поля верхней цены
-	EditText price_edit2;
-	TextView price_pluse;
+	
 	LinearLayout llt;
 	//поля таблицы
 	TableLayout tableLayout;
@@ -84,6 +81,7 @@ public class MainActivity extends Activity
         // подключим адаптер для списка
         mDrawerListView.setAdapter(new ArrayAdapter<String>(this,
 															R.layout.draw_list_item, mCatTitles));
+		mDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
 		llt = (LinearLayout) findViewById(R.id.layout_button);
 		//  LinearLayout llt = new LinearLayout(this);
         //layout params for every Button
@@ -115,51 +113,7 @@ public class MainActivity extends Activity
 		//инициализация кнопок покупки продажи
 		final Button btnZ_Start = (Button) findViewById(R.id.zayvka_start);
         final Button btnZ_Stop = (Button) findViewById(R.id.zayvka_stop);
-		//инициализация полей нижней цены
-		price_edit = (EditText) findViewById(R.id.price_edit);
-		price_minuse = (TextView) findViewById(R.id.price_minus);
-		//инициализация полей верхней цены
-		price_edit2 = (EditText) findViewById(R.id.price_edit2);
-		price_pluse = (TextView) findViewById(R.id.price_plus);
-		//запись при старте в edit нижняя цена
-		try {
-		if(pref.contains("edit_price")){
-			price_edit.setText(pref.getString("edit_price", ""));
-		}
-		} catch (Exception e){}
-		//запись при старте в edit верхняя цена
-		try {
-			if(pref.contains("edit_price2")){
-				price_edit2.setText(pref.getString("edit_price2", ""));
-			}
-		} catch (Exception e){}
-		//слушатель,  layot
-		interceptor = (RelativeLayout) findViewById(R.id.rel_layout);
-		interceptor.setOnTouchListener(new OnTouchListener() {
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					if (event.getAction() == MotionEvent.ACTION_DOWN) {
-						InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-						imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-						price_edit.setFocusable(false);
-						price_edit2.setFocusable(false);
-					}
-					return v.performClick();
-				}
-			});
-			//слушатель edit, установка акиивности вызов клавиатуры
-		OnTouchListener on_touch_listener = new OnTouchListener() {
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				if (event.getAction() == MotionEvent.ACTION_DOWN) {
-					v.setFocusableInTouchMode(true);
-				}
-				return v.performClick();
-			}
-		};
-		//вешаем на каждый edit один слушатель
-		price_edit.setOnTouchListener(on_touch_listener);
-		price_edit2.setOnTouchListener(on_touch_listener);
+		
 		//слушатель кнопки купить
 		btnZ_Start.setOnClickListener(new  View.OnClickListener() {
 				@Override
@@ -179,27 +133,10 @@ public class MainActivity extends Activity
         btnStart.setOnClickListener(new  View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					//пепевод введенного в edit записи в значение double
-					String edit = price_edit.getText().toString();
-					String edit2 = price_edit2.getText().toString();
-					Double text, text2;
-					if (edit.equals("")){
-						edit = "0.0";
-						price_edit.setText("0.0");
-					}
-					if (edit2.equals("")){
-						edit2 = "999.9";
-						price_edit2.setText("999.9");
-					}
-					// сохраниние нулевых значений в файле, и значений введенных в edit
-					editor = pref.edit();
-					editor.putString("edit_price2", edit2);
-					editor.putString("edit_price", edit);
-					editor.putString("price_plus","0");
-					editor.putString("price_minus", "0");
-					editor.commit();
+					
+					
 					//вызов функции включения в запись менеджера временных задач
-					final Intent i = new Intent(MainActivity.this, PlayService.class);
+					i = new Intent(MainActivity.this, PlayService.class);
 					startService(i);
 					}});
 //остановка временой щадачи и остановка службы
@@ -207,92 +144,79 @@ public class MainActivity extends Activity
 				@Override
 				public void onClick(View view) {
 					//Intent intentstop = new Intent(MainActivity.this, PlayService.class);
-					stopService(new Intent(MainActivity.this, PlayService.class));
+					stopService(i);
 				}
 			});
-		// кнопка "широковещптельное сообщение", для тестов
-		Button intent_buttin = (Button) findViewById(R.id.intent_button);
-		//int color = ContextCompat.(this, R.color.colorGreen);
-		//intent_buttin.setBackgroundColor(getResources().getColor( R.color.colorGreen));
-		intent_buttin.setOnClickListener(new View.OnClickListener(){
-			@Override
-			public void onClick(View view){
- 						//здесь код для слушателя кнопок
-			}
-		});
+		
+		
+	
+		
+		
+	}
 
+	@Override
+	protected void onStart()
+	{
+		Toast.makeText(this, "yt", Toast.LENGTH_SHORT).show();
 		// создаем BroadcastReceiver, слушатель главного MainActivity приложения
-		br = new BroadcastReceiver() {
-		// действия при получении сообщений
-		public void onReceive(Context context, Intent intent) {
-			int res = pref.getInt("res", 0);
-			if (res == 0){
-			editor.putInt("res", 1);
-			editor.commit();
-			try{
-			String coin_price = intent.getStringExtra("coin_price");
-			coin_prices(coin_price);
-			String list_price = intent.getStringExtra("list_price");
-			tabl_price(list_price);
-			tabl_z();
-				Double price_intent = intent.getDoubleExtra("price", 0.0);
-				String price_intent_string = price_intent.toString();
-				TextView text_balance = (TextView) findViewById(R.id.text2);
-				TextView text_fullanswer = (TextView) findViewById(R.id.text);
-				text_balance.setText(price_intent_string);
-				text_fullanswer.setText("");
-				//надписи внизу edit
-				String price_minus =pref.getString("price_minus", "");
-				Double price_minus_d = Double.parseDouble(price_minus);
-				if (price_minus_d < 0){
-					price_minuse.setTextColor(Color.RED);
-				}
-				else {
-					price_minuse.setTextColor(Color.WHITE);
-				}
-				String price_edit =pref.getString("edit_price", "");
-				Double price_edit_d = Double.parseDouble(price_edit);
-				Double minuses = Math.round((price_edit_d + price_minus_d) * 100.0) / 100.0;
-				price_minuse.setText(minuses.toString() + "   (" + price_minus + ")");
-				String price_plus =pref.getString("price_plus", "");
-				Double price_plus_d = Double.parseDouble(price_plus);
-				if (price_plus_d > 0){
-					price_pluse.setTextColor(Color.GREEN);
-				} else {
-					price_pluse.setTextColor(Color.WHITE);
-				}
-				String price_edit2 =pref.getString("edit_price2", "");
-				Double price_edit2_d = Double.parseDouble(price_edit2);
 
-				Double pluses = Math.round((price_edit2_d + price_plus_d) * 100.0) / 100.0;
-				price_pluse.setText(pluses.toString() + "   (" + price_plus + ")");
+
+		br = null;
+		br = new BroadcastReceiver() {
+			// действия при получении сообщений
+			public void onReceive(Context context, Intent intent) {
+				//int res = pref.getInt("res", 0);
+				//if (res == 0){
+				//editor.putInt("res", 1);
+				//editor.commit();
+				try{
+					String coin_price = intent.getStringExtra("coin_price");
+
+					String list_price = intent.getStringExtra("list_price");
+
+					Double price_intent = intent.getDoubleExtra("price", 0.0);
+					String price_intent_string = price_intent.toString();
+					TextView text_balance = (TextView) findViewById(R.id.text2);
+					
+					text_balance.setText(price_intent_string + "$");
+					
+					coin_prices(coin_price);
+					tabl_price(list_price);
+					tabl_z();
+					//надписи внизу edit
+					
+				}
+				catch (Exception e){}
+				editor.putInt("fin", 1);
+				//	}
+				//editor.putInt("res", 0);
+				//	editor.commit();
 			}
-			catch (Exception e){}
-			editor.putInt("fin", 1);
-			}
-				editor.putInt("res", 0);
-				editor.commit();
-			}
-			};
+		};
+
 		// создаем фильтр для BroadcastReceiver
-		IntentFilter intFilt = new IntentFilter("CAT");
+		intFilt = new IntentFilter("CAT");
 		// регистрируем (включаем) BroadcastReceiver
 		registerReceiver(br, intFilt);
-}
+		// TODO: Implement this method
+		super.onStart();
+	}
+	
+
+	@Override
+	protected void onStop()
+	{
+		try{
+			unregisterReceiver(br);
+		}catch(Exception e){}
+		// TODO: Implement this method
+		super.onStop();
+	}
 
 	@Override
 	protected void onPause()
 	{
-		//System.out.println( "сохраниние");
-		String edit = price_edit.getText().toString();
-
-		String edit2 = price_edit2.getText().toString();
-		//editor = pref.edit();
-		try{
-		editor.putString("edit_price", edit);
-		editor.putString("edit_price2",edit2);
-		editor.commit();
-		} catch (Exception e){}
+	
 		// TODO: Implement this method
 		super.onPause();
 	}
@@ -319,7 +243,8 @@ public class MainActivity extends Activity
 													Button btn =  new Button(this);
 													int wight;
 													wight = LayoutParams.WRAP_CONTENT;
-													btn.setLayoutParams( new LinearLayout.LayoutParams(wight,  100));
+													btn.setLayoutParams( new LinearLayout.LayoutParams(wight,  50));
+													btn.setTextSize(14);
 													btn.setId(i + 1000);
 													btn.setOnClickListener(getButtonText);
 													llt.addView(btn);
@@ -337,6 +262,7 @@ public class MainActivity extends Activity
 							i_str_color = pref.getInt(i_str + "1", 2);
 							but = (Button) findViewById(i + 1000);
 							but.setText(name + "\n" + price);
+				
 							price_double = Double.parseDouble(price);
 							i_file_coin = pref.getString(i_str, "0.0");
 							i_file_coin_double = Double.parseDouble(i_file_coin);
@@ -493,4 +419,15 @@ public class MainActivity extends Activity
 		}
 	}
 
-}
+
+//  Слушатель для элементов списка в выдвижной панели
+private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Toast.makeText(getApplicationContext(),   "Выбран пункт " + position, Toast.LENGTH_SHORT).show();
+		if (position == 0){
+			Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+			startActivity(intent);
+		}
+    }
+}}
