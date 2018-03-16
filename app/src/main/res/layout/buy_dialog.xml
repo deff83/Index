@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical"
+	android:id="@+id/lin_dialog">
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="0px"
+			android:text="@string/typ_dialog"
+			android:id="@+id/text_typ"
+			android:layout_weight="1"/>
+
+		<Switch
+			android:id="@+id/monitored_switch"
+			android:layout_width="0px"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:textOff="Продать"
+			android:textOn="Купить"
+			android:textSize="12sp"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="0px"
+			android:text="@string/notes_dialog"
+			android:id="@+id/text_notes"
+			android:layout_weight="1"/>
+
+		<EditText
+			android:id="@+id/notes_dialog"
+			android:layout_height="wrap_content"
+			android:inputType="number"
+			android:ems="4"
+			android:focusable="false"
+			android:imeOptions="actionDone"
+			android:layout_width="0px"
+			android:layout_weight="1"
+			android:layout_alignParentRight="true"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/layout_centr"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="0px"
+			android:text="@string/text_price"
+			android:id="@+id/text_price"
+			android:layout_weight="1"/>
+
+		<EditText
+			android:id="@+id/price_dialog"
+			android:layout_height="wrap_content"
+			android:inputType="numberDecimal"
+			android:ems="4"
+			android:focusable="false"
+			android:imeOptions="actionDone"
+			android:layout_width="0px"
+			android:layout_weight="1"
+			android:layout_alignParentRight="true"/>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:id="@+id/ok_cancel"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+
+		<Button
+			android:id="@+id/cancel"
+			android:layout_width="0px"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="Отмена"/>
+
+		<Button
+			android:id="@+id/ok"
+			android:layout_width="0px"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="Отправить"/>
+
+	</LinearLayout>
+
+</LinearLayout>
+

@@ -134,18 +134,28 @@ public class PlayService extends Service {
 		super.onDestroy();
         
     }
-	
+	OkHttpClient client;
+	Intent intent;
+	String login = "U0bEaZLzlags7j0";
+	String password = "uKIKrFvKT4spWfuGTE99lVDLeQfagx2gcb4";
+	String culture = "ru-RU";
+	String wmid = "280113070531";
+	String signature;
+	Integer zCoin;
+	public void s_znachen(){
+		zCoin = 60;
+		login = "U0bEaZLzlags7j0";
+		password = "uKIKrFvKT4spWfuGTE99lVDLeQfagx2gcb4";
+		culture = "ru-RU";
+		wmid = "280113070531";
+		
+	}
 	//do time consuming operations
 	public void request (Double ty, Double ty2) {
-		Integer zCoin;
-		zCoin = 60;
-		String login = "U0bEaZLzlags7j0";
-		String password = "uKIKrFvKT4spWfuGTE99lVDLeQfagx2gcb4";
-		String culture = "ru-RU";
-		String wmid = "280113070531";
-		String signature;
+		
+		s_znachen();
 		//создание объекта ответа
-		OkHttpClient client = new OkHttpClient();
+		client = new OkHttpClient();
 		String json = "{'ApiContext':{'Login':'U0bEaZLzlags7j0','Wmid':'280113070531','Culture':'ru-RU','Signature':'Y9miCjx8fgnSW6glpAuIxRBO9t3GBbZXw8vxZJ+ZP+c='}}";
 		RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
 		Request request = new Request.Builder()
@@ -153,7 +163,7 @@ public class PlayService extends Service {
 			.post(body)
 			.build();
 		Response response = null;
-		final Intent intent;
+		
 		intent = new Intent();
  		try{
 			
@@ -345,6 +355,15 @@ public class PlayService extends Service {
 						editor.putInt("col_izm", 1);
 					}
 				}
+				if (pref.getInt("col_izm_res", 0) == 0){
+					if (col_z == jsonArray2.length()){}else{
+						if (col_z < jsonArray2.length()){
+							editor.putInt("col_izm_res", 2);
+						} else {
+							editor.putInt("col_izm_res", 1);
+						}
+					}
+				}
 				editor.putInt("col_z", jsonArray2.length());
 				String x = "net";
 				for (int i=0; i < jsonArray2.length(); i++){
@@ -373,31 +392,59 @@ public class PlayService extends Service {
 		}catch (IOException e) {
 			//intent.putExtra("l", "ошибка");
 		}
-		
 		//удаление заявки
 		int del = pref.getInt("del", 0);
 		if (del == 1){
+			del_zayvki(0);
+		}
+		//удаление всех заявок сразу
+		int del_all = pref.getInt("del_all", 0);
+		if (del_all == 1){
+			int col_z = pref.getInt("col_z", 0);
+			for (int i=0; i<col_z; i++){
+				del_zayvki(i);
+			}
+			editor.putInt("del_all", 0);
+		} 
+		//постановка заявки
+		int add = pref.getInt("add", 0);
+		if (add == 1){
+			add_zayvk();
+		}
+		request = null;
+		request2 = null;
+		zapisi();
+		
+	}
+	
+	public void zapisi(){
+		//создание намерения CAT
+		String CAT_ACTION = "CAT";
+		intent.setAction(CAT_ACTION);
+		//intent.putExtra("intent_service_name", "tabl_price");
+		intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+		//отправка широковещательного сообщения
+		client = null;
+		//client2 = null;
+		
+		//int res = pref.getInt("res", 0);
+		//if (res == 0){ 
+		sendBroadcast(intent);
+		//	}
+		editor.putInt("fin", 1);
+		editor.commit();
+	}
+	
+	public void del_zayvki(int j_del){
+		
 			//удаление заявки
 			//OkHttpClient client3 = new OkHttpClient();
-			int offerid = pref.getInt("my_offer" + zCoin + "_" + 0 + "offerid", 0);
+			int offerid = pref.getInt("my_offer" + zCoin + "_" + j_del + "offerid", 0);
 			if (offerid != 0){
-				// шиврование
-				String base64 = "";
-				try{
 				
-					MessageDigest digest = MessageDigest.getInstance("SHA-256");
-					String r = login+ ';' + password+ ';' + culture+ ';' + wmid + ';' + offerid;
-					try{
-						
-						byte[] zl = digest.digest(r.getBytes("UTF-8"));
-						
-						base64 = Base64.encodeToString(zl, Base64.NO_WRAP);
-					}catch (UnsupportedEncodingException e){}
-				}catch (NoSuchAlgorithmException e){}
-				
-			
+				String base64 = base64_shifr(0, offerid);
 				signature = base64;
-			
+
 				String json5 = "{'ApiContext':{'Login':'" + login + "','Wmid':'" + wmid + "','Culture':'" + culture + "','Signature':'" + signature + "'},'OfferId':'"+ offerid + "'}";
 				RequestBody body5 = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json5);
 				Request request5 = new Request.Builder()
@@ -408,37 +455,74 @@ public class PlayService extends Service {
  				try{
 					response5 = client.newCall(request5).execute();
 					final String coin_price5 = response5.body().string(); 
-					intent.putExtra("list_price", coin_price5.toString());
+					//intent.putExtra("list_price", coin_price5.toString());
 				}catch (IOException e) {
 					//intent.putExtra("l", "ошибка");
 				}
 				editor.putInt("my_offer" + zCoin + "_" + 0 + "offerid", 0);
 			}
-				editor.putInt("del", 0);
-			
-		}
-		//создание намерения CAT
-		String CAT_ACTION = "CAT";
-		intent.setAction(CAT_ACTION);
-		//intent.putExtra("intent_service_name", "tabl_price");
-		intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-		//отправка широковещательного сообщения
-		client = null;
-		//client2 = null;
-		request = null;
-		request2 = null;
-		//int res = pref.getInt("res", 0);
-		//if (res == 0){ 
-		sendBroadcast(intent);
-		//	}
-		editor.putInt("fin", 1);
+			editor.putInt("del", 0);
+
+	}
+	public void add_zayvk(){
+		editor.putInt("add", 0);
 		editor.commit();
+		String base64 = base64_shifr(1, 0);
+		String signature6 = base64;
+		String isbid = "";
+		Double price_dialog = Double.parseDouble(pref.getString("price_dialog", "0.0"));
+		int notes_dialog = pref.getInt("notes_dialog",1);
+		
+		Integer typ_oper = pref.getInt("typ_oper", 0);
+		if (typ_oper == 0){
+			isbid = "false";
+		}
+		if (typ_oper == 1){
+			isbid = "true";
+		}
+		String isanonymous = "true";
+		 
+		//{"ApiContext":{"Login":"U0bEaZLzlags7j0","Wmid":"280113070531","Culture":"ru-RU","Signature":"wznCOrrwzvO6vVsYnRF68utGxGWYFxFVOT6WPpjzTFM="},"Offer":{
+		String json6 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'"+signature6+"'},'Offer':{'ID':"+zCoin+",'Count':"+notes_dialog+",'IsAnonymous':"+isanonymous+",'IsBid':"+isbid+",'Price':"+price_dialog+"}}";
+		//	String json6 = "{'ApiContext':{'Login':'" + login + "','Wmid':'" + wmid + "','Culture':'" + culture + "','Signature':'" + signature + "'},'OfferId':{'ID':"+60+",'Count':"+1+",'IsAnonymous':true,'IsBid':true,'Price':"+ 6.0000 +"}}";
+		RequestBody body6 = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json6);
+		Request request6 = new Request.Builder()
+			.url("https://api.indx.ru/api/v2/trade/OfferAdd")
+			.post(body6)
+			.build();
+		Response response6 = null;
+		try{
+			response6 = client.newCall(request6).execute();
+			final String coin_price6 = response6.body().string(); 
+			intent.putExtra("list_price", "успешно поставлена");
+		}catch (IOException e) {
+			//intent.putExtra("l", "ошибка");
+		}
+	
 		
 	}
-	
-	
-	
-	
+	public String base64_shifr(int i, int offerid){
+		// шиврование
+		String base64 = "";
+		try{
+
+			MessageDigest digest = MessageDigest.getInstance("SHA-256");
+			String r = "";
+			if (i == 0){			//удаление заявки
+			 r = login+ ';' + password+ ';' + culture+ ';' + wmid + ';' + offerid;
+			}
+			if (i == 1){			//постановка заявки
+				r = login+ ';' + password+ ';' + culture+ ';' + wmid + ';' + zCoin;
+			}
+			try{
+
+				byte[] zl = digest.digest(r.getBytes("UTF-8"));
+
+				base64 = Base64.encodeToString(zl, Base64.NO_WRAP);
+			}catch (UnsupportedEncodingException e){}
+		}catch (NoSuchAlgorithmException e){}
+		return base64;
+	}
 	public void data_service(){
 		
 

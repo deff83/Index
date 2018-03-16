@@ -133,6 +133,63 @@ public class MessageReceiver extends BroadcastReceiver {
 
 		
 		editor.putString("price", price.toString());
+		
+		//оповещение изменилось количество заявок
+		int col_izm_res = pref.getInt("col_izm_res", 0);
+		if (col_izm_res == 1){
+			//код оповещения
+			Intent intent_receiver = new Intent(context, MainActivity.class);
+			PendingIntent pi_receiver = PendingIntent.getActivity(context, 003, intent_receiver, PendingIntent.FLAG_ONE_SHOT);
+			int notificationId = 003;     //id оповещения
+
+			NotificationCompat.Builder notificationBuilder =
+				new NotificationCompat.Builder(context)
+				.setContentIntent(pi_receiver)
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setContentTitle("заявка сработала!")
+				.setContentText(price.toString())
+				.setTicker("заявка сработала")						//текст в строке заголовка
+				.setDefaults(Notification.DEFAULT_SOUND)
+				.setAutoCancel(true);
+
+			NotificationManagerCompat notificationManager =
+				NotificationManagerCompat.from(context);
+
+
+
+			notificationManager.notify(notificationId, notificationBuilder.build());
+			
+			editor.putInt("col_izm_res", 0);
+		}
+		if (col_izm_res == 2){
+			//код оповещения
+			Intent intent_receiver = new Intent(context, MainActivity.class);
+			PendingIntent pi_receiver = PendingIntent.getActivity(context, 004, intent_receiver, PendingIntent.FLAG_ONE_SHOT);
+			int notificationId = 004;     //id оповещения
+
+			NotificationCompat.Builder notificationBuilder =
+				new NotificationCompat.Builder(context)
+				.setContentIntent(pi_receiver)
+				.setSmallIcon(R.drawable.ic_launcher)
+				.setContentTitle("поставлена заявка!")
+				.setContentText(price.toString())
+				.setTicker("поставлена заявка!")						//текст в строке заголовка
+				.setDefaults(Notification.DEFAULT_SOUND)
+				.setAutoCancel(true);
+
+			NotificationManagerCompat notificationManager =
+				NotificationManagerCompat.from(context);
+
+
+
+			notificationManager.notify(notificationId, notificationBuilder.build());
+
+			editor.putInt("col_izm_res", 0);
+		}
+		
+		
+		
+		
 			//editor.putString("otvet_coin", "0");
 			//int activity_true = pref.getInt("activity_true", 1);
 			//if (activity_true == 0){
