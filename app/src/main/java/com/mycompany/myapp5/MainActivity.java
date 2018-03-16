@@ -118,35 +118,25 @@ public class MainActivity extends Activity
 		btnZ_Start.setOnClickListener(new  View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					
-					
+					Intent intent = new Intent(MainActivity.this, Buy_dialog.class);
+					editor.putInt("btn_z", 0);
+					editor.commit();
+					startActivity(intent);
+					//editor.putInt("add", 1);
+					//editor.commit();					
 					}});
 		//слушатель кнопки продать
 		btnZ_Stop.setOnClickListener(new  View.OnClickListener() {
 				@Override
 				public void onClick(View view) {
-					editor.putInt("del", 1);
+					
+					Intent intent = new Intent(MainActivity.this, Buy_dialog.class);
+					editor.putInt("btn_z", 1);
 					editor.commit();
+					startActivity(intent);
 					
 					}});
-		// запуск службы, нажатие на кнопку старт
-        btnStart.setOnClickListener(new  View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					
-					
-					//вызов функции включения в запись менеджера временных задач
-					i = new Intent(MainActivity.this, PlayService.class);
-					startService(i);
-					}});
-//остановка временой щадачи и остановка службы
-		btnStop.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View view) {
-					//Intent intentstop = new Intent(MainActivity.this, PlayService.class);
-					stopService(i);
-				}
-			});
+		
 		
 		
 	
@@ -243,8 +233,8 @@ public class MainActivity extends Activity
 													Button btn =  new Button(this);
 													int wight;
 													wight = LayoutParams.WRAP_CONTENT;
-													btn.setLayoutParams( new LinearLayout.LayoutParams(wight,  50));
-													btn.setTextSize(14);
+													btn.setLayoutParams( new LinearLayout.LayoutParams(wight,  LayoutParams.WRAP_CONTENT));
+													btn.setTextSize(12);
 													btn.setId(i + 1000);
 													btn.setOnClickListener(getButtonText);
 													llt.addView(btn);
@@ -257,6 +247,9 @@ public class MainActivity extends Activity
 				for (int i = 0; i < jsonarray.length(); i++) {
 							JSONObject friend = jsonarray.getJSONObject(i);
 							String name = friend.getString("name");
+							Integer id_coin = friend.getInt("id");
+							editor.putString("name_coin"+i, name);
+							editor.putInt("id_coin"+i,id_coin);
 							String price = friend.getString("price");
 							String i_str = String.valueOf(i) + "1000";
 							i_str_color = pref.getInt(i_str + "1", 2);
@@ -372,13 +365,15 @@ public class MainActivity extends Activity
 	public void tabl_z(){
 		int col_izm = pref.getInt("col_izm", 0);
 		int col_z = pref.getInt("col_z", 0);
-		if (col_izm == 1){
+		int col_tabl = pref.getInt("col_tabl", 0);
+		//if (col_tabl != col_z){
 			tableLayout2.removeAllViews();
 			TableRow tr2;
-			
+			editor.putInt("col_tabl", col_z);
 			for (int i = 0; i < col_z; i++){
 				LayoutInflater inflate = LayoutInflater.from(this);
 				tr2 = (TableRow) inflate.inflate(R.layout.tabl2_row, null);
+				tr2.setId(i + 4000);
 				TextView toolidtw;
 				TextView offeridtw;
 				TextView nametw;
@@ -416,7 +411,7 @@ public class MainActivity extends Activity
 			}
 			editor.putInt("col_izm", 0);
 			editor.commit();
-		}
+		
 	}
 
 
@@ -425,9 +420,18 @@ private class DrawerItemClickListener implements ListView.OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Toast.makeText(getApplicationContext(),   "Выбран пункт " + position, Toast.LENGTH_SHORT).show();
-		if (position == 0){
-			Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-			startActivity(intent);
+		Intent intent = null;
+		switch (position){
+			case 0:
+				intent = new Intent(MainActivity.this, OpovActivity.class);
+				break;
+			case 1:
+				intent = new Intent(MainActivity.this, Userfunction.class);
+				break;
+			case 2:
+				intent = new Intent(MainActivity.this, Setting.class);
+				break;
 		}
+		startActivity(intent);
     }
 }}

@@ -8,7 +8,7 @@ import android.view.View.*;
 import android.view.inputmethod.*;
 import android.graphics.*;
 
-public class SettingActivity extends Activity
+public class OpovActivity extends Activity
 {
 	SharedPreferences pref;
 	Context context = null;
@@ -30,10 +30,11 @@ public class SettingActivity extends Activity
 		editor = pref.edit();
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.setting);
+		setContentView(R.layout.opoveshenia);
+		
 		//список в выдвижной панели
-		mCatTitles = getResources().getStringArray(R.array.cats_array_ru);
-        mDrawerListView = (ListView) findViewById(R.id.left_drawer);
+		mCatTitles = getResources().getStringArray(R.array.opoveshenia);
+        mDrawerListView = (ListView) findViewById(R.id.left_drawer3);
         // подключим адаптер для списка
         mDrawerListView.setAdapter(new ArrayAdapter<String>(this,
 															R.layout.draw_list_item, mCatTitles));
@@ -54,10 +55,10 @@ public class SettingActivity extends Activity
 		try {
 			if(pref.contains("edit_price2")){
 				price_edit2.setText(pref.getString("edit_price2", ""));
-			}
+			} 
 		} catch (Exception e){}
 		//слушатель,  layot
-		interceptor = (RelativeLayout) findViewById(R.id.rel_layout);
+		interceptor = (RelativeLayout) findViewById(R.id.rel_layout3);
 		interceptor.setOnTouchListener(new OnTouchListener() {
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
@@ -71,7 +72,7 @@ public class SettingActivity extends Activity
 				}
 			});
 		//слушатель edit, установка акиивности вызов клавиатуры
-		OnTouchListener on_touch_listener = new OnTouchListener() {
+		OnTouchListener on_touch_listener3 = new OnTouchListener() {
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
@@ -81,13 +82,15 @@ public class SettingActivity extends Activity
 			}
 		};
 		//вешаем на каждый edit один слушатель
-		price_edit.setOnTouchListener(on_touch_listener);
-		price_edit2.setOnTouchListener(on_touch_listener);
+		price_edit.setOnTouchListener(on_touch_listener3);
+		price_edit2.setOnTouchListener(on_touch_listener3);
+		
 	}
 
 	@Override
 	protected void onStart()
 	{
+		try{
 		String price_minus =pref.getString("price_minus", "");
 		Double price_minus_d = Double.parseDouble(price_minus);
 		if (price_minus_d < 0){
@@ -112,7 +115,11 @@ public class SettingActivity extends Activity
 
 		Double pluses = Math.round((price_edit2_d + price_plus_d) * 100.0) / 100.0;
 		price_pluse.setText(pluses.toString() + "   (" + price_plus + ")");
-		
+		}catch(Exception e){
+			editor.putString("edit_price", "999.9");
+			editor.putString("edit_price2", "0.0");
+			editor.commit();
+		}
 		// TODO: Implement this method
 		super.onStart();
 	}
@@ -165,9 +172,17 @@ public class SettingActivity extends Activity
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 			Toast.makeText(getApplicationContext(),   "Выбран пункт " + position, Toast.LENGTH_SHORT).show();
-			if (position == 0){
-				Intent intent = new Intent(SettingActivity.this, MainActivity.class);
-				startActivity(intent);
+			Intent intent = null;
+			switch (position){
+				case 0:
+					intent = new Intent(OpovActivity.this, MainActivity.class);
+					break;
+				case 1:
+					intent = new Intent(OpovActivity.this, Setting.class);
+					break;
 			}
+				startActivity(intent);
+			
+			
 		}
 	}}

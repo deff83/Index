@@ -7,4 +7,6 @@
 		  theme UI controls like checkboxes and text fields -->
 		<item name="android:colorAccent">@color/accent</item>
 	</style>
+	<style name="Dialog" parent="@android:style/Theme.Holo.Light.Dialog">
+	</style>
 </resources>
