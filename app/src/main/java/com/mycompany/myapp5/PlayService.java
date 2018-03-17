@@ -53,7 +53,7 @@ public class PlayService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 		
 		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-		
+		s_znachen();
 		editor = pref.edit();
 		editor.putInt("fin", 1);
 		editor.commit();
@@ -136,27 +136,27 @@ public class PlayService extends Service {
     }
 	OkHttpClient client;
 	Intent intent;
-	String login = "U0bEaZLzlags7j0";
-	String password = "uKIKrFvKT4spWfuGTE99lVDLeQfagx2gcb4";
-	String culture = "ru-RU";
-	String wmid = "280113070531";
+	String login;
+	String password;
+	String culture;
+	String wmid;
 	String signature;
 	Integer zCoin;
 	public void s_znachen(){
 		zCoin = 60;
-		login = "U0bEaZLzlags7j0";
-		password = "uKIKrFvKT4spWfuGTE99lVDLeQfagx2gcb4";
+		login = pref.getString("login", "");
+		password = pref.getString("password", "");
 		culture = "ru-RU";
-		wmid = "280113070531";
+		wmid = pref.getString("wmid", "");
 		
 	}
 	//do time consuming operations
 	public void request (Double ty, Double ty2) {
 		
-		s_znachen();
+		
 		//создание объекта ответа
 		client = new OkHttpClient();
-		String json = "{'ApiContext':{'Login':'U0bEaZLzlags7j0','Wmid':'280113070531','Culture':'ru-RU','Signature':'Y9miCjx8fgnSW6glpAuIxRBO9t3GBbZXw8vxZJ+ZP+c='}}";
+		String json = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'Y9miCjx8fgnSW6glpAuIxRBO9t3GBbZXw8vxZJ+ZP+c='}}";
 		RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
 		Request request = new Request.Builder()
 			.url("https://api.indx.ru/api/v2/trade/Balance")
@@ -205,7 +205,7 @@ public class PlayService extends Service {
 
 		//создание объекта ответа
 		//OkHttpClient client2 = new OkHttpClient();
-		String json2 = "{'ApiContext':{'Login':'U0bEaZLzlags7j0','Wmid':'280113070531','Culture':'ru-RU','Signature':'YyYa1jmzcUnsUfqDOtWGcwLMdVtQ+qWQp9KY02ds6Fo='}}";
+		String json2 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'YyYa1jmzcUnsUfqDOtWGcwLMdVtQ+qWQp9KY02ds6Fo='}}";
 		RequestBody body2 = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json2);
 		Request request2 = new Request.Builder()
 			.url("https://api.indx.ru/api/v2/trade/Tools")
@@ -242,7 +242,7 @@ public class PlayService extends Service {
 
 		//создание объекта ответа
 		//OkHttpClient client3 = new OkHttpClient();
-		String json3 = "{'ApiContext':{'Login':'U0bEaZLzlags7j0','Wmid':'280113070531','Culture':'ru-RU','Signature':'wznCOrrwzvO6vVsYnRF68utGxGWYFxFVOT6WPpjzTFM='},'Trading':{'ID':60}}";
+		String json3 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'wznCOrrwzvO6vVsYnRF68utGxGWYFxFVOT6WPpjzTFM='},'Trading':{'ID':"+zCoin+"}}";
 		RequestBody body3 = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json3);
 		Request request3 = new Request.Builder()
 			.url("https://api.indx.ru/api/v2/trade/OfferList")
@@ -331,7 +331,7 @@ public class PlayService extends Service {
 		//запрос мои заявки
 		
 		//OkHttpClient client3 = new OkHttpClient();
-		String json4 = "{'ApiContext':{'Login':'U0bEaZLzlags7j0','Wmid':'280113070531','Culture':'ru-RU','Signature':'Y9miCjx8fgnSW6glpAuIxRBO9t3GBbZXw8vxZJ+ZP+c='}}";
+		String json4 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'Y9miCjx8fgnSW6glpAuIxRBO9t3GBbZXw8vxZJ+ZP+c='}}";
 		RequestBody body4 = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json4);
 		Request request4 = new Request.Builder()
 			.url("https://api.indx.ru/api/v2/trade/OfferMy")
@@ -494,7 +494,14 @@ public class PlayService extends Service {
 		try{
 			response6 = client.newCall(request6).execute();
 			final String coin_price6 = response6.body().string(); 
+			try {
+			JSONObject jsonres6 = new JSONObject(coin_price6);
+			JSONObject jsonresval6 = jsonres6.getJSONObject("value");
+			String jsoncode6 = jsonresval6.getString("Code");
+			if (jsoncode6.equals("0")){
 			intent.putExtra("list_price", "успешно поставлена");
+			}else{intent.putExtra("list_price", "ошибка постановки заявки");}
+			}catch(JSONException e){}
 		}catch (IOException e) {
 			//intent.putExtra("l", "ошибка");
 		}

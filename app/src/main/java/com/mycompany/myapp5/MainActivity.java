@@ -67,6 +67,10 @@ public class MainActivity extends Activity
 		editor.putInt("res", 0);
 		editor.putInt("col_izm", 1);
 		editor.putInt("del", 0);
+		//запись логинм и пароля входа
+		editor.putString("login", "U0bEaZLzlags7j0");
+		editor.putString("password", "uKIKrFvKT4spWfuGTE99lVDLeQfagx2gcb4");
+		editor.putString("wmid", "280113070531");
 		editor.commit();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
