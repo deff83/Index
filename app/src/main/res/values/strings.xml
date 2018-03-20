@@ -7,6 +7,9 @@
 	<string name="text_price">Цена</string>
 	<string name="notes_dialog">Количество нот</string>
 	<string name="typ_dialog">Тип операции</string>
+	<string name="mes_z_del">Выберите действие для заявки</string>
+	<string name="delz">убрать</string>
+	<string name="editz">редактировать</string>
 	<string-array name="cats_array_ru">
 		<item>оповещения</item>
 		<item>функции_пользователя</item>

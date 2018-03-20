@@ -15,7 +15,7 @@ import android.view.View.*;
 import android.text.*;
 import android.graphics.*;
 import android.preference.*;
-import android.icu.util.*;
+
 import android.view.ViewDebug.*;
 import android.widget.Toolbar.*;
 import android.support.v4.content.*;
@@ -49,6 +49,7 @@ public class MainActivity extends Activity
 	//LayoutInflater inflater;
 	int str_schet;
 	OnClickListener getButtonText;
+	OnClickListener gettablz;
 	LinearLayout.LayoutParams lButtonParams;
 	@Override
     protected void onCreate(Bundle savedInstanceState)
@@ -105,6 +106,85 @@ public class MainActivity extends Activity
 			 }
 		 }
 		 };
+		 //слушатель таблицы заявок
+		 gettablz = new OnClickListener(){
+			 @Override
+			 public void onClick(View v){
+				 int j = v.getId() - 4000;
+				
+				 //окрашиваем строчку
+				 final TextView toolidtw_z;
+				 final TextView offeridtw_z;
+				 final TextView nametw_z;
+				 final TextView kindtw_z;
+				 final TextView pricetw_z;
+				 final TextView notestw_z;
+
+				 toolidtw_z = (TextView) v.findViewById(R.id.colm1);
+				 offeridtw_z = (TextView) v.findViewById(R.id.colm2);
+				 nametw_z = (TextView) v.findViewById(R.id.colm3);
+				 kindtw_z = (TextView) v.findViewById(R.id.colm4);
+				 pricetw_z = (TextView) v.findViewById(R.id.colm5);
+				 notestw_z = (TextView) v.findViewById(R.id.colm6);
+				 
+				 toolidtw_z.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				 offeridtw_z.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				 nametw_z.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				 kindtw_z.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				 pricetw_z.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				 notestw_z.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				 //получаем данные				 
+				 String name_z =pref.getString("my_offer" + vCoin + "_" + i + "name", "");
+				 final int z_id =pref.getInt("my_offer" + vCoin + "_" + j + "offerid", 0);
+				 final String price_z =pref.getString("my_offer" + vCoin + "_" + j + "price", "");
+				 int notes_z =pref.getInt("my_offer" + vCoin + "_" + j + "notes", 0);
+				 //устанавливаем флаг нажатия
+				 editor.putInt("press_tabl", z_id);
+				 editor.commit();
+				 //заголовок окна
+				 String title_z = pref.getString("name_coin" + 0, "");
+				 //выводим диалоговое окно
+				 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+				 builder.setTitle(title_z)
+					 .setMessage("Выберите действие для заявки" + "  "+z_id + "\n" + name_z +"  " +price_z +"  (" + notes_z +" нот)")                      			
+					 .setCancelable(true)
+					 .setNegativeButton(R.string.delz,
+					 new DialogInterface.OnClickListener() {
+						 public void onClick(DialogInterface dialog, int id) {
+							 // нажато "Отмена"
+							 Toast.makeText(getBaseContext(), price_z, 
+											Toast.LENGTH_SHORT).show();
+							//убираем цвет нажатой таблицы
+							 toolidtw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+							 offeridtw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+							 nametw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+							 kindtw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+							 pricetw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+							 notestw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+							//убираем флаг нажатия
+							editor.putInt("press_tabl", 3);
+							editor.putInt("del", 1);
+							editor.putInt("j_del", z_id);
+							editor.commit();
+							 dialog.cancel();
+						 }
+					 })
+					 .setPositiveButton(R.string.editz, 
+					 new DialogInterface.OnClickListener() {
+						 public void onClick(DialogInterface dialog, int id) {
+							 // нажато "OK"
+							 Toast.makeText(getBaseContext(), "OK", 
+											Toast.LENGTH_SHORT).show();
+							 //убираем флаг нажатия
+							 editor.putInt("press_tabl", 3);
+							 editor.commit();
+							 dialog.cancel();
+						 }
+					 });
+				 AlertDialog alert = builder.create();
+				 alert.show();
+			 }
+		 };
 		//таблица цен
 		tableLayout = (TableLayout) findViewById(R.id.table);
 		//таблица заявок
@@ -140,10 +220,12 @@ public class MainActivity extends Activity
 					startActivity(intent);
 					
 					}});
-		
-		
-		
-	
+		//старт снрвиса при создании активити
+		int serv = pref.getInt("serv", 0);
+		if (serv == 0){
+			Intent i = new Intent(this, PlayService.class);
+			startService(i);
+		}
 		
 		
 	}
@@ -378,6 +460,7 @@ public class MainActivity extends Activity
 				LayoutInflater inflate = LayoutInflater.from(this);
 				tr2 = (TableRow) inflate.inflate(R.layout.tabl2_row, null);
 				tr2.setId(i + 4000);
+				
 				TextView toolidtw;
 				TextView offeridtw;
 				TextView nametw;
@@ -387,10 +470,14 @@ public class MainActivity extends Activity
 				
 					toolidtw = (TextView) tr2.findViewById(R.id.colm1);
 					offeridtw = (TextView) tr2.findViewById(R.id.colm2);
+				tr2.setOnClickListener(gettablz);
 					nametw = (TextView) tr2.findViewById(R.id.colm3);
 					kindtw = (TextView) tr2.findViewById(R.id.colm4);
 					pricetw = (TextView) tr2.findViewById(R.id.colm5);
 					notestw = (TextView) tr2.findViewById(R.id.colm6);
+					
+					//проверка нажата ли таблица для установки цвета
+					
 					vCoin = 60;
 					
 					int offerid =pref.getInt("my_offer" + vCoin + "_" + i + "offerid", 0);
@@ -398,6 +485,17 @@ public class MainActivity extends Activity
 					int kind =pref.getInt("my_offer" + vCoin + "_" + i + "kind", 0);
 					String price =pref.getString("my_offer" + vCoin + "_" + i + "price", "");
 					int notes =pref.getInt("my_offer" + vCoin + "_" + i + "notes", 0);
+					
+					//
+					int pressz = pref.getInt("press_tabl", 3);
+					if (pressz == offerid){
+				toolidtw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				offeridtw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				nametw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				kindtw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				pricetw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				notestw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
+				}
 					if ( kind == 0){
 						
 						kindtw.setText(sale);

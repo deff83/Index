@@ -15,7 +15,7 @@ import android.widget.*;
 import android.app.*;
 import android.content.*;
 import android.util.*;
-import org.apache.commons.codec.digest.*;
+
 import java.security.*;
 
 
@@ -39,7 +39,10 @@ public class PlayService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-		
+		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		editor = pref.edit();
+		editor.putInt("serv", 1);
+		editor.commit();
 		fin = 1;
         Toast.makeText(this, "Служба создана",
 					   Toast.LENGTH_SHORT).show();
@@ -52,10 +55,11 @@ public class PlayService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 		
-		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		
 		s_znachen();
-		editor = pref.edit();
+		
 		editor.putInt("fin", 1);
+		
 		editor.commit();
 		Toast.makeText(this, "старт",
 					   Toast.LENGTH_SHORT).show();
@@ -128,7 +132,8 @@ public class PlayService extends Service {
 		
        
 		timer_server.cancel();
-		
+		editor.putInt("serv", 0);
+		editor.commit();
         Toast.makeText(this, "Служба остановлена",
 					   Toast.LENGTH_SHORT).show();
 		super.onDestroy();
@@ -394,8 +399,9 @@ public class PlayService extends Service {
 		}
 		//удаление заявки
 		int del = pref.getInt("del", 0);
+		int j_del = pref.getInt("j_del", 0);
 		if (del == 1){
-			del_zayvki(0);
+			del_zayvki(j_del);
 		}
 		//удаление всех заявок сразу
 		int del_all = pref.getInt("del_all", 0);
@@ -439,7 +445,7 @@ public class PlayService extends Service {
 		
 			//удаление заявки
 			//OkHttpClient client3 = new OkHttpClient();
-			int offerid = pref.getInt("my_offer" + zCoin + "_" + j_del + "offerid", 0);
+			int offerid = j_del;
 			if (offerid != 0){
 				
 				String base64 = base64_shifr(0, offerid);
