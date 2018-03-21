@@ -79,7 +79,6 @@ public class Setting extends Activity
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Toast.makeText(getApplicationContext(),   "Выбран пункт " + position, Toast.LENGTH_SHORT).show();
 			if (position == 0){
 				Intent intent = new Intent(Setting.this, MainActivity.class);
 				startActivity(intent);

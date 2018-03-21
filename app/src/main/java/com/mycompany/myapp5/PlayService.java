@@ -20,6 +20,8 @@ import java.security.*;
 
 
 public class PlayService extends Service {
+	//глобальная переменная запуска службы
+	public static Boolean serviceIndexRunning = false;
 	Double ty;
 	Double ty2;
 	SharedPreferences pref;
@@ -41,11 +43,14 @@ public class PlayService extends Service {
         super.onCreate();
 		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
 		editor = pref.edit();
+		
 		editor.putInt("serv", 1);
 		editor.commit();
 		fin = 1;
-        Toast.makeText(this, "Служба создана",
-					   Toast.LENGTH_SHORT).show();
+		s_znachen();
+       // Toast.makeText(this, "Служба создана",
+					//   Toast.LENGTH_SHORT).show();
+		
       
     }
 	Timer timer_server;
@@ -56,21 +61,22 @@ public class PlayService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 		
 		
-		s_znachen();
+		
 		
 		editor.putInt("fin", 1);
 		
 		editor.commit();
-		Toast.makeText(this, "старт",
-					   Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, "старт",
+					//   Toast.LENGTH_SHORT).show();
 		
 		
 					//создание run потока
 		try{
+			
 			timer_server.cancel();}
 		catch (Exception e){}
 		timer_server = new Timer();
-	
+		serviceIndexRunning = true;
 		//инициализация таймера
 		timer_server.schedule(new TimerTask(){
 			
@@ -130,7 +136,7 @@ public class PlayService extends Service {
     @Override
     public void onDestroy() {
 		
-       
+		serviceIndexRunning = false;
 		timer_server.cancel();
 		editor.putInt("serv", 0);
 		editor.commit();
@@ -147,6 +153,7 @@ public class PlayService extends Service {
 	String wmid;
 	String signature;
 	Integer zCoin;
+	Integer id_del_all;
 	public void s_znachen(){
 		zCoin = 60;
 		login = pref.getString("login", "");
@@ -155,13 +162,15 @@ public class PlayService extends Service {
 		wmid = pref.getString("wmid", "");
 		
 	}
+	String signature_baz;
 	//do time consuming operations
 	public void request (Double ty, Double ty2) {
 		
 		
 		//создание объекта ответа
+		signature_baz = base64_shifr(3, 0);
 		client = new OkHttpClient();
-		String json = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'Y9miCjx8fgnSW6glpAuIxRBO9t3GBbZXw8vxZJ+ZP+c='}}";
+		String json = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'" + signature_baz + "'}}";
 		RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
 		Request request = new Request.Builder()
 			.url("https://api.indx.ru/api/v2/trade/Balance")
@@ -204,13 +213,10 @@ public class PlayService extends Service {
 		}
 		
 	
-	//post запрос на цены коинов
-	//do time consuming operations
-	
-
-		//создание объекта ответа
+		//post запрос на цены коинов
+		signature_baz = base64_shifr(4, 0);
 		//OkHttpClient client2 = new OkHttpClient();
-		String json2 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'YyYa1jmzcUnsUfqDOtWGcwLMdVtQ+qWQp9KY02ds6Fo='}}";
+		String json2 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'" + signature_baz + "'}}";
 		RequestBody body2 = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json2);
 		Request request2 = new Request.Builder()
 			.url("https://api.indx.ru/api/v2/trade/Tools")
@@ -245,9 +251,10 @@ public class PlayService extends Service {
 		
 	
 
-		//создание объекта ответа
+		//запрос прайс листа
+		signature_baz = base64_shifr(1, 0);
 		//OkHttpClient client3 = new OkHttpClient();
-		String json3 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'wznCOrrwzvO6vVsYnRF68utGxGWYFxFVOT6WPpjzTFM='},'Trading':{'ID':"+zCoin+"}}";
+		String json3 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'" + signature_baz + "'},'Trading':{'ID':"+zCoin+"}}";
 		RequestBody body3 = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json3);
 		Request request3 = new Request.Builder()
 			.url("https://api.indx.ru/api/v2/trade/OfferList")
@@ -317,8 +324,9 @@ public class PlayService extends Service {
 							editor.putString("tabl_notes_prod" + i, y_col.toString());
 							editor.putString("tabl_offerid_prod" + i, y_offerid.toString());
 					}
+					
 					editor.commit();
-						ystr = y.toString();
+					ystr = y.toString();
 				
 		//			intent.putExtra("list_price", pref.getString("tabl0", "ошибка в значении"));
 				
@@ -334,9 +342,9 @@ public class PlayService extends Service {
 		
 		
 		//запрос мои заявки
-		
+		signature_baz = base64_shifr(3, 0);
 		//OkHttpClient client3 = new OkHttpClient();
-		String json4 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'Y9miCjx8fgnSW6glpAuIxRBO9t3GBbZXw8vxZJ+ZP+c='}}";
+		String json4 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'" + signature_baz + "'}}";
 		RequestBody body4 = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json4);
 		Request request4 = new Request.Builder()
 			.url("https://api.indx.ru/api/v2/trade/OfferMy")
@@ -407,8 +415,10 @@ public class PlayService extends Service {
 		int del_all = pref.getInt("del_all", 0);
 		if (del_all == 1){
 			int col_z = pref.getInt("col_z", 0);
+			
 			for (int i=0; i<col_z; i++){
-				del_zayvki(i);
+				id_del_all = pref.getInt("my_offer" + zCoin + "_" + i + "offerid", 0);
+				del_zayvki(id_del_all);
 			}
 			editor.putInt("del_all", 0);
 		} 
@@ -461,7 +471,15 @@ public class PlayService extends Service {
  				try{
 					response5 = client.newCall(request5).execute();
 					final String coin_price5 = response5.body().string(); 
+					try{
+					JSONObject jsonres5 = new JSONObject(coin_price5);
+					JSONObject jsonresval5 = jsonres5.getJSONObject("value");
+					String jsoncode5 = jsonresval5.getString("Code");
+					if (jsoncode5.equals("0")){
+						intent.putExtra("list_price", "успешно удалена заявка " + offerid);
 					//intent.putExtra("list_price", coin_price5.toString());
+						}else{intent.putExtra("list_price", "ОШИБКА удаления заявки");}
+						}catch(JSONException e){}
 				}catch (IOException e) {
 					//intent.putExtra("l", "ошибка");
 				}
@@ -506,7 +524,7 @@ public class PlayService extends Service {
 			String jsoncode6 = jsonresval6.getString("Code");
 			if (jsoncode6.equals("0")){
 			intent.putExtra("list_price", "успешно поставлена");
-			}else{intent.putExtra("list_price", "ошибка постановки заявки");}
+			}else{intent.putExtra("list_price", "ОШИБКА постановки заявки");}
 			}catch(JSONException e){}
 		}catch (IOException e) {
 			//intent.putExtra("l", "ошибка");
@@ -524,8 +542,14 @@ public class PlayService extends Service {
 			if (i == 0){			//удаление заявки
 			 r = login+ ';' + password+ ';' + culture+ ';' + wmid + ';' + offerid;
 			}
-			if (i == 1){			//постановка заявки
+			if (i == 1){			//постановка заявки и прайс лист
 				r = login+ ';' + password+ ';' + culture+ ';' + wmid + ';' + zCoin;
+			}
+			if (i == 3){			//мои заявки и баланс портфеля
+				r = login+ ';' + password+ ';' + culture+ ';' + wmid;
+			}
+			if (i == 4){			//цены на коины
+				r = login+ ';' + password+ ';' + culture;
 			}
 			try{
 

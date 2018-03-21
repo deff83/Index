@@ -6,6 +6,8 @@
 		<!--<item name="android:windowBackground">@color/colorPrimaryDark</item>
 		  theme UI controls like checkboxes and text fields -->
 	</style>
+	<style name="App_Theme2" parent="@android:style/Theme.Holo.Light">
+	</style>
 		<style name="Dialog" parent="@android:style/Theme.Holo.Light.Dialog">
 	</style>
 </resources>
