@@ -21,6 +21,7 @@ import android.widget.Toolbar.*;
 import android.support.v4.content.*;
 import android.content.res.*;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v4.widget.*;
 public class MainActivity extends Activity
 {
 	//список в выдвижной панели
@@ -41,7 +42,7 @@ public class MainActivity extends Activity
 	SharedPreferences pref;
 	Context context = null;
 	SharedPreferences.Editor editor = null;
-	
+	private SwipeRefreshLayout swipe;
 	LinearLayout llt;
 	//поля таблицы
 	TableLayout tableLayout;
@@ -51,6 +52,8 @@ public class MainActivity extends Activity
 	OnClickListener getButtonText;
 	OnClickListener gettablz;
 	LinearLayout.LayoutParams lButtonParams;
+	//текст свайп вниз
+	TextView text_error;
 	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -68,14 +71,28 @@ public class MainActivity extends Activity
 		editor.putInt("res", 0);
 		editor.putInt("col_izm", 1);
 		editor.putInt("del", 0);
-		//запись логинм и пароля входа
-		editor.putString("login", "U0bEaZLzlags7j0");
-		editor.putString("password", "uKIKrFvKT4spWfuGTE99lVDLeQfagx2gcb4");
-		editor.putString("wmid", "280113070531");
 		editor.commit();
         super.onCreate(savedInstanceState);
+		int verification = pref.getInt("verification", 0);
+		if (verification != 1){
+			Intent exit = new Intent(this, LoginActivity.class);
+			startActivity(exit);
+		}
         setContentView(R.layout.main);
-		
+		final Intent ir = new Intent(getApplication(), PlayService.class);
+		//создаем объект свайпа
+		swipe = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
+		//слушптель свайпа
+		swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+			@Override
+			public void onRefresh() {
+				
+				startService(ir);
+				
+			}
+		});
+		//текст ошибки
+		text_error = (TextView) findViewById(R.id.text_error);
 		//кнопка акшнбара
 		//final ActionBar actionBar = getSupportActionBar();
 		//actionBar.setHomeAsUpIndicator(R.drawable.ic_launcher);
@@ -152,7 +169,7 @@ public class MainActivity extends Activity
 					 new DialogInterface.OnClickListener() {
 						 public void onClick(DialogInterface dialog, int id) {
 							 // нажато "Отмена"
-							 Toast.makeText(getBaseContext(), price_z, 
+							 Toast.makeText(getBaseContext(), "подождите", 
 											Toast.LENGTH_SHORT).show();
 							//убираем цвет нажатой таблицы
 							 toolidtw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
@@ -233,7 +250,7 @@ public class MainActivity extends Activity
 	@Override
 	protected void onStart()
 	{
-		Toast.makeText(this, "yt", Toast.LENGTH_SHORT).show();
+		Toast.makeText(this, "Добро пожаловать...", Toast.LENGTH_SHORT).show();
 		// создаем BroadcastReceiver, слушатель главного MainActivity приложения
 
 
@@ -445,6 +462,8 @@ public class MainActivity extends Activity
 						tv2_notes.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
 					}
 		}
+		text_error.setText("");
+		swipe.setRefreshing(false);
 		//вывод какой-нибуть величины после обработки функции вывода таблицы
 		Toast.makeText(this, list_price, Toast.LENGTH_SHORT).show();
 	}
@@ -521,8 +540,7 @@ public class MainActivity extends Activity
 private class DrawerItemClickListener implements ListView.OnItemClickListener {
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(getApplicationContext(),   "Выбран пункт " + position, Toast.LENGTH_SHORT).show();
-		Intent intent = null;
+        Intent intent = null;
 		switch (position){
 			case 0:
 				intent = new Intent(MainActivity.this, OpovActivity.class);
@@ -532,6 +550,15 @@ private class DrawerItemClickListener implements ListView.OnItemClickListener {
 				break;
 			case 2:
 				intent = new Intent(MainActivity.this, Setting.class);
+				break;
+			case 3:
+				intent = new Intent(MainActivity.this, LoginActivity.class);
+				editor.putInt("verification", 0);
+				editor.putInt("col_tabl", 0);
+				editor.putInt("tabl_hight", 0);
+				editor.commit();
+				Intent i = new Intent(MainActivity.this, PlayService.class);
+				stopService(i);
 				break;
 		}
 		startActivity(intent);

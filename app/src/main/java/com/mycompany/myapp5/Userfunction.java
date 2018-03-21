@@ -85,8 +85,6 @@ public class Userfunction extends Activity
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Toast.makeText(getApplicationContext(),   "Выбран пункт " + position, Toast.LENGTH_SHORT).show();
-			
 				Intent intent = null;
 				switch (position){
 					case 0:

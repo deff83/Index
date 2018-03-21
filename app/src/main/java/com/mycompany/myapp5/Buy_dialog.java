@@ -14,7 +14,7 @@ public class Buy_dialog extends Activity
 	Context context = null;
 	SharedPreferences.Editor editor = null;
 	private LinearLayout interceptor;
-	
+	Integer btn_z;
 	EditText price_dialog;
 	EditText notes_dialog;
 	//алушатель кнопки
@@ -33,7 +33,7 @@ public class Buy_dialog extends Activity
 		String title = pref.getString("name_coin" + 0, "");
 		setTitle(title);
 		setContentView(R.layout.buy_dialog);
-		this.setFinishOnTouchOutside(false);
+		//this.setFinishOnTouchOutside(false);
 		//инициализация едита цены
 		price_dialog = (EditText) findViewById(R.id.price_dialog);
 		notes_dialog = (EditText) findViewById(R.id.notes_dialog);
@@ -96,12 +96,48 @@ public class Buy_dialog extends Activity
 					editor.putInt("notes_dialog", Integer.parseInt(notes_dialog_str));
 					editor.putInt("add", 1);
 					editor.commit();
+					Toast.makeText(getBaseContext(), "подождите",
+								   Toast.LENGTH_SHORT).show();
 					finish();
+				}
+			});
+			//кнопка ----
+			Button ok2 = (Button) findViewById(R.id.ok2);
+		ok2.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent ihy =  new Intent(getApplication(), LoginActivity.class);
+					startActivity(ihy);
+					}
+				}
+		);
+		//кнопка отправить заяву с минимальным отрывом перед стаканом
+		Button but_min= (Button) findViewById(R.id.minprice);
+		but_min.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					int btn_z = pref.getInt("btn_z", 0);
+					String price_dialog_str_min;
+					Double jk;
+		if (btn_z == 0){
+			
+			price_dialog_str_min = pref.getString("tabl0", "0");
+			jk = Double.parseDouble(price_dialog_str_min)+0.0001;
+			price_dialog.setText(jk.toString());
+		}
+		if(btn_z == 1){
+			
+			price_dialog_str_min = pref.getString("tabl_prod0", "999");
+			jk = Double.parseDouble(price_dialog_str_min)-0.0001;
+			price_dialog.setText(jk.toString());
+		}
+					
+					
 				}
 			});
 		//переключатель
 		Switch switch_dialog = (Switch) findViewById(R.id.monitored_switch);
-		int btn_z = pref.getInt("btn_z", 0);
+		btn_z = pref.getInt("btn_z", 0);
 		if (btn_z == 0){
 			editor.putInt("typ_oper",1);
 			switch_dialog.setChecked(true);
@@ -118,9 +154,10 @@ public class Buy_dialog extends Activity
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 						if(isChecked){
 							editor.putInt("typ_oper", 1);
-						} else{editor.putInt("typ_oper",0);}
-						Toast.makeText(getApplication(), "Отслеживание переключения: " + (isChecked ? "on" : "off"),
-									   Toast.LENGTH_SHORT).show();
+							editor.putInt("btn_z", 0);
+							editor.commit();
+						} else{editor.putInt("typ_oper",0); editor.putInt("btn_z", 1); editor.commit();}
+						
 					}
 				
 			});

@@ -10,10 +10,12 @@
 	<string name="mes_z_del">Выберите действие для заявки</string>
 	<string name="delz">убрать</string>
 	<string name="editz">редактировать</string>
+	<string name="login_activ">вход</string>
 	<string-array name="cats_array_ru">
 		<item>оповещения</item>
 		<item>функции_пользователя</item>
 		<item>настройки</item>
+		<item>Выход</item>
 	</string-array>
 	<string-array name="opoveshenia">
 		<item>назад</item>

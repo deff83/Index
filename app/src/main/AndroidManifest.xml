@@ -49,6 +49,13 @@
 			android:excludeFromRecents="true"
 			>
 		</activity>
+		<activity 
+			android:name=".LoginActivity"
+			android:label="@string/login_activ"
+			android:theme="@style/App_Theme2"
+			android:excludeFromRecents="true"
+		>
+		</activity>
     </application>
 
 </manifest>

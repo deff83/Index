@@ -37,7 +37,20 @@
 			</HorizontalScrollView>
 
 		</ScrollView>
-
+		<TextView
+			android:id="@+id/text_error"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			
+			android:layout_gravity="center"
+			android:layout_centerHorizontal = "true"
+			android:text="Выполните свайп вниз"/>
+		<ProgressBar
+			android:layout_height="wrap_content"
+			style="?android:attr/progressBarStyleLarge"
+			android:layout_centerInParent = "true"
+			android:layout_width="wrap_content"/>
+		
 		<LinearLayout
 			android:id="@+id/layout_centr"
 			android:layout_height="match_parent"
@@ -68,12 +81,16 @@
 						android:layout_alignParentRight="true"/>
 
 				</LinearLayout>
-
+				<android.support.v4.widget.SwipeRefreshLayout
+					xmlns:android="http://schemas.android.com/apk/res/android"
+					android:id="@+id/swipe_container"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent">
 				<ScrollView
 					android:id="@+id/scrollvert"
 					android:layout_width="fill_parent"
 					android:layout_height="fill_parent">
-
+					
 					<LinearLayout
 						android:id="@+id/layout_tabl"
 						android:layout_height="wrap_content"
@@ -90,9 +107,10 @@
 						</TableLayout>
 
 					</LinearLayout>
-
 				</ScrollView>
-
+					</android.support.v4.widget.SwipeRefreshLayout>
+				
+				
 			</LinearLayout>
 
 			<LinearLayout
