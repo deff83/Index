@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-	<resources>
-    <color name="colorPrimary">#3F51B5</color>
+
+<resources>
+    <color name="colorPrimary">#00a9ff</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-	<color name="colorRed">#a9ff00</color>
-	<color name="colorGreen">#00a9ff</color>
+    <color name="colorAccent">#004081</color>
+	<color name="colorRed">#a90000</color>
+	<color name="colorGreen">#00a900</color>
+	
+	<color name="colorTabl">#eeeeee</color>
+	<color name="colorTablGran">#000099</color>
+	<color name="colorMyZayvka">#ffddaa</color>
 </resources>

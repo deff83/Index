@@ -1,4 +1,4 @@
-package com.mycompany.myapp5;
+package com.deff83.indexAPI;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
