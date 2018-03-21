@@ -1,12 +1,12 @@
-package com.mycompany.myapp5;
+package com.deff83.indexAPI;
 import android.app.*;
 import android.os.*;
 import android.content.*;
 import android.widget.*;
-import android.view.View.*;
 import android.view.*;
+import android.view.View.*;
 
-public class Setting extends Activity
+public class Userfunction extends Activity
 {
 	SharedPreferences pref;
 	Context context = null;
@@ -15,22 +15,23 @@ public class Setting extends Activity
 	//список в выдвижной панели
 	private String[] mCatTitles;
     private ListView mDrawerListView;
-
+	
 	//алушатель кнопки
 	OnClickListener listbutton;
-
+	
+	static Thread myThread;
 	@Override
-	protected void onCreate(Bundle savedInstanceState)
+	public void onCreate(Bundle savedInstanceState)
 	{
 		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
 		editor = pref.edit();
-
-
+		
+		
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.setting);
+		setContentView(R.layout.user_function);
 		//список в выдвижной панели
-		mCatTitles = getResources().getStringArray(R.array.setting);
+		mCatTitles = getResources().getStringArray(R.array.userfunction);
         mDrawerListView = (ListView) findViewById(R.id.left_drawer);
         // подключим адаптер для списка
         mDrawerListView.setAdapter(new ArrayAdapter<String>(this,
@@ -40,26 +41,31 @@ public class Setting extends Activity
 		listbutton = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(Setting.this, PlayService.class);
-				switch (v.getId()){
-					case R.id.button_start:	//запуск службы
-						try{
-							startService(i);
-						}catch(Exception e){}
-						break;
-					case R.id.button_stop:	//останов службы
-						try{
-							stopService(i);
-						}catch(Exception e){}
-				}
-				}
-				};
-		Button btnStart = (Button) findViewById(R.id.button_start);
-		Button btnStop = (Button) findViewById(R.id.button_stop);
+	
+						int i = pref.getInt("col_z", 0);
+						//выполнение функции удаления заявок
+						if (i != 0){
+							switch(v.getId()){
+								case R.id.button_del_all:
+									editor.putInt("del_all", 1);
+									editor.commit();
+									break;
+								case R.id.button_del:
+									editor.putInt("del", 1);
+									editor.commit();
+									Toast.makeText(getApplicationContext(),   "исполнено ", Toast.LENGTH_SHORT).show();		
+									break;
+							}
+						}
+									
+			}
+		};
 		
 		
-		btnStart.setOnClickListener(listbutton);
-		btnStop.setOnClickListener(listbutton);
+		Button but_del_all = (Button) findViewById(R.id.button_del_all);
+		Button but_del = (Button) findViewById(R.id.button_del);
+		but_del_all.setOnClickListener(listbutton);
+		but_del.setOnClickListener(listbutton);
 	}
 
 	@Override
@@ -79,10 +85,17 @@ public class Setting extends Activity
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			if (position == 0){
-				Intent intent = new Intent(Setting.this, MainActivity.class);
+				Intent intent = null;
+				switch (position){
+					case 0:
+						intent = new Intent(Userfunction.this, MainActivity.class);
+						break;
+					case 1:
+						intent = new Intent(Userfunction.this, Setting.class);
+						break;
+				}
 				startActivity(intent);
-			}
+			
 		}
 	}
 }

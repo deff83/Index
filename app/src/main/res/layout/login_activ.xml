@@ -66,6 +66,11 @@
 			android:textSize="12sp"/>
 
 	</LinearLayout>
-
+	<ImageView
+    android:id="@+id/imagePhon"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_centerInParent="true"
+    android:src="@drawable/launch_screen" />
 </RelativeLayout>
 
