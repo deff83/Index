@@ -33,7 +33,7 @@ public class Userfunction extends Activity
 		//список в выдвижной панели
 		mCatTitles = getResources().getStringArray(R.array.userfunction);
         mDrawerListView = (ListView) findViewById(R.id.left_drawer);
-        // подключим адаптер для списка
+		// подключим адаптер для списка
         mDrawerListView.setAdapter(new ArrayAdapter<String>(this,
 															R.layout.draw_list_item, mCatTitles));
 		mDrawerListView.setOnItemClickListener(new DrawerItemClickListener());

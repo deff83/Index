@@ -148,14 +148,14 @@
 					<Button
 						android:id="@+id/zayvka_start"
 						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
+						android:layout_height="50dp"
 						android:layout_weight="1"
 						android:text="Купить"/>
 
 					<Button
 						android:id="@+id/zayvka_stop"
 						android:layout_width="wrap_content"
-						android:layout_height="wrap_content"
+						android:layout_height="50dp"
 						android:layout_weight="1"
 						android:text="Продать"/>
 
@@ -164,6 +164,12 @@
 			</LinearLayout>
 
 		</LinearLayout>
+		<ProgressBar
+			android:id="@+id/progressbar"
+			android:visibility="invisible"
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:layout_centerInParent = "true"/>
 
 	</RelativeLayout>
 
@@ -176,6 +182,6 @@
 		android:choiceMode="singleChoice"
 		android:divider="@android:color/transparent"
 		android:dividerHeight="0dp"/>
-
+	
 </android.support.v4.widget.DrawerLayout>
 

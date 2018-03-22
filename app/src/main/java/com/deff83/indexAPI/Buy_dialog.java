@@ -7,6 +7,7 @@ import android.view.View.*;
 import android.view.*;
 import android.view.inputmethod.*;
 import android.view.ViewDebug.*;
+import java.util.*;
 
 public class Buy_dialog extends Activity
 {
@@ -15,6 +16,7 @@ public class Buy_dialog extends Activity
 	SharedPreferences.Editor editor = null;
 	private LinearLayout interceptor;
 	Integer btn_z;
+	Integer zCoin;
 	EditText price_dialog;
 	EditText notes_dialog;
 	//алушатель кнопки
@@ -25,12 +27,13 @@ public class Buy_dialog extends Activity
 		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
 		editor = pref.edit();
 		editor.putInt("add", 0);
-		
 		editor.commit();
+		zCoin = pref.getInt("zCoin", 60);
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
 		//устанока титла окна
-		String title = pref.getString("name_coin" + 0, "");
+		int i = pref.getInt("idCoin", 0);
+		String title = pref.getString("name_coin" + i, "");
 		setTitle(title);
 		setContentView(R.layout.buy_dialog);
 		//this.setFinishOnTouchOutside(false);
@@ -111,7 +114,7 @@ public class Buy_dialog extends Activity
 					}
 				}
 		);
-		//кнопка отправить заяву с минимальным отрывом перед стаканом
+		//кнопка установить цену с минимальным отрывом перед стаканом
 		Button but_min= (Button) findViewById(R.id.minprice);
 		but_min.setOnClickListener(new OnClickListener() {
 				@Override
@@ -123,13 +126,13 @@ public class Buy_dialog extends Activity
 			
 			price_dialog_str_min = pref.getString("tabl0", "0");
 			jk = Double.parseDouble(price_dialog_str_min)+0.0001;
-			price_dialog.setText(jk.toString());
+			price_dialog.setText(String.format(Locale.US, "%.4f",jk));
 		}
 		if(btn_z == 1){
 			
 			price_dialog_str_min = pref.getString("tabl_prod0", "999");
 			jk = Double.parseDouble(price_dialog_str_min)-0.0001;
-			price_dialog.setText(jk.toString());
+			price_dialog.setText(String.format(Locale.US, "%.4f",jk));
 		}
 					
 					

@@ -15,9 +15,9 @@ android {
 
 		   release {
 			   storeFile file("C:/Users/1/Documents/GitHub/teststore.jks")
-			   storePassword "18819801s"
-			   keyAlias "deff"
-			   keyPassword "18819801s"
+			   storePassword "*********"
+			   keyAlias "****"
+			   keyPassword "*********"
 		   }
 	}
     buildTypes {

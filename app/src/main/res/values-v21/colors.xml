@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <resources>
-    <color name="colorPrimary">#00a9ff</color>
+	<color name="colorPrimary">#00a9ff</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#004081</color>
 	<color name="colorRed">#a90000</color>
 	<color name="colorGreen">#00a900</color>
-	
+	<color name="upbutt">#ffffff</color>
 	<color name="colorTabl">#eeeeee</color>
 	<color name="colorTablGran">#000099</color>
 	<color name="colorMyZayvka">#ffddaa</color>
+	<color name="titl_tablz">#ccccff</color>
+	<color name="titl_tablz2">#ccffcc</color>
 </resources>
