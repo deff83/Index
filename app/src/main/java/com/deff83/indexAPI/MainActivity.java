@@ -22,6 +22,8 @@ import android.support.v4.content.*;
 import android.content.res.*;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.widget.*;
+import android.transition.*;
+import android.graphics.drawable.*;
 public class MainActivity extends Activity
 {
 	//список в выдвижной панели
@@ -29,10 +31,12 @@ public class MainActivity extends Activity
     private ListView mDrawerListView;
 	//
 	String textr;
-	int vCoin;
+	Integer vCoin;
 	String buy;
 	String sale;
 	Integer del;
+	Integer j_z;
+	Integer kind_z;
 	static BroadcastReceiver br;
 	static IntentFilter intFilt;
 	static Intent i;
@@ -54,6 +58,7 @@ public class MainActivity extends Activity
 	LinearLayout.LayoutParams lButtonParams;
 	//текст свайп вниз
 	TextView text_error;
+	ProgressBar prog_b;
 	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -79,6 +84,8 @@ public class MainActivity extends Activity
 			startActivity(exit);
 		}
         setContentView(R.layout.main);
+		//прогрессбар
+		 prog_b =(ProgressBar) findViewById(R.id.progressbar);
 		final Intent ir = new Intent(getApplication(), PlayService.class);
 		//создаем объект свайпа
 		swipe = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
@@ -100,6 +107,8 @@ public class MainActivity extends Activity
 		//список в выдвижной панели
 		mCatTitles = getResources().getStringArray(R.array.cats_array_ru);
         mDrawerListView = (ListView) findViewById(R.id.left_drawer);
+		//mDrawerListView.setBackgroundDrawable(getResources().getDrawable(R.drawable.launch_screen));
+		
         // подключим адаптер для списка
         mDrawerListView.setAdapter(new ArrayAdapter<String>(this,
 															R.layout.draw_list_item, mCatTitles));
@@ -110,7 +119,9 @@ public class MainActivity extends Activity
 		getButtonText = new OnClickListener() {
 		 @Override
 		 public void onClick(View v) {
-			 
+			 editor.putInt("toolup", 1);
+			 editor.commit();
+			 prog_b.setVisibility(ProgressBar.VISIBLE);
 			 v.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_d));
 			 
 			 int buttonId = v.getId() - 1000;
@@ -121,13 +132,20 @@ public class MainActivity extends Activity
 					}
 					editor.commit();
 			 }
+			 vCoin = pref.getInt("id_coin" + buttonId, 60);
+			//
+			
+			editor.putInt("zCoin", vCoin);
+			 editor.putInt("idCoin", buttonId);
+			 editor.commit();
 		 }
 		 };
+		
 		 //слушатель таблицы заявок
 		 gettablz = new OnClickListener(){
 			 @Override
 			 public void onClick(View v){
-				 int j = v.getId() - 4000;
+				 j_z = v.getId() - 4000;
 				
 				 //окрашиваем строчку
 				 final TextView toolidtw_z;
@@ -151,24 +169,27 @@ public class MainActivity extends Activity
 				 pricetw_z.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
 				 notestw_z.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
 				 //получаем данные				 
-				 String name_z =pref.getString("my_offer" + vCoin + "_" + i + "name", "");
-				 final int z_id =pref.getInt("my_offer" + vCoin + "_" + j + "offerid", 0);
-				 final String price_z =pref.getString("my_offer" + vCoin + "_" + j + "price", "");
-				 int notes_z =pref.getInt("my_offer" + vCoin + "_" + j + "notes", 0);
+				 String name_z =pref.getString("my_offer_" + j_z + "name", "");
+				 final int z_id =pref.getInt("my_offer_" + j_z + "offerid", 0);
+				 final String price_z =pref.getString("my_offer_" + j_z+ "price", "");
+				 kind_z =pref.getInt("my_offer_" + j_z + "kind", 0);
+				 int notes_z =pref.getInt("my_offer_" + j_z + "notes", 0);
 				 //устанавливаем флаг нажатия
 				 editor.putInt("press_tabl", z_id);
 				 editor.commit();
-				 //заголовок окна
-				 String title_z = pref.getString("name_coin" + 0, "");
+					
 				 //выводим диалоговое окно
 				 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-				 builder.setTitle(title_z)
+				  //заголовок окна
+				 Toast.makeText(getBaseContext(), j_z.toString(), 
+								Toast.LENGTH_SHORT).show();
+				 builder.setTitle(name_z)
 					 .setMessage("Выберите действие для заявки" + "  "+z_id + "\n" + name_z +"  " +price_z +"  (" + notes_z +" нот)")                      			
 					 .setCancelable(true)
 					 .setNegativeButton(R.string.delz,
 					 new DialogInterface.OnClickListener() {
 						 public void onClick(DialogInterface dialog, int id) {
-							 // нажато "Отмена"
+							 // нажато "удалить заявку"
 							 Toast.makeText(getBaseContext(), "подождите", 
 											Toast.LENGTH_SHORT).show();
 							//убираем цвет нажатой таблицы
@@ -189,11 +210,20 @@ public class MainActivity extends Activity
 					 .setPositiveButton(R.string.editz, 
 					 new DialogInterface.OnClickListener() {
 						 public void onClick(DialogInterface dialog, int id) {
-							 // нажато "OK"
-							 Toast.makeText(getBaseContext(), "OK", 
-											Toast.LENGTH_SHORT).show();
+							 // нажато "редактировать заявку"
+							 Toast.makeText(getBaseContext(), "подождите", Toast.LENGTH_SHORT).show();
+							 //убираем цвет нажатой таблицы
+							 toolidtw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+							 offeridtw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+							 nametw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+							 kindtw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+							 pricetw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+							 notestw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
 							 //убираем флаг нажатия
 							 editor.putInt("press_tabl", 3);
+							 editor.putInt("del", 1);
+							 editor.putInt("j_del", z_id);
+							 editor.putInt("task1", 1);
 							 editor.commit();
 							 dialog.cancel();
 						 }
@@ -214,29 +244,48 @@ public class MainActivity extends Activity
 		//инициализация кнопок покупки продажи
 		final Button btnZ_Start = (Button) findViewById(R.id.zayvka_start);
         final Button btnZ_Stop = (Button) findViewById(R.id.zayvka_stop);
-		
+		btnZ_Start.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonred));
+		btnZ_Stop.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttongreen));
 		//слушатель кнопки купить
-		btnZ_Start.setOnClickListener(new  View.OnClickListener() {
+		btnZ_Start.setOnTouchListener(new  View.OnTouchListener() {
 				@Override
-				public void onClick(View view) {
-					Intent intent = new Intent(MainActivity.this, Buy_dialog.class);
-					editor.putInt("btn_z", 0);
-					editor.commit();
-					startActivity(intent);
-					//editor.putInt("add", 1);
-					//editor.commit();					
-					}});
+				public boolean onTouch(View v, MotionEvent event) {
+					if(event.getAction() == MotionEvent.ACTION_DOWN){
+						//кнопка нажата, присваиваем один цвет
+						btnZ_Start.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonredup));
+						return true;
+					} else if (event.getAction() == MotionEvent.ACTION_UP) {
+						//кнопка отжата, присваиваем другой цвет
+						btnZ_Start.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttonred));
+						Intent intent = new Intent(MainActivity.this, Buy_dialog.class);
+						editor.putInt("btn_z", 0);
+						editor.commit();
+						startActivity(intent);
+						return true;
+					}
+					return false;
+				}
+				});
 		//слушатель кнопки продать
-		btnZ_Stop.setOnClickListener(new  View.OnClickListener() {
+		btnZ_Stop.setOnTouchListener(new  View.OnTouchListener() {
 				@Override
-				public void onClick(View view) {
-					
+				public boolean onTouch(View v, MotionEvent event) {
+					if(event.getAction() == MotionEvent.ACTION_DOWN){
+						//кнопка нажата, присваиваем один цвет
+						btnZ_Stop.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttongreenup));
+						return true;
+					} else if (event.getAction() == MotionEvent.ACTION_UP) {
+						//кнопка отжата, присваиваем другой цвет
+						btnZ_Stop.setBackgroundDrawable(getResources().getDrawable(R.drawable.buttongreen));
 					Intent intent = new Intent(MainActivity.this, Buy_dialog.class);
 					editor.putInt("btn_z", 1);
 					editor.commit();
 					startActivity(intent);
-					
-					}});
+					return true;
+					}
+					return false;
+				}
+			});
 		//старт снрвиса при создании активити
 		int serv = pref.getInt("serv", 0);
 		if (serv == 0){
@@ -268,15 +317,33 @@ public class MainActivity extends Activity
 					String list_price = intent.getStringExtra("list_price");
 
 					Double price_intent = intent.getDoubleExtra("price", 0.0);
+					String ostatok = pref.getString("ostatok", "");
 					String price_intent_string = price_intent.toString();
 					TextView text_balance = (TextView) findViewById(R.id.text2);
 					
-					text_balance.setText(price_intent_string + "$");
+					text_balance.setText(price_intent_string + "$" + ostatok);
 					
 					coin_prices(coin_price);
 					tabl_price(list_price);
 					tabl_z();
+					if (pref.getInt("toolup", 0) == 0){
+					if (prog_b.getVisibility() == ProgressBar.VISIBLE){
+						prog_b.setVisibility(ProgressBar.INVISIBLE);
+					}
+					}
 					//надписи внизу edit
+					if (pref.getInt("taskdel1", 0) == 1){
+						Intent intent_task_del = new Intent(MainActivity.this, Buy_dialog.class);
+						if (kind_z == 1){
+							editor.putInt("btn_z", 0);
+						} else {
+							editor.putInt("btn_z", 1);
+						}
+						editor.putInt("task1", 0);
+						editor.putInt("taskdel1", 0);
+						editor.commit();
+						startActivity(intent_task_del);
+					}
 					
 				}
 				catch (Exception e){}
@@ -413,6 +480,25 @@ public class MainActivity extends Activity
 		list = list_price;
 		TableRow tr;
 		if ( count_tabl2 != 1){
+			LayoutInflater inflater1 = LayoutInflater.from(this);
+			tr = (TableRow) inflater1.inflate(R.layout.tabl_row, null);
+			TextView tv_sh = (TextView) tr.findViewById(R.id.col1);
+			TextView tv2_sh = (TextView) tr.findViewById(R.id.col4);
+			TextView tv_notes_sh = (TextView) tr.findViewById(R.id.col2);
+			TextView tv2_notes_sh = (TextView) tr.findViewById(R.id.col5);
+			tv_sh.setText(" Цена ");
+			tv_sh.setGravity(Gravity.CENTER);
+			tv_sh.setBackgroundColor(getResources().getColor(R.color.titl_tablz));
+			tv2_sh.setText(" Цена ");
+			tv2_sh.setGravity(Gravity.CENTER);
+			tv2_sh.setBackgroundColor(getResources().getColor(R.color.titl_tablz2));
+			tv_notes_sh.setText(" Нот ");
+			tv_notes_sh.setGravity(Gravity.CENTER);
+			tv_notes_sh.setBackgroundColor(getResources().getColor(R.color.titl_tablz));
+			tv2_notes_sh.setText(" Нот ");
+			tv2_notes_sh.setGravity(Gravity.CENTER);
+			tv2_notes_sh.setBackgroundColor(getResources().getColor(R.color.titl_tablz2));
+			tableLayout.addView(tr);
 		 			for (int i = 0; i < tabl_hight; i++) {
 		 						LayoutInflater inflater = LayoutInflater.from(this);
 		 						//Создаем строку таблицы, используя шаблон из файла /res/layout/table_row.xml
@@ -435,7 +521,7 @@ public class MainActivity extends Activity
 					//функция сравнения номера заявки
 					String offerid = pref.getString("tabl_offerid" + i, "0");
 					String offerid_prod = pref.getString("tabl_offerid_prod" + i, "0");
-										TextView tv_notes = (TextView) tr.findViewById(R.id.col2);
+					TextView tv_notes = (TextView) tr.findViewById(R.id.col2);
 					TextView tv2_notes = (TextView) tr.findViewById(R.id.col5);
 					String xx_notes = pref.getString("tabl_notes" + i, "");
 					String xv_notes = pref.getString("tabl_notes_prod" + i, "");
@@ -497,13 +583,13 @@ public class MainActivity extends Activity
 					
 					//проверка нажата ли таблица для установки цвета
 					
-					vCoin = 60;
 					
-					int offerid =pref.getInt("my_offer" + vCoin + "_" + i + "offerid", 0);
-					String name =pref.getString("my_offer" + vCoin + "_" + i + "name", "");
-					int kind =pref.getInt("my_offer" + vCoin + "_" + i + "kind", 0);
-					String price =pref.getString("my_offer" + vCoin + "_" + i + "price", "");
-					int notes =pref.getInt("my_offer" + vCoin + "_" + i + "notes", 0);
+					int idCoinz = pref.getInt("my_offer_" + i, 0);
+					int offerid =pref.getInt("my_offer_" + i + "offerid", 0);
+					String name =pref.getString("my_offer_" + i + "name", "");
+					int kind =pref.getInt("my_offer_" + i + "kind", 0);
+					String price =pref.getString("my_offer_" + i + "price", "");
+					int notes =pref.getInt("my_offer_" + i + "notes", 0);
 					
 					//
 					int pressz = pref.getInt("press_tabl", 3);
@@ -522,10 +608,9 @@ public class MainActivity extends Activity
 					if (kind == 1){
 						kindtw.setText(buy);
 					}
-					toolidtw.setText(String.valueOf(vCoin));
+					toolidtw.setText(String.valueOf(idCoinz));
 					offeridtw.setText(String.valueOf(offerid));
 					nametw.setText(name);
-					
 					pricetw.setText(price.toString());
 					notestw.setText(String.valueOf(notes));
 				tableLayout2.addView(tr2);

@@ -74,7 +74,7 @@ public class MessageReceiver extends BroadcastReceiver {
 		NotificationCompat.Builder notificationBuilder =
             new NotificationCompat.Builder(context)
 			.setContentIntent(pi_receiver)
-			.setSmallIcon(R.drawable.ic_launcher)
+			.setSmallIcon(R.drawable.trenddown)
 			.setContentTitle(price.toString())
 			.setContentText(minus.toString())
 			.setTicker(minus.toString())
@@ -107,7 +107,7 @@ public class MessageReceiver extends BroadcastReceiver {
 			NotificationCompat.Builder notificationBuilder =
 				new NotificationCompat.Builder(context)
 				.setContentIntent(pi_receiver)
-				.setSmallIcon(R.drawable.ic_launcher)
+				.setSmallIcon(R.drawable.trendup)
 				.setContentTitle(price.toString())
 				.setContentText(plus.toString())
 				.setTicker(plus.toString())						//текст в строке заголовка
@@ -145,7 +145,7 @@ public class MessageReceiver extends BroadcastReceiver {
 			NotificationCompat.Builder notificationBuilder =
 				new NotificationCompat.Builder(context)
 				.setContentIntent(pi_receiver)
-				.setSmallIcon(R.drawable.ic_launcher)
+				.setSmallIcon(R.drawable.srab_down)
 				.setContentTitle("заявка сработала!")
 				.setContentText(price.toString())
 				.setTicker("заявка сработала")						//текст в строке заголовка
@@ -170,7 +170,7 @@ public class MessageReceiver extends BroadcastReceiver {
 			NotificationCompat.Builder notificationBuilder =
 				new NotificationCompat.Builder(context)
 				.setContentIntent(pi_receiver)
-				.setSmallIcon(R.drawable.ic_launcher)
+				.setSmallIcon(R.drawable.srab_up)
 				.setContentTitle("поставлена заявка!")
 				.setContentText(price.toString())
 				.setTicker("поставлена заявка!")						//текст в строке заголовка

@@ -155,7 +155,7 @@ public class PlayService extends Service {
 	Integer zCoin;
 	Integer id_del_all;
 	public void s_znachen(){
-		zCoin = 60;
+		
 		login = pref.getString("login", "");
 		password = pref.getString("password", "");
 		culture = "ru-RU";
@@ -165,8 +165,11 @@ public class PlayService extends Service {
 	String signature_baz;
 	//do time consuming operations
 	public void request (Double ty, Double ty2) {
-		
-		
+		zCoin = pref.getInt("zCoin", 60);
+		if (pref.getInt("toolup", 0)==1){
+		editor.putInt("toolup", 0);
+		editor.commit();
+		}
 		//создание объекта ответа
 		signature_baz = base64_shifr(3, 0);
 		client = new OkHttpClient();
@@ -198,6 +201,31 @@ public class PlayService extends Service {
 				intent.putExtra("price_edit", ty);
 				intent.putExtra("price_edit2", ty2);
 				intent.putExtra("price", price);
+				JSONArray jsonarray = value.getJSONArray("portfolio");
+				int portfol_length = jsonarray.length();
+				editor.putInt("portlength", portfol_length);
+				Double ostatok = price;
+				for (int j=0; j<portfol_length; j++){
+					JSONObject port = jsonarray.getJSONObject(j);
+					int id_port = port.getInt("id");
+					String name_port = port.getString("name");
+					int notes_port = port.getInt("notes");
+					Double port_price = port.getDouble("price");
+					String type_port = port.getString("type");
+					int kind_port = port.getInt("kind");
+					int by = port.getInt("by");
+					ostatok = ostatok - port_price * notes_port;
+					editor.putInt("port_id" +j, id_port);
+					editor.putString("port_name"+j, name_port);
+					editor.putInt("port_notes"+j, notes_port);
+					editor.putString("port_price"+j, port_price.toString());
+					editor.putString("port_type"+j, type_port);
+					editor.putInt("port_kind"+j, kind_port);
+					editor.putInt("port_by"+j, by);
+					editor.commit();
+				}
+				editor.putString("ostatok", " (" + String.format(Locale.US, "%.4f", ostatok) + "$)");
+				editor.commit();
 			//	intent.putExtra("intent_service_name", "balance");
 				//intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
 				//отправка широковещательного сообщения
@@ -382,7 +410,8 @@ public class PlayService extends Service {
 				for (int i=0; i < jsonArray2.length(); i++){
 					JSONObject json_my_offer = jsonArray2.getJSONObject(i);
 					Integer toolid = json_my_offer.getInt("toolid");
-					String my_offer_tool = "my_offer" +toolid + "_" + i;
+					String my_offer_tool = "my_offer_" + i;
+					editor.putInt(my_offer_tool, toolid);
 					Integer offerid = json_my_offer.getInt("offerid");
 					editor.putInt(my_offer_tool + "offerid", offerid);
 					String name = json_my_offer.getString("name");
@@ -405,6 +434,11 @@ public class PlayService extends Service {
 		}catch (IOException e) {
 			//intent.putExtra("l", "ошибка");
 		}
+		//постановка заявки
+		int add = pref.getInt("add", 0);
+		if (add == 1){
+			add_zayvk();
+		}
 		//удаление заявки
 		int del = pref.getInt("del", 0);
 		int j_del = pref.getInt("j_del", 0);
@@ -417,18 +451,15 @@ public class PlayService extends Service {
 			int col_z = pref.getInt("col_z", 0);
 			
 			for (int i=0; i<col_z; i++){
-				id_del_all = pref.getInt("my_offer" + zCoin + "_" + i + "offerid", 0);
+				id_del_all = pref.getInt("my_offer_" + i + "offerid", 0);
 				del_zayvki(id_del_all);
 			}
 			editor.putInt("del_all", 0);
 		} 
-		//постановка заявки
-		int add = pref.getInt("add", 0);
-		if (add == 1){
-			add_zayvk();
-		}
+		
 		request = null;
 		request2 = null;
+		
 		zapisi();
 		
 	}
@@ -452,7 +483,7 @@ public class PlayService extends Service {
 	}
 	
 	public void del_zayvki(int j_del){
-		
+			try{
 			//удаление заявки
 			//OkHttpClient client3 = new OkHttpClient();
 			int offerid = j_del;
@@ -477,6 +508,9 @@ public class PlayService extends Service {
 					String jsoncode5 = jsonresval5.getString("Code");
 					if (jsoncode5.equals("0")){
 						intent.putExtra("list_price", "успешно удалена заявка " + offerid);
+						if (pref.getInt("task1", 0) == 1){
+							editor.putInt("taskdel1", 1);
+						}
 					//intent.putExtra("list_price", coin_price5.toString());
 						}else{intent.putExtra("list_price", "ОШИБКА удаления заявки");}
 						}catch(JSONException e){}
@@ -486,9 +520,10 @@ public class PlayService extends Service {
 				editor.putInt("my_offer" + zCoin + "_" + 0 + "offerid", 0);
 			}
 			editor.putInt("del", 0);
-
+			}catch(Exception e){intent.putExtra("list_price", "ОШИБКА функции удаления заявки");}
 	}
 	public void add_zayvk(){
+		try{
 		editor.putInt("add", 0);
 		editor.commit();
 		String base64 = base64_shifr(1, 0);
@@ -530,7 +565,7 @@ public class PlayService extends Service {
 			//intent.putExtra("l", "ошибка");
 		}
 	
-		
+		}catch(Exception e){intent.putExtra("list_price", "ОШИБКА функции добавления заявки");}
 	}
 	public String base64_shifr(int i, int offerid){
 		// шиврование
