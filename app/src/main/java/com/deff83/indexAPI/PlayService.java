@@ -55,6 +55,7 @@ public class PlayService extends Service {
     }
 	Timer timer_server;
 	Integer fin;
+	Integer timer_schedule;
 	Thread myThread2;
 	//запуск службы
     @Override
@@ -78,6 +79,10 @@ public class PlayService extends Service {
 		timer_server = new Timer();
 		serviceIndexRunning = true;
 		//инициализация таймера
+		timer_schedule = 10;
+		try{
+		 timer_schedule = Integer.parseInt(pref.getString("chPost", "10"));
+		}catch(Exception e){}
 		timer_server.schedule(new TimerTask(){
 			
 			
@@ -127,7 +132,7 @@ public class PlayService extends Service {
 		
 		}
 		
-	}	}		, 0L, 6L * 1000);
+				}	}		, 0L, timer_schedule * 1000);
 		//Toast.makeText(this, "Служба запущена", Toast.LENGTH_SHORT).show();
        
 		return Service.START_STICKY;
@@ -165,6 +170,7 @@ public class PlayService extends Service {
 	String signature_baz;
 	//do time consuming operations
 	public void request (Double ty, Double ty2) {
+	try{
 		zCoin = pref.getInt("zCoin", 60);
 		if (pref.getInt("toolup", 0)==1){
 		editor.putInt("toolup", 0);
@@ -182,6 +188,7 @@ public class PlayService extends Service {
 		Response response = null;
 		
 		intent = new Intent();
+		intent.putExtra("list_price", "_");
  		try{
 			
 			response = client.newCall(request).execute();
@@ -304,7 +311,7 @@ public class PlayService extends Service {
 		
 		
 		int count_tabl = pref.getInt("count_tabl", 0);
-		int tabl_hight = pref.getInt("tabl_hight", 10);
+			int tabl_hight = Integer.parseInt(pref.getString("tabl_hight", "10"));
 		//Runnable runnable45 = new Runnable() {
 		//	@Override
 			//public void run() {
@@ -461,7 +468,7 @@ public class PlayService extends Service {
 		request2 = null;
 		
 		zapisi();
-		
+	}catch(Exception e){}
 	}
 	
 	public void zapisi(){
@@ -510,6 +517,9 @@ public class PlayService extends Service {
 						intent.putExtra("list_price", "успешно удалена заявка " + offerid);
 						if (pref.getInt("task1", 0) == 1){
 							editor.putInt("taskdel1", 1);
+						}
+						if (pref.getInt("task2", 0) == 1){
+							editor.putInt("taskdel2", 1);
 						}
 					//intent.putExtra("list_price", coin_price5.toString());
 						}else{intent.putExtra("list_price", "ОШИБКА удаления заявки");}

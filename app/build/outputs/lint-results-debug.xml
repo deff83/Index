@@ -2,6 +2,23 @@
 <issues format="4" by="lint 24.4.1">
 
     <issue
+        id="ScrollViewSize"
+        severity="Warning"
+        message="This LinearLayout should use `android:layout_height=&quot;wrap_content&quot;`"
+        category="Correctness"
+        priority="7"
+        summary="ScrollView size validation"
+        explanation="ScrollView children must set their `layout_width` or `layout_height` attributes to `wrap_content` rather than `fill_parent` or `match_parent` in the scrolling dimension"
+        errorLine1="          android:layout_height=&quot;match_parent&quot;"
+        errorLine2="          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio,adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="26"
+            column="11"/>
+    </issue>
+
+    <issue
         id="CommitPrefEdits"
         severity="Warning"
         message="`SharedPreferences.edit()` without a corresponding `commit()` or `apply()` call"
@@ -16,6 +33,23 @@
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\Buy_dialog.java"
             line="28"
             column="12"/>
+    </issue>
+
+    <issue
+        id="CommitPrefEdits"
+        severity="Warning"
+        message="`SharedPreferences.edit()` without a corresponding `commit()` or `apply()` call"
+        category="Correctness"
+        priority="6"
+        summary="Missing `commit()` on `SharedPreference` editor"
+        explanation="After calling `edit()` on a `SharedPreference`, you must call `commit()` or `apply()` on the editor to save the results."
+        errorLine1="   editor = pref.edit();"
+        errorLine2="            ~~~~~~~~~~~"
+        quickfix="studio">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\Functred_dialog.java"
+            line="27"
+            column="13"/>
     </issue>
 
     <issue
@@ -48,7 +82,7 @@
         quickfix="studio">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="72"
+            line="77"
             column="12"/>
     </issue>
 
@@ -133,7 +167,7 @@
         quickfix="studio">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\Setting.java"
-            line="26"
+            line="29"
             column="12"/>
     </issue>
 
@@ -166,11 +200,11 @@
         errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="515"
+            line="581"
             column="31"/>
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="485"
+            line="547"
             column="32"/>
     </issue>
 
@@ -186,11 +220,11 @@
         errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="516"
+            line="582"
             column="32"/>
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="486"
+            line="548"
             column="33"/>
     </issue>
 
@@ -202,15 +236,15 @@
         priority="6"
         summary="Likely cut &amp; paste mistakes"
         explanation="This lint check looks for cases where you have cut &amp; pasted calls to `findViewById` but have forgotten to update the R.id field. It&apos;s possible that your code is simply (redundantly) looking up the field repeatedly, but lint cannot distinguish that from a case where you for example want to initialize fields `prev` and `next` and you cut &amp; pasted `findViewById(R.id.prev)` and forgot to update the second initialization to `R.id.next`."
-        errorLine1="     TextView tv_notes = (TextView) tr.findViewById(R.id.col2);"
-        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="   TextView tv_notes = (TextView) tr.findViewById(R.id.col2);"
+        errorLine2="                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="524"
-            column="37"/>
+            line="594"
+            column="35"/>
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="487"
+            line="549"
             column="38"/>
     </issue>
 
@@ -222,15 +256,15 @@
         priority="6"
         summary="Likely cut &amp; paste mistakes"
         explanation="This lint check looks for cases where you have cut &amp; pasted calls to `findViewById` but have forgotten to update the R.id field. It&apos;s possible that your code is simply (redundantly) looking up the field repeatedly, but lint cannot distinguish that from a case where you for example want to initialize fields `prev` and `next` and you cut &amp; pasted `findViewById(R.id.prev)` and forgot to update the second initialization to `R.id.next`."
-        errorLine1="     TextView tv2_notes = (TextView) tr.findViewById(R.id.col5);"
-        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="   TextView tv2_notes = (TextView) tr.findViewById(R.id.col5);"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="525"
-            column="38"/>
+            line="595"
+            column="36"/>
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="488"
+            line="550"
             column="39"/>
     </issue>
 
@@ -285,7 +319,7 @@ To fix this issue, set the `targetSdkVersion` to the highest available value. Th
         errorLine2="                                                        ~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="484"
+            line="546"
             column="57"/>
     </issue>
 
@@ -303,7 +337,7 @@ To fix this issue, set the `targetSdkVersion` to the highest available value. Th
         errorLine2="                                                             ~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="505"
+            line="571"
             column="62"/>
     </issue>
 
@@ -321,7 +355,7 @@ To fix this issue, set the `targetSdkVersion` to the highest available value. Th
         errorLine2="                                                         ~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="566"
+            line="648"
             column="58"/>
     </issue>
 
@@ -357,6 +391,54 @@ To fix this issue, set the `targetSdkVersion` to the highest available value. Th
             file="C:\Users\1\Documents\GitHub\Index\app\build.gradle"
             line="37"
             column="2"/>
+    </issue>
+
+    <issue
+        id="Deprecated"
+        severity="Warning"
+        message="`android:singleLine` is deprecated: False is the default, so just remove the attribute"
+        category="Correctness"
+        priority="2"
+        summary="Using deprecated resources"
+        explanation="Deprecated views, attributes and so on are deprecated because there is a better way to do something. Do it that new way. You&apos;ve been warned."
+        errorLine1="      android:singleLine=&quot;false&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
+            line="40"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="Deprecated"
+        severity="Warning"
+        message="`android:singleLine` is deprecated: False is the default, so just remove the attribute"
+        category="Correctness"
+        priority="2"
+        summary="Using deprecated resources"
+        explanation="Deprecated views, attributes and so on are deprecated because there is a better way to do something. Do it that new way. You&apos;ve been warned."
+        errorLine1="      android:singleLine=&quot;false&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
+            line="64"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="Deprecated"
+        severity="Warning"
+        message="`android:singleLine` is deprecated: False is the default, so just remove the attribute"
+        category="Correctness"
+        priority="2"
+        summary="Using deprecated resources"
+        explanation="Deprecated views, attributes and so on are deprecated because there is a better way to do something. Do it that new way. You&apos;ve been warned."
+        errorLine1="      android:singleLine=&quot;false&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
+            line="103"
+            column="7"/>
     </issue>
 
     <issue
@@ -422,28 +504,92 @@ To fix this issue, set the `targetSdkVersion` to the highest available value. Th
         quickfix="studio,adt">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\main.xml"
-            line="81"
+            line="85"
             column="7"/>
     </issue>
 
     <issue
-        id="UnusedResources"
+        id="DisableBaselineAlignment"
         severity="Warning"
-        message="The resource `R.color.colorPrimary` appears to be unused"
+        message="Set `android:baselineAligned=&quot;false&quot;` on this element for better performance"
         category="Performance"
         priority="3"
-        summary="Unused resources"
-        explanation="Unused resources make applications larger and slow down builds."
-        errorLine1="    &lt;color name=&quot;colorPrimary&quot;>#00a9ff&lt;/color>"
-        errorLine2="           ~~~~~~~~~~~~~~~~~~~">
+        summary="Missing `baselineAligned` attribute"
+        explanation="When a LinearLayout is used to distribute the space proportionally between nested layouts, the baseline alignment property should be turned off to make the layout computation faster."
+        errorLine1="          &lt;LinearLayout"
+        errorLine2="          ^"
+        quickfix="studio,adt">
         <location
-            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\values\colors.xml"
-            line="4"
-            column="12"/>
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="110"
+            column="11"/>
+    </issue>
+
+    <issue
+        id="InefficientWeight"
+        severity="Warning"
+        message="Use a `layout_height` of `0dp` instead of `wrap_content` for better performance"
+        category="Performance"
+        priority="3"
+        summary="Inefficient layout weight"
+        explanation="When only a single widget in a LinearLayout defines a weight, it is more efficient to assign a width/height of `0dp` to it since it will absorb all the remaining space anyway. With a declared width/height of `0dp` it does not have to measure its own size first."
+        errorLine1="  android:layout_height=&quot;wrap_content&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio,adt">
         <location
-            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\values-v21\colors.xml"
-            line="4"
-            column="9"/>
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\funct_red.xml"
+            line="8"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="InefficientWeight"
+        severity="Warning"
+        message="Use a `layout_width` of `0dp` instead of `fill_parent` for better performance"
+        category="Performance"
+        priority="3"
+        summary="Inefficient layout weight"
+        explanation="When only a single widget in a LinearLayout defines a weight, it is more efficient to assign a width/height of `0dp` to it since it will absorb all the remaining space anyway. With a declared width/height of `0dp` it does not have to measure its own size first."
+        errorLine1="      android:layout_width=&quot;fill_parent&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio,adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
+            line="46"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="InefficientWeight"
+        severity="Warning"
+        message="Use a `layout_width` of `0dp` instead of `wrap_content` for better performance"
+        category="Performance"
+        priority="3"
+        summary="Inefficient layout weight"
+        explanation="When only a single widget in a LinearLayout defines a weight, it is more efficient to assign a width/height of `0dp` to it since it will absorb all the remaining space anyway. With a declared width/height of `0dp` it does not have to measure its own size first."
+        errorLine1="                  android:layout_width=&quot;wrap_content&quot;"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="studio,adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="119"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="NestedWeights"
+        severity="Warning"
+        message="Nested weights are bad for performance"
+        category="Performance"
+        priority="3"
+        summary="Nested layout weights"
+        explanation="Layout weights require a widget to be measured twice. When a LinearLayout with non-zero weights is nested inside another LinearLayout with non-zero weights, then the number of measurements increase exponentially."
+        errorLine1="                      android:layout_weight=&quot;20&quot;"
+        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="130"
+            column="23"/>
     </issue>
 
     <issue
@@ -577,25 +723,59 @@ To fix this issue, set the `targetSdkVersion` to the highest available value. Th
         quickfix="adt">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\main.xml"
-            line="142"
+            line="153"
             column="5"/>
     </issue>
 
     <issue
         id="UselessParent"
         severity="Warning"
-        message="This `LinearLayout` layout or its `RelativeLayout` parent is possibly useless"
+        message="This `ScrollView` layout or its `RelativeLayout` parent is possibly useless"
         category="Performance"
         priority="2"
         summary="Useless parent layout"
         explanation="A layout with children that has no siblings, is not a scrollview or a root layout, and does not have a background, can be removed and have its children moved directly into the parent for a flatter and more efficient layout hierarchy."
-        errorLine1="  &lt;LinearLayout"
+        errorLine1="  &lt;ScrollView"
+        errorLine2="  ^"
+        quickfix="adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
+            line="18"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="UselessParent"
+        severity="Warning"
+        message="This `ScrollView` layout or its `RelativeLayout` parent is possibly useless"
+        category="Performance"
+        priority="2"
+        summary="Useless parent layout"
+        explanation="A layout with children that has no siblings, is not a scrollview or a root layout, and does not have a background, can be removed and have its children moved directly into the parent for a flatter and more efficient layout hierarchy."
+        errorLine1="  &lt;ScrollView"
         errorLine2="  ^"
         quickfix="adt">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
-            line="18"
+            line="19"
             column="3"/>
+    </issue>
+
+    <issue
+        id="UselessParent"
+        severity="Warning"
+        message="This `LinearLayout` layout or its `LinearLayout` parent is useless; transfer the `background` attribute to the other view"
+        category="Performance"
+        priority="2"
+        summary="Useless parent layout"
+        explanation="A layout with children that has no siblings, is not a scrollview or a root layout, and does not have a background, can be removed and have its children moved directly into the parent for a flatter and more efficient layout hierarchy."
+        errorLine1="              &lt;LinearLayout"
+        errorLine2="              ^"
+        quickfix="adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="118"
+            column="15"/>
     </issue>
 
     <issue
@@ -947,7 +1127,7 @@ Low density is not really used much anymore, so this check ignores the ldpi dens
         errorLine2="     ^">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\main.xml"
-            line="148"
+            line="159"
             column="6"/>
     </issue>
 
@@ -965,7 +1145,7 @@ Low density is not really used much anymore, so this check ignores the ldpi dens
         errorLine2="     ^">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\main.xml"
-            line="155"
+            line="166"
             column="6"/>
     </issue>
 
@@ -979,12 +1159,12 @@ Low density is not really used much anymore, so this check ignores the ldpi dens
         explanation="Button bars typically use a borderless style for the buttons. Set the `style=&quot;?android:attr/buttonBarButtonStyle&quot;` attribute on each of the buttons, and set `style=&quot;?android:attr/buttonBarStyle&quot;` on the parent layout"
         url="http://developer.android.com/design/building-blocks/buttons.html"
         urls="http://developer.android.com/design/building-blocks/buttons.html"
-        errorLine1="   &lt;Button"
-        errorLine2="   ^">
+        errorLine1="                      &lt;Button"
+        errorLine2="                      ^">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
-            line="24"
-            column="4"/>
+            line="139"
+            column="23"/>
     </issue>
 
     <issue
@@ -997,12 +1177,12 @@ Low density is not really used much anymore, so this check ignores the ldpi dens
         explanation="Button bars typically use a borderless style for the buttons. Set the `style=&quot;?android:attr/buttonBarButtonStyle&quot;` attribute on each of the buttons, and set `style=&quot;?android:attr/buttonBarStyle&quot;` on the parent layout"
         url="http://developer.android.com/design/building-blocks/buttons.html"
         urls="http://developer.android.com/design/building-blocks/buttons.html"
-        errorLine1="   &lt;Button"
-        errorLine2="   ^">
+        errorLine1="                      &lt;Button"
+        errorLine2="                      ^">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
-            line="31"
-            column="4"/>
+            line="146"
+            column="23"/>
     </issue>
 
     <issue
@@ -1135,7 +1315,7 @@ If you really want to keep the text field generic, you can suppress this warning
         errorLine2="                   ~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="252"
+            line="274"
             column="20"/>
     </issue>
 
@@ -1151,7 +1331,7 @@ If you really want to keep the text field generic, you can suppress this warning
         errorLine2="                   ~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="272"
+            line="294"
             column="20"/>
     </issue>
 
@@ -1193,7 +1373,7 @@ Note that for text fields, you should not set both the `hint` and the `contentDe
         errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="324"
+            line="367"
             column="27"/>
     </issue>
 
@@ -1214,7 +1394,7 @@ Note that for text fields, you should not set both the `hint` and the `contentDe
         errorLine2="                   ~~~~~~~~~~~~~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
-            line="427"
+            line="487"
             column="20"/>
     </issue>
 
@@ -1321,6 +1501,69 @@ Note that for text fields, you should not set both the `hint` and the `contentDe
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\OpovActivity.java"
             line="140"
             column="24"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        severity="Warning"
+        message="String literal in `setText` can not be translated. Use Android resources instead."
+        category="Internationalization"
+        priority="6"
+        summary="TextView Internationalization"
+        explanation="When calling `TextView#setText`
+* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.
+* Do not pass a string literal (e.g. &quot;Hello&quot;) to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.
+* Do not build messages by concatenating text chunks. Such messages can not be properly translated."
+        url="http://developer.android.com/guide/topics/resources/localization.html"
+        urls="http://developer.android.com/guide/topics/resources/localization.html"
+        errorLine1="   chPost.setText(&quot;10&quot;);"
+        errorLine2="                  ~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\Setting.java"
+            line="129"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        severity="Warning"
+        message="String literal in `setText` can not be translated. Use Android resources instead."
+        category="Internationalization"
+        priority="6"
+        summary="TextView Internationalization"
+        explanation="When calling `TextView#setText`
+* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.
+* Do not pass a string literal (e.g. &quot;Hello&quot;) to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.
+* Do not build messages by concatenating text chunks. Such messages can not be properly translated."
+        url="http://developer.android.com/guide/topics/resources/localization.html"
+        urls="http://developer.android.com/guide/topics/resources/localization.html"
+        errorLine1="   sizeSh.setText(&quot;20&quot;);"
+        errorLine2="                  ~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\Setting.java"
+            line="133"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="SetTextI18n"
+        severity="Warning"
+        message="String literal in `setText` can not be translated. Use Android resources instead."
+        category="Internationalization"
+        priority="6"
+        summary="TextView Internationalization"
+        explanation="When calling `TextView#setText`
+* Never call `Number#toString()` to format numbers; it will not handle fraction separators and locale-specific digits properly. Consider using `String#format` with proper format specifications (`%d` or `%f`) instead.
+* Do not pass a string literal (e.g. &quot;Hello&quot;) to display text. Hardcoded text can not be properly translated to other languages. Consider using Android resource strings instead.
+* Do not build messages by concatenating text chunks. Such messages can not be properly translated."
+        url="http://developer.android.com/guide/topics/resources/localization.html"
+        urls="http://developer.android.com/guide/topics/resources/localization.html"
+        errorLine1="   coltablp.setText(&quot;10&quot;);"
+        errorLine2="                    ~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\Setting.java"
+            line="137"
+            column="21"/>
     </issue>
 
     <issue
@@ -1464,6 +1707,29 @@ There are quickfixes to automatically extract this hardcoded string into a resou
     <issue
         id="HardcodedText"
         severity="Warning"
+        message="[I18N] Hardcoded string &quot;перепоставить&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:
+
+* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)
+
+* The application cannot be translated to other languages by just adding new translations for existing string resources.
+
+There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="  android:text=&quot;перепоставить&quot;/>"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\funct_red.xml"
+            line="10"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
         message="[I18N] Hardcoded string &quot;wmid&quot;, should use `@string` resource"
         category="Internationalization"
         priority="5"
@@ -1572,7 +1838,7 @@ There are quickfixes to automatically extract this hardcoded string into a resou
         quickfix="adt">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\main.xml"
-            line="47"
+            line="49"
             column="4"/>
     </issue>
 
@@ -1595,7 +1861,7 @@ There are quickfixes to automatically extract this hardcoded string into a resou
         quickfix="adt">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\main.xml"
-            line="153"
+            line="164"
             column="7"/>
     </issue>
 
@@ -1618,8 +1884,169 @@ There are quickfixes to automatically extract this hardcoded string into a resou
         quickfix="adt">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\main.xml"
-            line="160"
+            line="171"
             column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="[I18N] Hardcoded string &quot;Оповещения размера портфеля&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:
+
+* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)
+
+* The application cannot be translated to other languages by just adding new translations for existing string resources.
+
+There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="      android:text=&quot;Оповещения размера портфеля&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
+            line="41"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="[I18N] Hardcoded string &quot;Верхняя граница срабатывания&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:
+
+* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)
+
+* The application cannot be translated to other languages by just adding new translations for existing string resources.
+
+There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="      android:text=&quot;Верхняя граница срабатывания&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
+            line="65"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="[I18N] Hardcoded string &quot;Нижняя граница срабатывания&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:
+
+* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)
+
+* The application cannot be translated to other languages by just adding new translations for existing string resources.
+
+There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="      android:text=&quot;Нижняя граница срабатывания&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
+            line="104"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="[I18N] Hardcoded string &quot;Частота POST запросов&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:
+
+* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)
+
+* The application cannot be translated to other languages by just adding new translations for existing string resources.
+
+There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="                  android:text=&quot;Частота POST запросов&quot;"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="42"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="[I18N] Hardcoded string &quot;Размер шрифта&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:
+
+* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)
+
+* The application cannot be translated to other languages by just adding new translations for existing string resources.
+
+There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="                  android:text=&quot;Размер шрифта&quot;"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="71"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="[I18N] Hardcoded string &quot;Количество заявок в таблице&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:
+
+* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)
+
+* The application cannot be translated to other languages by just adding new translations for existing string resources.
+
+There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="                  android:text=&quot;Количество заявок в таблице&quot;"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="96"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="[I18N] Hardcoded string &quot;Сервис запросов API&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:
+
+* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)
+
+* The application cannot be translated to other languages by just adding new translations for existing string resources.
+
+There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="                      android:text=&quot;Сервис запросов API&quot;"
+        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="131"
+            column="23"/>
     </issue>
 
     <issue
@@ -1636,13 +2063,13 @@ There are quickfixes to automatically extract this hardcoded string into a resou
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 There are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="    android:text=&quot;Старт&quot;/>"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~~"
+        errorLine1="                          android:text=&quot;Старт&quot; />"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
-            line="29"
-            column="5"/>
+            line="144"
+            column="27"/>
     </issue>
 
     <issue
@@ -1659,13 +2086,13 @@ There are quickfixes to automatically extract this hardcoded string into a resou
 * The application cannot be translated to other languages by just adding new translations for existing string resources.
 
 There are quickfixes to automatically extract this hardcoded string into a resource lookup."
-        errorLine1="    android:text=&quot;Стоп&quot;/>"
-        errorLine2="    ~~~~~~~~~~~~~~~~~~~"
+        errorLine1="                          android:text=&quot;Стоп&quot; />"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~"
         quickfix="adt">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
-            line="36"
-            column="5"/>
+            line="151"
+            column="27"/>
     </issue>
 
     <issue
@@ -1770,14 +2197,14 @@ For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStar
         errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\main.xml"
-            line="81"
+            line="85"
             column="7"/>
     </issue>
 
     <issue
         id="RtlHardcoded"
         severity="Warning"
-        message="Consider adding `android:layout_alignParentEnd=&quot;true&quot;` to better support right-to-left layouts"
+        message="Consider adding `android:layout_marginStart=&quot;10dp&quot;` to better support right-to-left layouts"
         category="Internationalization:Bidirectional Text"
         priority="5"
         summary="Using left/right instead of start/end attributes"
@@ -1786,18 +2213,18 @@ For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStar
 For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
 
 (Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
-        errorLine1="   android:layout_alignParentRight=&quot;true&quot;/>"
-        errorLine2="   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="      android:layout_marginLeft=&quot;10dp&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
-            line="28"
-            column="4"/>
+            line="39"
+            column="7"/>
     </issue>
 
     <issue
         id="RtlHardcoded"
         severity="Warning"
-        message="Consider adding `android:layout_alignParentEnd=&quot;true&quot;` to better support right-to-left layouts"
+        message="Consider adding `android:layout_marginStart=&quot;1dp&quot;` to better support right-to-left layouts"
         category="Internationalization:Bidirectional Text"
         priority="5"
         summary="Using left/right instead of start/end attributes"
@@ -1806,18 +2233,18 @@ For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStar
 For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
 
 (Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
-        errorLine1="   android:layout_alignParentRight=&quot;true&quot;/>"
-        errorLine2="   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="      android:layout_marginLeft=&quot;1dp&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
-            line="35"
-            column="4"/>
+            line="48"
+            column="7"/>
     </issue>
 
     <issue
         id="RtlHardcoded"
         severity="Warning"
-        message="Consider adding `android:layout_alignParentEnd=&quot;true&quot;` to better support right-to-left layouts"
+        message="Consider adding `android:layout_marginStart=&quot;10dp&quot;` to better support right-to-left layouts"
         category="Internationalization:Bidirectional Text"
         priority="5"
         summary="Using left/right instead of start/end attributes"
@@ -1826,18 +2253,18 @@ For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStar
 For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
 
 (Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
-        errorLine1="   android:layout_alignParentRight=&quot;true&quot;/>"
-        errorLine2="   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="      android:layout_marginLeft=&quot;10dp&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
-            line="46"
-            column="4"/>
+            line="63"
+            column="7"/>
     </issue>
 
     <issue
         id="RtlHardcoded"
         severity="Warning"
-        message="Consider adding `android:layout_alignParentEnd=&quot;true&quot;` to better support right-to-left layouts"
+        message="Use &quot;`end`&quot; instead of &quot;`right`&quot; to ensure correct behavior in right-to-left locales"
         category="Internationalization:Bidirectional Text"
         priority="5"
         summary="Using left/right instead of start/end attributes"
@@ -1846,12 +2273,132 @@ For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStar
 For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
 
 (Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
-        errorLine1="   android:layout_alignParentRight=&quot;true&quot;"
-        errorLine2="   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        errorLine1="      android:gravity=&quot;right&quot;"
+        errorLine2="                       ~~~~~">
         <location
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
-            line="52"
-            column="4"/>
+            line="71"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        severity="Warning"
+        message="Consider adding `android:layout_marginStart=&quot;10dp&quot;` to better support right-to-left layouts"
+        category="Internationalization:Bidirectional Text"
+        priority="5"
+        summary="Using left/right instead of start/end attributes"
+        explanation="Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a layout is rendered in locales where text flows from right to left. Use `Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity` and `layout_gravity` attributes, use `start` rather than `left`.
+
+For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
+
+(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
+        errorLine1="      android:layout_marginLeft=&quot;10dp&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
+            line="102"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        severity="Warning"
+        message="Use &quot;`end`&quot; instead of &quot;`right`&quot; to ensure correct behavior in right-to-left locales"
+        category="Internationalization:Bidirectional Text"
+        priority="5"
+        summary="Using left/right instead of start/end attributes"
+        explanation="Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a layout is rendered in locales where text flows from right to left. Use `Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity` and `layout_gravity` attributes, use `start` rather than `left`.
+
+For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
+
+(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
+        errorLine1="      android:gravity=&quot;right&quot;"
+        errorLine2="                       ~~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\opoveshenia.xml"
+            line="110"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        severity="Warning"
+        message="Consider adding `android:layout_marginStart=&quot;10dp&quot;` to better support right-to-left layouts"
+        category="Internationalization:Bidirectional Text"
+        priority="5"
+        summary="Using left/right instead of start/end attributes"
+        explanation="Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a layout is rendered in locales where text flows from right to left. Use `Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity` and `layout_gravity` attributes, use `start` rather than `left`.
+
+For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
+
+(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
+        errorLine1="                  android:layout_marginLeft=&quot;10dp&quot;"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="40"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        severity="Warning"
+        message="Consider adding `android:layout_marginStart=&quot;10dp&quot;` to better support right-to-left layouts"
+        category="Internationalization:Bidirectional Text"
+        priority="5"
+        summary="Using left/right instead of start/end attributes"
+        explanation="Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a layout is rendered in locales where text flows from right to left. Use `Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity` and `layout_gravity` attributes, use `start` rather than `left`.
+
+For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
+
+(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
+        errorLine1="                  android:layout_marginLeft=&quot;10dp&quot;"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="69"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        severity="Warning"
+        message="Consider adding `android:layout_marginStart=&quot;10dp&quot;` to better support right-to-left layouts"
+        category="Internationalization:Bidirectional Text"
+        priority="5"
+        summary="Using left/right instead of start/end attributes"
+        explanation="Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a layout is rendered in locales where text flows from right to left. Use `Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity` and `layout_gravity` attributes, use `start` rather than `left`.
+
+For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
+
+(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
+        errorLine1="                  android:layout_marginLeft=&quot;10dp&quot;"
+        errorLine2="                  ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="94"
+            column="19"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        severity="Warning"
+        message="Consider adding `android:layout_marginStart=&quot;10dp&quot;` to better support right-to-left layouts"
+        category="Internationalization:Bidirectional Text"
+        priority="5"
+        summary="Using left/right instead of start/end attributes"
+        explanation="Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a layout is rendered in locales where text flows from right to left. Use `Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity` and `layout_gravity` attributes, use `start` rather than `left`.
+
+For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
+
+(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
+        errorLine1="                      android:layout_marginLeft=&quot;10dp&quot;"
+        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\setting.xml"
+            line="128"
+            column="23"/>
     </issue>
 
     <issue
