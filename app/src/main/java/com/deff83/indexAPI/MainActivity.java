@@ -30,6 +30,7 @@ public class MainActivity extends Activity
 	private String[] mCatTitles;
     private ListView mDrawerListView;
 	//
+	Float floarsize;
 	String textr;
 	Integer vCoin;
 	String buy;
@@ -72,7 +73,7 @@ public class MainActivity extends Activity
 		editor = pref.edit();
 		editor.putInt("count_coin",0);
 		editor.putInt("activity_true", 1);
-		editor.putInt("tabl_hight", 50);
+		
 		editor.putInt("res", 0);
 		editor.putInt("col_izm", 1);
 		editor.putInt("del", 0);
@@ -100,6 +101,7 @@ public class MainActivity extends Activity
 		});
 		//текст ошибки
 		text_error = (TextView) findViewById(R.id.text_error);
+		
 		//кнопка акшнбара
 		//final ActionBar actionBar = getSupportActionBar();
 		//actionBar.setHomeAsUpIndicator(R.drawable.ic_launcher);
@@ -286,12 +288,14 @@ public class MainActivity extends Activity
 					return false;
 				}
 			});
+		
 		//старт снрвиса при создании активити
+		if (pref.getInt("verification", 0) == 1){
 		int serv = pref.getInt("serv", 0);
 		if (serv == 0){
 			Intent i = new Intent(this, PlayService.class);
 			startService(i);
-		}
+		}}
 		
 		
 	}
@@ -301,7 +305,25 @@ public class MainActivity extends Activity
 	{
 		Toast.makeText(this, "Добро пожаловать...", Toast.LENGTH_SHORT).show();
 		// создаем BroadcastReceiver, слушатель главного MainActivity приложения
-
+		
+			try{int y = Integer.parseInt(pref.getString("sizeSh", "20"));}
+		catch(Exception e){
+				editor.putString("sizeSh", "20");
+				editor.commit();
+			} 
+		
+		try{int y = Integer.parseInt(pref.getString("tabl_hight", "10"));}
+		catch(Exception e)
+			{
+				editor.putString("tabl_hight", "10");
+				editor.commit();
+				}
+			
+		try{int y = Integer.parseInt(pref.getString("chPost", "10"));}
+		catch(Exception e){
+			editor.putString("chPost", "10");
+			editor.commit();
+		} 
 
 		br = null;
 		br = new BroadcastReceiver() {
@@ -476,9 +498,11 @@ public class MainActivity extends Activity
 	Integer count_tabl2;
 	String list;
 	public void tabl_price (String list_price){
-		int tabl_hight = pref.getInt("tabl_hight", 10);
+		int tabl_hight = Integer.parseInt(pref.getString("tabl_hight", "10"));
 		list = list_price;
 		TableRow tr;
+		//размер шрифта
+		floarsize = Float.parseFloat(pref.getString("sizeSh", "20"));
 		if ( count_tabl2 != 1){
 			LayoutInflater inflater1 = LayoutInflater.from(this);
 			tr = (TableRow) inflater1.inflate(R.layout.tabl_row, null);
@@ -486,15 +510,19 @@ public class MainActivity extends Activity
 			TextView tv2_sh = (TextView) tr.findViewById(R.id.col4);
 			TextView tv_notes_sh = (TextView) tr.findViewById(R.id.col2);
 			TextView tv2_notes_sh = (TextView) tr.findViewById(R.id.col5);
-			tv_sh.setText(" Цена ");
+			tv_sh.setTextSize(floarsize);
+			tv_sh.setText("      Цена      ");
 			tv_sh.setGravity(Gravity.CENTER);
 			tv_sh.setBackgroundColor(getResources().getColor(R.color.titl_tablz));
-			tv2_sh.setText(" Цена ");
+			tv2_sh.setTextSize(floarsize);
+			tv2_sh.setText("      Цена      ");
 			tv2_sh.setGravity(Gravity.CENTER);
 			tv2_sh.setBackgroundColor(getResources().getColor(R.color.titl_tablz2));
+			tv_notes_sh.setTextSize(floarsize);
 			tv_notes_sh.setText(" Нот ");
 			tv_notes_sh.setGravity(Gravity.CENTER);
 			tv_notes_sh.setBackgroundColor(getResources().getColor(R.color.titl_tablz));
+			tv2_notes_sh.setTextSize(floarsize);
 			tv2_notes_sh.setText(" Нот ");
 			tv2_notes_sh.setGravity(Gravity.CENTER);
 			tv2_notes_sh.setBackgroundColor(getResources().getColor(R.color.titl_tablz2));
@@ -514,19 +542,25 @@ public class MainActivity extends Activity
 					tr = (TableRow) findViewById(i + 3000);
 					TextView tv = (TextView) tr.findViewById(R.id.col1);
 					TextView tv2 = (TextView) tr.findViewById(R.id.col4);
-					String xx = pref.getString("tabl" + i, "");
-					String xv = pref.getString("tabl_prod" + i, "");
-					tv.setText(xx);
-					tv2.setText(xv);
-					//функция сравнения номера заявки
-					String offerid = pref.getString("tabl_offerid" + i, "0");
-					String offerid_prod = pref.getString("tabl_offerid_prod" + i, "0");
-					TextView tv_notes = (TextView) tr.findViewById(R.id.col2);
-					TextView tv2_notes = (TextView) tr.findViewById(R.id.col5);
-					String xx_notes = pref.getString("tabl_notes" + i, "");
-					String xv_notes = pref.getString("tabl_notes_prod" + i, "");
-					tv_notes.setText(xx_notes);
-					tv2_notes.setText(xv_notes);
+			String xx = pref.getString("tabl" + i, "");
+			String xv = pref.getString("tabl_prod" + i, "");
+			//размер шрифта
+			tv.setTextSize(floarsize);
+			tv2.setTextSize(floarsize);
+			//значения прайса
+			tv.setText(xx);
+			tv2.setText(xv);
+			//функция сравнения номера заявки
+			String offerid = pref.getString("tabl_offerid" + i, "0");
+			String offerid_prod = pref.getString("tabl_offerid_prod" + i, "0");
+			TextView tv_notes = (TextView) tr.findViewById(R.id.col2);
+			TextView tv2_notes = (TextView) tr.findViewById(R.id.col5);
+			tv_notes.setTextSize(floarsize);
+			tv2_notes.setTextSize(floarsize);
+			String xx_notes = pref.getString("tabl_notes" + i, "");
+			String xv_notes = pref.getString("tabl_notes_prod" + i, "");
+			tv_notes.setText(xx_notes);
+			tv2_notes.setText(xv_notes);
 					//
 					if (offerid.equals("0")){
 						tv.setTypeface(null);
@@ -557,6 +591,7 @@ public class MainActivity extends Activity
 		int col_izm = pref.getInt("col_izm", 0);
 		int col_z = pref.getInt("col_z", 0);
 		int col_tabl = pref.getInt("col_tabl", 0);
+		floarsize = Float.parseFloat(pref.getString("sizeSh", "20"));
 		//if (col_tabl != col_z){
 			tableLayout2.removeAllViews();
 			TableRow tr2;
@@ -582,7 +617,13 @@ public class MainActivity extends Activity
 					notestw = (TextView) tr2.findViewById(R.id.colm6);
 					
 					//проверка нажата ли таблица для установки цвета
-					
+				//шрифт
+				toolidtw.setTextSize(floarsize);
+				offeridtw.setTextSize(floarsize);
+				nametw.setTextSize(floarsize);
+				kindtw.setTextSize(floarsize);
+				pricetw.setTextSize(floarsize);
+				notestw.setTextSize(floarsize);
 					
 					int idCoinz = pref.getInt("my_offer_" + i, 0);
 					int offerid =pref.getInt("my_offer_" + i + "offerid", 0);

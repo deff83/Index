@@ -14,29 +14,149 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical"
-		android:id="@+id/rel_layout2">
-		<LinearLayout
-			android:id="@+id/layout_start_stop"
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			android:orientation="horizontal">
+		android:id="@+id/rel_layout2_setting">
 
-			<Button
-				android:id="@+id/button_start"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="Старт"/>
+		<ScrollView
+		    android:id="@+id/scrollView1"
+		    android:layout_width="match_parent"
+		    android:layout_height="wrap_content" >
 
-			<Button
-				android:id="@+id/button_stop"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="Стоп"/>
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="match_parent"
+		        android:background="@color/colorPrimary"
+		        android:orientation="vertical" >
 
-		</LinearLayout>
+		        <LinearLayout
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginBottom="1dp"
+		            android:background="@color/colorTabl" >
 
+		            <TextView
+		                android:id="@+id/textView1"
+		                android:layout_width="match_parent"
+		                android:layout_height="wrap_content"
+		                android:layout_marginLeft="10dp"
+		                android:layout_weight="20"
+		                android:text="Частота POST запросов"
+		                android:textSize="20sp" />
+
+		            <EditText
+		                android:id="@+id/edit_h_POST"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="1"
+		                android:ems="4"
+		                android:focusable="false"
+		                android:inputType="number" >
+
+		                <requestFocus />
+		            </EditText>
+
+		        </LinearLayout>
+
+		        <LinearLayout
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginBottom="1dp"
+		            android:background="@color/colorTabl" >
+
+		            <TextView
+		                android:id="@+id/TextView01"
+		                android:layout_width="match_parent"
+		                android:layout_height="wrap_content"
+		                android:layout_marginLeft="10dp"
+		                android:layout_weight="20"
+		                android:text="Размер шрифта"
+		                android:textSize="20sp" />
+
+		            <EditText
+		                android:id="@+id/Shrift"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="1"
+		                android:ems="4"
+		                android:focusable="false"
+		                android:inputType="number" />
+
+		        </LinearLayout>
+				<LinearLayout
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginBottom="1dp"
+		            android:background="@color/colorTabl" >
+
+		            <TextView
+		                android:id="@+id/textcoltabl"
+		                android:layout_width="match_parent"
+		                android:layout_height="wrap_content"
+		                android:layout_marginLeft="10dp"
+		                android:layout_weight="20"
+		                android:text="Количество заявок в таблице"
+		                android:textSize="20sp" />
+
+		            <EditText
+		                android:id="@+id/editcoltabl"
+		                android:layout_width="wrap_content"
+		                android:layout_height="wrap_content"
+		                android:layout_weight="1"
+		                android:ems="4"
+		                android:focusable="false"
+		                android:inputType="number" />
+
+		        </LinearLayout>
+
+		        <LinearLayout
+		            android:id="@+id/layout_start_stop"
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginBottom="1dp"
+		            android:background="@color/colorTabl"
+		            android:orientation="horizontal" >
+
+		            <LinearLayout
+		                android:layout_width="wrap_content"
+		                android:layout_height="match_parent"
+		                android:layout_weight="1"
+		                android:orientation="vertical" >
+
+		                <TextView
+		                    android:id="@+id/TextView02"
+		                    android:layout_width="match_parent"
+		                    android:layout_height="wrap_content"
+		                    android:layout_marginLeft="10dp"
+		                    android:layout_marginTop="5dp"
+		                    android:layout_weight="20"
+		                    android:text="Сервис запросов API"
+		                    android:textSize="20sp" />
+
+		                <LinearLayout
+		                    android:layout_width="match_parent"
+		                    android:layout_height="wrap_content"
+		                    android:layout_weight="1" >
+
+		                    <Button
+		                        android:id="@+id/button_start"
+		                        android:layout_width="wrap_content"
+		                        android:layout_height="wrap_content"
+		                        android:layout_weight="1"
+		                        android:text="Старт" />
+
+		                    <Button
+		                        android:id="@+id/button_stop"
+		                        android:layout_width="wrap_content"
+		                        android:layout_height="wrap_content"
+		                        android:layout_weight="1"
+		                        android:text="Стоп" />
+
+		                </LinearLayout>
+		            </LinearLayout>
+
+		        </LinearLayout>
+
+		    </LinearLayout>
+		</ScrollView>
 
 	</RelativeLayout>
 	<ListView

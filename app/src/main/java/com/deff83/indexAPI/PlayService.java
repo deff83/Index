@@ -55,6 +55,7 @@ public class PlayService extends Service {
     }
 	Timer timer_server;
 	Integer fin;
+	Integer timer_schedule;
 	Thread myThread2;
 	//запуск службы
     @Override
@@ -78,6 +79,10 @@ public class PlayService extends Service {
 		timer_server = new Timer();
 		serviceIndexRunning = true;
 		//инициализация таймера
+		timer_schedule = 10;
+		try{
+		 timer_schedule = Integer.parseInt(pref.getString("chPost", "10"));
+		}catch(Exception e){}
 		timer_server.schedule(new TimerTask(){
 			
 			
@@ -127,7 +132,7 @@ public class PlayService extends Service {
 		
 		}
 		
-	}	}		, 0L, 6L * 1000);
+				}	}		, 0L, timer_schedule * 1000);
 		//Toast.makeText(this, "Служба запущена", Toast.LENGTH_SHORT).show();
        
 		return Service.START_STICKY;
@@ -304,7 +309,7 @@ public class PlayService extends Service {
 		
 		
 		int count_tabl = pref.getInt("count_tabl", 0);
-		int tabl_hight = pref.getInt("tabl_hight", 10);
+			int tabl_hight = Integer.parseInt(pref.getString("tabl_hight", "10"));
 		//Runnable runnable45 = new Runnable() {
 		//	@Override
 			//public void run() {

@@ -16,6 +16,8 @@
 		android:orientation="vertical"
 		android:id="@+id/rel_layout">
 
+		
+
 		<ScrollView
 			android:id="@+id/scroll"
 			android:layout_width="match_parent"
@@ -37,20 +39,21 @@
 			</HorizontalScrollView>
 
 		</ScrollView>
+
 		<TextView
 			android:id="@+id/text_error"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			
 			android:layout_gravity="center"
-			android:layout_centerHorizontal = "true"
+			android:layout_centerHorizontal="true"
 			android:text="Выполните свайп вниз"/>
+
 		<ProgressBar
 			android:layout_height="wrap_content"
 			style="?android:attr/progressBarStyleLarge"
-			android:layout_centerInParent = "true"
+			android:layout_centerInParent="true"
 			android:layout_width="wrap_content"/>
-		
+
 		<LinearLayout
 			android:id="@+id/layout_centr"
 			android:layout_height="match_parent"
@@ -81,38 +84,47 @@
 						android:layout_alignParentRight="true"/>
 
 				</LinearLayout>
+
 				<android.support.v4.widget.SwipeRefreshLayout
-					xmlns:android="http://schemas.android.com/apk/res/android"
 					android:id="@+id/swipe_container"
 					android:layout_width="match_parent"
 					android:layout_height="match_parent">
-				<ScrollView
-					android:id="@+id/scrollvert"
-					android:layout_width="fill_parent"
-					android:layout_height="fill_parent">
-					
-					<LinearLayout
-						android:id="@+id/layout_tabl"
-						android:layout_height="wrap_content"
-						android:layout_width="match_parent"
-						android:orientation="vertical">
 
-						<TableLayout
-							android:id="@+id/table"
-							android:layout_width="fill_parent"
-							android:layout_height="fill_parent"
-							android:background="@color/colorTablGran"
-							android:stretchColumns="0,5">
+					<ScrollView
+						android:id="@+id/scrollvert"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent">
 
-						</TableLayout>
+						<LinearLayout
+							android:id="@+id/layout_tabl"
+							android:layout_height="wrap_content"
+							android:layout_width="match_parent"
+							android:orientation="vertical">
 
-					</LinearLayout>
-				</ScrollView>
-					</android.support.v4.widget.SwipeRefreshLayout>
-				
-				
+							<TableLayout
+								android:id="@+id/table"
+								android:layout_width="fill_parent"
+								android:layout_height="fill_parent"
+								android:background="@color/colorTablGran"
+								android:stretchColumns="0,5">
+
+							</TableLayout>
+
+						</LinearLayout>
+
+					</ScrollView>
+
+				</android.support.v4.widget.SwipeRefreshLayout>
+
 			</LinearLayout>
-
+			<TextView
+				android:id="@+id/rab_gud"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_gravity="center"
+				android:text="Выполнитз"
+			/>
 			<LinearLayout
 				android:id="@+id/layout_tabl2"
 				android:layout_height="wrap_content"
@@ -136,8 +148,6 @@
 				android:layout_width="match_parent"
 				android:orientation="vertical"
 				android:layout_weight="0">
-
-				
 
 				<LinearLayout
 					android:id="@+id/layout_start_stop4"
@@ -164,12 +174,13 @@
 			</LinearLayout>
 
 		</LinearLayout>
+
 		<ProgressBar
 			android:id="@+id/progressbar"
 			android:visibility="invisible"
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
-			android:layout_centerInParent = "true"/>
+			android:layout_centerInParent="true"/>
 
 	</RelativeLayout>
 
@@ -182,6 +193,6 @@
 		android:choiceMode="singleChoice"
 		android:divider="@android:color/transparent"
 		android:dividerHeight="0dp"/>
-	
+
 </android.support.v4.widget.DrawerLayout>
 
