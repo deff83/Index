@@ -49,6 +49,7 @@
 			android:text="Выполните свайп вниз"/>
 
 		<ProgressBar
+			android:id="@+id/progressbar0"
 			android:layout_height="wrap_content"
 			style="?android:attr/progressBarStyleLarge"
 			android:layout_centerInParent="true"
@@ -123,7 +124,7 @@
 				android:layout_height="wrap_content"
 				android:textAppearance="?android:attr/textAppearanceMedium"
 				android:layout_gravity="center"
-				android:text="Выполнитз"
+				android:text=""
 			/>
 			<LinearLayout
 				android:id="@+id/layout_tabl2"

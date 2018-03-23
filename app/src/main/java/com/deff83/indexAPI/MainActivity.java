@@ -38,6 +38,7 @@ public class MainActivity extends Activity
 	Integer del;
 	Integer j_z;
 	Integer kind_z;
+	Integer notes_z;
 	static BroadcastReceiver br;
 	static IntentFilter intFilt;
 	static Intent i;
@@ -59,7 +60,10 @@ public class MainActivity extends Activity
 	LinearLayout.LayoutParams lButtonParams;
 	//текст свайп вниз
 	TextView text_error;
+	TextView rab_gud;
+	String rab;
 	ProgressBar prog_b;
+	ProgressBar prog_b0;
 	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -87,6 +91,7 @@ public class MainActivity extends Activity
         setContentView(R.layout.main);
 		//прогрессбар
 		 prog_b =(ProgressBar) findViewById(R.id.progressbar);
+		 prog_b0 = (ProgressBar) findViewById(R.id.progressbar0);
 		final Intent ir = new Intent(getApplication(), PlayService.class);
 		//создаем объект свайпа
 		swipe = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
@@ -94,14 +99,16 @@ public class MainActivity extends Activity
 		swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
 			@Override
 			public void onRefresh() {
-				
+				rab_gud.setText("обновление...");
 				startService(ir);
 				
 			}
 		});
 		//текст ошибки
 		text_error = (TextView) findViewById(R.id.text_error);
-		
+		rab_gud = (TextView) findViewById(R.id.rab_gud);
+		rab_gud.setText("служба не работает!");
+		rab = "";
 		//кнопка акшнбара
 		//final ActionBar actionBar = getSupportActionBar();
 		//actionBar.setHomeAsUpIndicator(R.drawable.ic_launcher);
@@ -175,16 +182,13 @@ public class MainActivity extends Activity
 				 final int z_id =pref.getInt("my_offer_" + j_z + "offerid", 0);
 				 final String price_z =pref.getString("my_offer_" + j_z+ "price", "");
 				 kind_z =pref.getInt("my_offer_" + j_z + "kind", 0);
-				 int notes_z =pref.getInt("my_offer_" + j_z + "notes", 0);
+				 notes_z =pref.getInt("my_offer_" + j_z + "notes", 0);
 				 //устанавливаем флаг нажатия
 				 editor.putInt("press_tabl", z_id);
 				 editor.commit();
 					
 				 //выводим диалоговое окно
 				 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-				  //заголовок окна
-				 Toast.makeText(getBaseContext(), j_z.toString(), 
-								Toast.LENGTH_SHORT).show();
 				 builder.setTitle(name_z)
 					 .setMessage("Выберите действие для заявки" + "  "+z_id + "\n" + name_z +"  " +price_z +"  (" + notes_z +" нот)")                      			
 					 .setCancelable(true)
@@ -223,13 +227,29 @@ public class MainActivity extends Activity
 							 notestw_z.setBackgroundColor(getResources().getColor(R.color.colorTabl));
 							 //убираем флаг нажатия
 							 editor.putInt("press_tabl", 3);
-							 editor.putInt("del", 1);
 							 editor.putInt("j_del", z_id);
+							 editor.putInt("del", 1);
 							 editor.putInt("task1", 1);
 							 editor.commit();
 							 dialog.cancel();
 						 }
-					 });
+					 })
+					 .setNeutralButton(R.string.serdialog, 
+					 new DialogInterface.OnClickListener() {
+						 public void onClick(DialogInterface dialog, int id) {
+							 
+							 Intent intent = new Intent(MainActivity.this, Functred_dialog.class);
+							 if (kind_z == 1){
+								 editor.putInt("kind_upz", 0);
+							 } else {
+								 editor.putInt("kind_upz", 1);
+							 }
+							 editor.putInt("press_tabl", 3);
+							 editor.putInt("j_redz", j_z);
+							 editor.commit();
+							 startActivity(intent);
+							 }});
+					 
 				 AlertDialog alert = builder.create();
 				 alert.show();
 			 }
@@ -294,6 +314,7 @@ public class MainActivity extends Activity
 		int serv = pref.getInt("serv", 0);
 		if (serv == 0){
 			Intent i = new Intent(this, PlayService.class);
+			rab_gud.setText("обновление...");
 			startService(i);
 		}}
 		
@@ -353,6 +374,7 @@ public class MainActivity extends Activity
 						prog_b.setVisibility(ProgressBar.INVISIBLE);
 					}
 					}
+					prog_b0.setVisibility(ProgressBar.INVISIBLE);
 					//надписи внизу edit
 					if (pref.getInt("taskdel1", 0) == 1){
 						Intent intent_task_del = new Intent(MainActivity.this, Buy_dialog.class);
@@ -365,6 +387,22 @@ public class MainActivity extends Activity
 						editor.putInt("taskdel1", 0);
 						editor.commit();
 						startActivity(intent_task_del);
+					}
+					if (pref.getInt("taskdel2", 0) == 1){
+						editor.putString("price_dialog", pref.getString("pricebuyauto", "0"));
+						editor.putInt("notes_dialog", notes_z);
+					
+						if (kind_z == 0){
+							editor.putInt("typ_oper",0);
+						}
+						if(kind_z == 1){
+							editor.putInt("typ_oper", 1);
+						}
+						editor.putInt("add", 1);
+						editor.putInt("task2", 0);
+						editor.putInt("taskdel2", 0);
+						editor.commit();
+						//Toast.makeText(getApplicationContext(), pref.getInt("add", 999), Toast.LENGTH_SHORT).show();
 					}
 					
 				}
@@ -585,7 +623,16 @@ public class MainActivity extends Activity
 		text_error.setText("");
 		swipe.setRefreshing(false);
 		//вывод какой-нибуть величины после обработки функции вывода таблицы
-		Toast.makeText(this, list_price, Toast.LENGTH_SHORT).show();
+		if (rab.equals("► ► ► ")){
+			rab = "";
+		}
+		else{
+			rab = rab + "► ";
+		}
+		rab_gud.setText(rab);
+		if (list_price.equals("_")){}else{
+		Toast.makeText(MainActivity.this, list_price, Toast.LENGTH_SHORT).show();
+		}
 	}
 	public void tabl_z(){
 		int col_izm = pref.getInt("col_izm", 0);

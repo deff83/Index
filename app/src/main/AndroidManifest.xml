@@ -50,6 +50,13 @@
 			>
 		</activity>
 		<activity 
+			android:name=".Functred_dialog"
+			android:label="@string/buy_dialog"
+			android:theme="@style/Dialog"
+			android:excludeFromRecents="true"
+		>
+		</activity>
+		<activity 
 			android:name=".LoginActivity"
 			android:label="@string/login_activ"
 			android:theme="@style/App_Theme2"

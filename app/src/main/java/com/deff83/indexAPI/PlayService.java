@@ -170,6 +170,7 @@ public class PlayService extends Service {
 	String signature_baz;
 	//do time consuming operations
 	public void request (Double ty, Double ty2) {
+	try{
 		zCoin = pref.getInt("zCoin", 60);
 		if (pref.getInt("toolup", 0)==1){
 		editor.putInt("toolup", 0);
@@ -187,6 +188,7 @@ public class PlayService extends Service {
 		Response response = null;
 		
 		intent = new Intent();
+		intent.putExtra("list_price", "_");
  		try{
 			
 			response = client.newCall(request).execute();
@@ -466,7 +468,7 @@ public class PlayService extends Service {
 		request2 = null;
 		
 		zapisi();
-		
+	}catch(Exception e){}
 	}
 	
 	public void zapisi(){
@@ -515,6 +517,9 @@ public class PlayService extends Service {
 						intent.putExtra("list_price", "успешно удалена заявка " + offerid);
 						if (pref.getInt("task1", 0) == 1){
 							editor.putInt("taskdel1", 1);
+						}
+						if (pref.getInt("task2", 0) == 1){
+							editor.putInt("taskdel2", 1);
 						}
 					//intent.putExtra("list_price", coin_price5.toString());
 						}else{intent.putExtra("list_price", "ОШИБКА удаления заявки");}
