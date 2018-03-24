@@ -111,6 +111,23 @@
         priority="6"
         summary="Missing `commit()` on `SharedPreference` editor"
         explanation="After calling `edit()` on a `SharedPreference`, you must call `commit()` or `apply()` on the editor to save the results."
+        errorLine1="   editor = pref.edit();"
+        errorLine2="            ~~~~~~~~~~~"
+        quickfix="studio">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\Myzayvk_act.java"
+            line="41"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="CommitPrefEdits"
+        severity="Warning"
+        message="`SharedPreferences.edit()` without a corresponding `commit()` or `apply()` call"
+        category="Correctness"
+        priority="6"
+        summary="Missing `commit()` on `SharedPreference` editor"
+        explanation="After calling `edit()` on a `SharedPreference`, you must call `commit()` or `apply()` on the editor to save the results."
         errorLine1="  editor = pref.edit();"
         errorLine2="           ~~~~~~~~~~~"
         quickfix="studio">
@@ -357,6 +374,24 @@ To fix this issue, set the `targetSdkVersion` to the highest available value. Th
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\MainActivity.java"
             line="648"
             column="58"/>
+    </issue>
+
+    <issue
+        id="InflateParams"
+        severity="Warning"
+        message="Avoid passing `null` as the view root (needed to resolve layout parameters on the inflated layout&apos;s root element)"
+        category="Correctness"
+        priority="5"
+        summary="Layout Inflation without a Parent"
+        explanation="When inflating a layout, avoid passing in null as the parent view, since otherwise any layout parameters on the root of the inflated layout will be ignored."
+        url="http://www.doubleencore.com/2013/05/layout-inflation-as-intended"
+        urls="http://www.doubleencore.com/2013/05/layout-inflation-as-intended"
+        errorLine1="  linmycoin = (LinearLayout) inflate.inflate(R.layout.mycoins, null);"
+        errorLine2="                                                               ~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\java\com\deff83\indexAPI\Myzayvk_act.java"
+            line="89"
+            column="64"/>
     </issue>
 
     <issue
@@ -1357,6 +1392,27 @@ Note that for text fields, you should not set both the `hint` and the `contentDe
     </issue>
 
     <issue
+        id="ContentDescription"
+        severity="Warning"
+        message="[Accessibility] Missing `contentDescription` attribute on image"
+        category="Accessibility"
+        priority="3"
+        summary="Image without `contentDescription`"
+        explanation="Non-textual widgets like ImageViews and ImageButtons should use the `contentDescription` attribute to specify a textual description of the widget such that screen readers and other accessibility tools can adequately describe the user interface.
+
+Note that elements in application screens that are purely decorative and do not provide any content or enable a user action should not have accessibility content descriptions. In this case, just suppress the lint warning with a tools:ignore=&quot;ContentDescription&quot; attribute.
+
+Note that for text fields, you should not set both the `hint` and the `contentDescription` attributes since the hint will never be shown. Just set the `hint`. See http://developer.android.com/guide/topics/ui/accessibility/checklist.html#special-cases."
+        errorLine1=" &lt;ImageView"
+        errorLine2=" ^"
+        quickfix="studio,adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\mycoins.xml"
+            line="8"
+            column="2"/>
+    </issue>
+
+    <issue
         id="SetTextI18n"
         severity="Warning"
         message="Do not concatenate text displayed with `setText`. Use resource string with placeholders."
@@ -2142,6 +2198,29 @@ There are quickfixes to automatically extract this hardcoded string into a resou
     </issue>
 
     <issue
+        id="HardcodedText"
+        severity="Warning"
+        message="[I18N] Hardcoded string &quot;загрузка...&quot;, should use `@string` resource"
+        category="Internationalization"
+        priority="5"
+        summary="Hardcoded text"
+        explanation="Hardcoding text attributes directly in layout files is bad for several reasons:
+
+* When creating configuration variations (for example for landscape or portrait)you have to repeat the actual text (and keep it up to date when making changes)
+
+* The application cannot be translated to other languages by just adding new translations for existing string resources.
+
+There are quickfixes to automatically extract this hardcoded string into a resource lookup."
+        errorLine1="   android:text=&quot;загрузка...&quot;"
+        errorLine2="   ~~~~~~~~~~~~~~~~~~~~~~~~~~"
+        quickfix="adt">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\zayvki_activity.xml"
+            line="21"
+            column="4"/>
+    </issue>
+
+    <issue
         id="RtlHardcoded"
         severity="Warning"
         message="Consider adding `android:layout_alignParentEnd=&quot;true&quot;` to better support right-to-left layouts"
@@ -2199,6 +2278,26 @@ For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStar
             file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\main.xml"
             line="85"
             column="7"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        severity="Warning"
+        message="Use &quot;`start`&quot; instead of &quot;`left`&quot; to ensure correct behavior in right-to-left locales"
+        category="Internationalization:Bidirectional Text"
+        priority="5"
+        summary="Using left/right instead of start/end attributes"
+        explanation="Using `Gravity#LEFT` and `Gravity#RIGHT` can lead to problems when a layout is rendered in locales where text flows from right to left. Use `Gravity#START` and `Gravity#END` instead. Similarly, in XML `gravity` and `layout_gravity` attributes, use `start` rather than `left`.
+
+For XML attributes such as paddingLeft and `layout_marginLeft`, use `paddingStart` and `layout_marginStart`. *NOTE*: If your `minSdkVersion` is less than 17, you should add *both* the older left/right attributes *as well as* the new start/right attributes. On older platforms, where RTL is not supported and the start/right attributes are unknown and therefore ignored, you need the older left/right attributes. There is a separate lint check which catches that type of error.
+
+(Note: For `Gravity#LEFT` and `Gravity#START`, you can use these constants even when targeting older platforms, because the `start` bitmask is a superset of the `left` bitmask. Therefore, you can use `gravity=&quot;start&quot;` rather than `gravity=&quot;left|start&quot;`.)"
+        errorLine1="  android:gravity=&quot;left|center&quot;>"
+        errorLine2="                   ~~~~~~~~~~~">
+        <location
+            file="C:\Users\1\Documents\GitHub\Index\app\src\main\res\layout\mycoins.xml"
+            line="19"
+            column="20"/>
     </issue>
 
     <issue

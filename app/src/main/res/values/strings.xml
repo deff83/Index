@@ -15,6 +15,7 @@
 	<string-array name="cats_array_ru">
 		<item>оповещения</item>
 		<item>функции_пользователя</item>
+		<item>портфель</item>
 		<item>настройки</item>
 		<item>Выход</item>
 	</string-array>
@@ -29,5 +30,9 @@
 	<string-array name="setting">
 		<item>назад</item>
 		
+	</string-array>
+	<string-array name="myz">
+		<item>назад</item>
+
 	</string-array>
 </resources>

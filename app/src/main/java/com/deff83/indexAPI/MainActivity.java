@@ -722,9 +722,12 @@ private class DrawerItemClickListener implements ListView.OnItemClickListener {
 				intent = new Intent(MainActivity.this, Userfunction.class);
 				break;
 			case 2:
-				intent = new Intent(MainActivity.this, Setting.class);
+				intent = new Intent(MainActivity.this, Myzayvk_act.class);
 				break;
 			case 3:
+				intent = new Intent(MainActivity.this, Setting.class);
+				break;
+			case 4:
 				intent = new Intent(MainActivity.this, LoginActivity.class);
 				editor.putInt("verification", 0);
 				editor.putInt("col_tabl", 0);
