@@ -541,7 +541,7 @@ public class PlayService extends Service {
 		String isbid = "";
 		Double price_dialog = Double.parseDouble(pref.getString("price_dialog", "0.0"));
 		int notes_dialog = pref.getInt("notes_dialog",1);
-		
+		int zCoinadd = pref.getInt("coin_add", 0);
 		Integer typ_oper = pref.getInt("typ_oper", 0);
 		if (typ_oper == 0){
 			isbid = "false";
@@ -552,7 +552,7 @@ public class PlayService extends Service {
 		String isanonymous = "true";
 		 
 		//{"ApiContext":{"Login":"U0bEaZLzlags7j0","Wmid":"280113070531","Culture":"ru-RU","Signature":"wznCOrrwzvO6vVsYnRF68utGxGWYFxFVOT6WPpjzTFM="},"Offer":{
-		String json6 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'"+signature6+"'},'Offer':{'ID':"+zCoin+",'Count':"+notes_dialog+",'IsAnonymous':"+isanonymous+",'IsBid':"+isbid+",'Price':"+price_dialog+"}}";
+		String json6 = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'"+signature6+"'},'Offer':{'ID':"+zCoinadd+",'Count':"+notes_dialog+",'IsAnonymous':"+isanonymous+",'IsBid':"+isbid+",'Price':"+price_dialog+"}}";
 		//	String json6 = "{'ApiContext':{'Login':'" + login + "','Wmid':'" + wmid + "','Culture':'" + culture + "','Signature':'" + signature + "'},'OfferId':{'ID':"+60+",'Count':"+1+",'IsAnonymous':true,'IsBid':true,'Price':"+ 6.0000 +"}}";
 		RequestBody body6 = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json6);
 		Request request6 = new Request.Builder()

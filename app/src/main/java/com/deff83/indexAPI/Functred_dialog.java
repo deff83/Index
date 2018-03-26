@@ -64,6 +64,7 @@ package com.deff83.indexAPI;
 						editor.putInt("del", 1);
 						editor.putInt("task2", 1);
 						editor.putString("pricebuyauto", price_dialog_str_min);
+						editor.putInt("coinauto", zCoin);
 						editor.commit();
 						Toast.makeText(getApplicationContext(), "Цена постановки: "+price_dialog_str_min, Toast.LENGTH_SHORT).show();
 						finish();

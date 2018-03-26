@@ -97,6 +97,7 @@ public class Buy_dialog extends Activity
 					String notes_dialog_str = notes_dialog.getText().toString();
 					editor.putString("price_dialog", price_dialog_str);
 					editor.putInt("notes_dialog", Integer.parseInt(notes_dialog_str));
+					editor.putInt("coin_add", zCoin);
 					editor.putInt("add", 1);
 					editor.commit();
 					Toast.makeText(getBaseContext(), "подождите",
@@ -109,8 +110,6 @@ public class Buy_dialog extends Activity
 		ok2.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Intent ihy =  new Intent(getApplication(), LoginActivity.class);
-					startActivity(ihy);
 					}
 				}
 		);
@@ -134,8 +133,6 @@ public class Buy_dialog extends Activity
 			jk = Double.parseDouble(price_dialog_str_min)-0.0001;
 			price_dialog.setText(String.format(Locale.US, "%.4f",jk));
 		}
-					
-					
 				}
 			});
 		//переключатель
@@ -149,7 +146,6 @@ public class Buy_dialog extends Activity
 			editor.putInt("typ_oper", 0);
 			
 		}
-		
 		if (switch_dialog != null) {
 			switch_dialog.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
@@ -160,13 +156,9 @@ public class Buy_dialog extends Activity
 							editor.putInt("btn_z", 0);
 							editor.commit();
 						} else{editor.putInt("typ_oper",0); editor.putInt("btn_z", 1); editor.commit();}
-						
 					}
-				
 			});
 		}
-		
-		
 	}
 
 	@Override
@@ -186,7 +178,6 @@ public class Buy_dialog extends Activity
 	@Override
 	protected void onStart()
 	{
-		
 		// TODO: Implement this method
 		super.onStart();
 	}
@@ -197,7 +188,4 @@ public class Buy_dialog extends Activity
 		// TODO: Implement this method
 		super.onStop();
 	}
-	
-	
-	
 }
