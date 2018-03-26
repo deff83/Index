@@ -4,17 +4,20 @@
 	android:layout_height="match_parent"
 	android:layout_width="match_parent"
 	android:orientation="horizontal">
-
-	<ImageView
-		android:id="@+id/imagePhon"
-		android:layout_width="100dp"
+	<RelativeLayout
 		android:layout_height="100dp"
-		android:src="@drawable/launch_screen"
-		android:layout_gravity="center"/>
+		android:layout_width="0dp"
+		android:orientation="vertical"
+		android:layout_weight="1"
+		android:id="@+id/linimg">
+	</RelativeLayout>
+	
+	
 
 	<LinearLayout
 		android:layout_height="match_parent"
-		android:layout_width="match_parent"
+		android:layout_width="0dp"
+		android:layout_weight="1"
 		android:orientation="vertical"
 		android:gravity="left|center">
 
@@ -34,4 +37,5 @@
 	</LinearLayout>
 
 </LinearLayout>
+
 
