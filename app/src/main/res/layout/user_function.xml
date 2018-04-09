@@ -33,7 +33,24 @@
 			android:layout_weight="1"
 			android:text="Убрать заявку"/>
 		</LinearLayout>
-		
+		<LinearLayout
+			android:layout_below="@+id/layout_start_stop"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal">
+			<Button
+				android:id="@+id/func1"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="стоп лос"/>
+			<Button
+				android:id="@+id/func2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="продать все"/>
+		</LinearLayout>
 
 	</RelativeLayout>
 	<ListView

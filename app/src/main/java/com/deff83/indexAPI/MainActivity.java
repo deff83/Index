@@ -599,7 +599,9 @@ public class MainActivity extends Activity
 		Toast.makeText(MainActivity.this, list_price, Toast.LENGTH_SHORT).show();
 		}
 	}
+	Set<String> h;
 	public void tabl_z(){
+		h = pref.getStringSet("z_stoplos", new HashSet());
 		int col_izm = pref.getInt("col_izm", 0);
 		int col_z = pref.getInt("col_z", 0);
 		int col_tabl = pref.getInt("col_tabl", 0);
@@ -642,7 +644,16 @@ public class MainActivity extends Activity
 				int kind =pref.getInt("my_offer_" + i + "kind", 0);
 				String price =pref.getString("my_offer_" + i + "price", "");
 				int notes =pref.getInt("my_offer_" + i + "notes", 0);
-					
+				//проверка на присутствие стоплос
+				if (h.contains(offerid+"")){
+					toolidtw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaStoplos));
+					offeridtw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaStoplos));
+					nametw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaStoplos));
+					kindtw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaStoplos));
+					pricetw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaStoplos));
+					notestw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaStoplos));
+				}
+				
 				//проверка нажата ли таблица для установки цвета
 				int pressz = pref.getInt("press_tabl", 3);
 				if (pressz == offerid){
