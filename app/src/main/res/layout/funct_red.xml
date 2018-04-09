@@ -2,10 +2,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+	<LinearLayout
+		android:id="@+id/layout_start_stop"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
     <Button
 		android:id="@+id/refresh_z"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
 		android:text="перепоставить"/>
+	
+	</LinearLayout>
+	<LinearLayout
+		android:id="@+id/layout_start_stop"
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+		<EditText
+			android:id="@+id/stoplosedit"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:ems="4"
+			android:focusable="false"
+			android:imeOptions="actionDone"
+			android:inputType="numberDecimal" />
+	<Button
+		android:id="@+id/stop_los"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:text="стоп_лос ордера"/>
+	</LinearLayout>
+	<Button
+		android:id="@+id/stop_los_del"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:text="убрать стоп_лос"/>
 </LinearLayout>

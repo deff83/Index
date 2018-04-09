@@ -10,6 +10,7 @@
 	<color name="colorTabl">#eeeeee</color>
 	<color name="colorTablGran">#000099</color>
 	<color name="colorMyZayvka">#ffddaa</color>
+	<color name="colorMyZayvkaStoplos">#ff99dd</color>
 	<color name="titl_tablz">#ccccff</color>
 	<color name="titl_tablz2">#ccffcc</color>
 </resources>

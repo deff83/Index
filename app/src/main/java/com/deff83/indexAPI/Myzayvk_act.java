@@ -104,6 +104,7 @@ public void tabl(){
 		countCoin.setTextSize(floarsize);
 		String port_name = pref.getString("port_name" + i, "");
 		Integer idcoin = pref.getInt("port_id" + i, 0);
+		
 		nameCoin.setText(port_name);
 		countCoin.setText(String.valueOf(port_count));
 		

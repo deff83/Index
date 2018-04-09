@@ -28,6 +28,7 @@ public class PlayService extends Service {
 	String otvet_tabl;
 	String otvet_prices;
 	String otvet_coin;
+	
 	SharedPreferences.Editor editor = null;
 	//старт потока
 	//инициализация потока post запроса
@@ -54,13 +55,78 @@ public class PlayService extends Service {
       
     }
 	Timer timer_server;
+	Timer timer_server2;
+	Timer timer_bot;
 	Integer fin;
 	Integer timer_schedule;
 	Thread myThread2;
 	//запуск службы
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+		timer_schedule = 10;
+		try{
+			timer_schedule = Integer.parseInt(pref.getString("chPost", "10"));
+		}catch(Exception e){}
+		final Thread myThread0;
+		try{
+
+			timer_server2.cancel();}
+		catch (Exception e){}
+		Runnable runnablex = new Runnable() {
+			@Override
+			public void run() {
+				Opiration opirat;
+				Bot_1 bot1;
+		opirat = Opiration.getOpiration();
+		opirat.inicialisation(login, wmid, password, culture);
+		bot1 = Bot_1.getbot1();
+		bot1.setBotcontext(getApplicationContext());
 		
+		timer_server2 = new Timer();
+		
+				timer_server2.schedule(new TimerTask(){
+
+
+						@Override
+						public void run() {
+							
+				Bot_1.getbot1().f();
+						}}, 0L, timer_schedule * 1000);
+		}
+		};
+		myThread0 = new Thread(runnablex);
+		myThread0.start();
+		
+		
+		final Thread myThread_bot;
+		try{
+
+			timer_bot.cancel();}
+		catch (Exception e){}
+		Runnable runnablex_bot = new Runnable() {
+			@Override
+			public void run() {
+				Opiration opirat;
+				Bot_1 bot1;
+				opirat = Opiration.getOpiration();
+				opirat.inicialisation(login, wmid, password, culture);
+				bot1 = Bot_1.getbot1();
+				bot1.setBotcontext(getApplicationContext());
+
+				timer_bot = new Timer();
+
+				timer_bot.schedule(new TimerTask(){
+
+
+						@Override
+						public void run() {
+
+							Bot_1.getbot1().bot_short();
+						}}, 0L, timer_schedule * 1000);
+			}
+		};
+		myThread_bot = new Thread(runnablex_bot);
+		myThread_bot.start();
 		
 		
 		
@@ -79,30 +145,29 @@ public class PlayService extends Service {
 		timer_server = new Timer();
 		serviceIndexRunning = true;
 		//инициализация таймера
-		timer_schedule = 10;
-		try{
-		 timer_schedule = Integer.parseInt(pref.getString("chPost", "10"));
-		}catch(Exception e){}
+		
+		
+		Runnable runnable;
+		final Thread myThread2;
+		runnable = new Runnable() {
+			@Override
+			public void run() {
 		timer_server.schedule(new TimerTask(){
 			
 			
 				@Override
 				public void run() {
-					Runnable runnable;
-					final Thread myThread2;
-					 runnable = new Runnable() {
-						@Override
-						public void run() {
+					
 
 							//выполнение функции POST запроса
 							request(ty, ty2);
 
 
-						}
+						
 
 
-					};
-					 myThread2 = new Thread(runnable);
+					
+					
 					String ty_str = pref.getString("edit_price", "0.0");
 					String ty_str2 = pref.getString("edit_price2", "0.0");
 					
@@ -114,25 +179,13 @@ public class PlayService extends Service {
 					
 						
 				
-					//____________
-					fin = pref.getInt("fin",1);
-					
-					if (fin == 1){
-		try{
-						myThread2.setDaemon(true);
-						}catch(Exception e){}
-				try{
-					
-		myThread2.start();
-		//editor = pref.edit();
-		editor.putInt("fin", 0);
-		editor.commit();
-			//fin = 1;
-		}catch (Exception e){}
-		
-		}
+			
 		
 				}	}		, 0L, timer_schedule * 1000);
+		}
+		};
+		myThread2 = new Thread(runnable);
+		myThread2.start();
 		//Toast.makeText(this, "Служба запущена", Toast.LENGTH_SHORT).show();
        
 		return Service.START_STICKY;
@@ -143,6 +196,7 @@ public class PlayService extends Service {
 		
 		serviceIndexRunning = false;
 		timer_server.cancel();
+		timer_server2.cancel();
 		editor.putInt("serv", 0);
 		editor.commit();
         Toast.makeText(this, "Служба остановлена",
@@ -229,6 +283,8 @@ public class PlayService extends Service {
 					editor.putString("port_type"+j, type_port);
 					editor.putInt("port_kind"+j, kind_port);
 					editor.putInt("port_by"+j, by);
+					editor.putInt("port_count_id" + id_port, notes_port);
+					editor.commit();
 					editor.commit();
 				}
 				editor.putString("ostatok", " (" + String.format(Locale.US, "%.4f", ostatok) + "$)");
@@ -414,25 +470,29 @@ public class PlayService extends Service {
 				}
 				editor.putInt("col_z", jsonArray2.length());
 				String x = "net";
+				Set<String> hz = new HashSet();
 				for (int i=0; i < jsonArray2.length(); i++){
 					JSONObject json_my_offer = jsonArray2.getJSONObject(i);
 					Integer toolid = json_my_offer.getInt("toolid");
 					String my_offer_tool = "my_offer_" + i;
 					editor.putInt(my_offer_tool, toolid);
 					Integer offerid = json_my_offer.getInt("offerid");
+					editor.putInt("id_po_offerid"+offerid, toolid);
 					editor.putInt(my_offer_tool + "offerid", offerid);
+					hz.add(offerid + "");
 					String name = json_my_offer.getString("name");
 					editor.putString(my_offer_tool+"name", name);
 					Integer kind = json_my_offer.getInt("kind");
 					editor.putInt(my_offer_tool+"kind",kind);
 					String price = json_my_offer.getString("price");
+					editor.putString("price_po_idoffer" + offerid, price);
 					editor.putString(my_offer_tool+"price",price);
 					Integer notes = json_my_offer.getInt("notes");
 					editor.putInt(my_offer_tool+"notes",notes);
 					x = my_offer_tool;
 				}
-				
-				
+				editor.putStringSet("myz", hz);
+				editor.commit();
 				
 				
 				

@@ -105,11 +105,44 @@ public class Buy_dialog extends Activity
 					finish();
 				}
 			});
-			//кнопка ----
+			//кнопка ---- попытка бота
 			Button ok2 = (Button) findViewById(R.id.ok2);
 		ok2.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					
+							AlertDialog.Builder builder = new AlertDialog.Builder(Buy_dialog.this);
+							builder.setTitle("Bot")
+								.setMessage("бот вкл выкл")    
+								.setCancelable(true)
+								.setNegativeButton("вкл",
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										if (pref.getInt("bot", 0) == 0){
+										// нажато "удалить заявку"
+										editor.putInt("bot", 1); //флаг бот включен
+										editor.putInt("botzcoin", zCoin);//передаем боту id коина где ботить
+										Toast.makeText(getBaseContext(), "Бот запущен",
+													   Toast.LENGTH_SHORT).show();
+										editor.commit();
+										}
+									}
+								})
+								.setPositiveButton("выкл", 
+								new DialogInterface.OnClickListener() {
+									public void onClick(DialogInterface dialog, int id) {
+										// нажато "редактировать заявку"
+										if (pref.getInt("bot", 0) == 1){
+										editor.putInt("bot", 0);
+											Toast.makeText(getBaseContext(), "Бот остановлен",
+														   Toast.LENGTH_SHORT).show();
+										editor.commit();
+										}
+									}
+								})
+								;
+							AlertDialog alert = builder.create();
+							alert.show();
 					}
 				}
 		);
