@@ -33,13 +33,19 @@ public class MessageReceiver extends BroadcastReceiver {
 		
 		//получаем значение полученного сообщения, параметр price
 	Double price = intent.getDoubleExtra("price",0.0);
-	Double price_edit = intent.getDoubleExtra("price_edit", 0.0);
-	Double price_edit2 = intent.getDoubleExtra("price_edit2", 999.9);
-		Double minus =  Math.round((price - price_edit)* 100.0) / 100.0;
-		Double plus =  Math.round((price - price_edit2)* 100.0) / 100.0;
+	
+	//Double price_edit = intent.getDoubleExtra("price_edit", 0.0);
+	//Double price_edit2 = intent.getDoubleExtra("price_edit2", 999.9);
+		
 		//получение файла данных
 		SharedPreferences 
 			pref = context.getSharedPreferences("CAT", Context.MODE_PRIVATE);
+	String ty_str = pref.getString("edit_price", "0.0");
+	String ty_str2 = pref.getString("edit_price2", "999.9");
+	Double price_edit = Double.parseDouble(ty_str);
+	Double price_edit2 = Double.parseDouble(ty_str2);
+	Double minus =  Math.round((price - price_edit)* 100.0) / 100.0;
+		Double plus =  Math.round((price - price_edit2)* 100.0) / 100.0;
 		String price_minuse;
 		String price_pluse;
 		if(pref.contains("price_minus")){
@@ -96,9 +102,9 @@ public class MessageReceiver extends BroadcastReceiver {
 			
 		}
 		//сравнение цены с верхней границей
-		if (price >= price_edit2 + price_pluse_double){
+		if (price >= price_edit2 - price_pluse_double){
 			
-			price_pluse_double = Math.round((plus + 0.05)* 100.0) / 100.0;
+			price_pluse_double = Math.round((plus - 0.05)* 100.0) / 100.0;
 			
 			Intent intent_receiver = new Intent(context, MainActivity.class);
 			PendingIntent pi_receiver = PendingIntent.getActivity(context, 002, intent_receiver, PendingIntent.FLAG_ONE_SHOT);
