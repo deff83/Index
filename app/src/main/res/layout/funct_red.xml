@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 	<LinearLayout
-		android:id="@+id/layout_start_stop"
+		android:id="@+id/layout_start_stop_dialog"
 		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
 		android:orientation="horizontal">
@@ -16,7 +16,7 @@
 	
 	</LinearLayout>
 	<LinearLayout
-		android:id="@+id/layout_start_stop"
+		android:id="@+id/layout_start_stoplos"
 		android:layout_height="wrap_content"
 		android:layout_width="match_parent"
 		android:orientation="horizontal">
