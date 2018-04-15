@@ -49,17 +49,17 @@ public class MessageReceiver extends BroadcastReceiver {
 		String price_minuse;
 		String price_pluse;
 		if(pref.contains("price_minus")){
-			price_minuse = pref.getString("price_minus", "0");
+			price_minuse = pref.getString("price_minus", "0.5");
 
 		} else {
 			price_minuse = "0";
 
 		}
 		if(pref.contains("price_plus")){
-			price_pluse = pref.getString("price_plus", "999.9");
+			price_pluse = pref.getString("price_plus", "-0.5");
 
 		} else {
-			price_pluse = "999.9";
+			price_pluse = "0";
 
 		}
 		Double price_minuse_double = Double.parseDouble(price_minuse);
@@ -102,9 +102,9 @@ public class MessageReceiver extends BroadcastReceiver {
 			
 		}
 		//сравнение цены с верхней границей
-		if (price >= price_edit2 - price_pluse_double){
+		if (price >= price_edit2 + price_pluse_double){
 			
-			price_pluse_double = Math.round((plus - 0.05)* 100.0) / 100.0;
+			price_pluse_double = Math.round((plus + 0.05)* 100.0) / 100.0;
 			
 			Intent intent_receiver = new Intent(context, MainActivity.class);
 			PendingIntent pi_receiver = PendingIntent.getActivity(context, 002, intent_receiver, PendingIntent.FLAG_ONE_SHOT);
