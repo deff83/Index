@@ -224,6 +224,9 @@ public class PlayService extends Service {
 	String signature_baz;
 	//do time consuming operations
 	public void request (Double ty, Double ty2) {
+		
+		
+		
 	try{
 		zCoin = pref.getInt("zCoin", 60);
 		if (pref.getInt("toolup", 0)==1){
@@ -258,7 +261,7 @@ public class PlayService extends Service {
 				JSONObject balance = value.getJSONObject("balance");
 				Double price = balance.getDouble("price");
 				//создание намерения CAT
-		
+				editor.putString("balance", price.toString());
 				intent.putExtra("price_edit", ty);
 				intent.putExtra("price_edit2", ty2);
 				intent.putExtra("price", price);
@@ -387,6 +390,10 @@ public class PlayService extends Service {
 						editor.putString("tabl" + i, z.toString());
 						editor.putString("tabl_notes" + i, z_col.toString());
 						editor.putString("tabl_offerid" + i, z_offerid.toString());
+						editor.putInt("colortablraw"+i, 0);
+					if( pref.getInt("sound_opov_price", 0) == 0 && Double.parseDouble(pref.getString("edit_price_opmin", "0.0")) - 0.0000<= z){
+						editor.putInt("colortablraw"+i, 1);
+						}
 					}
 					int j = tabl_hight;
 					int k = 0;
@@ -414,6 +421,10 @@ public class PlayService extends Service {
 							editor.putString("tabl_prod" + i, y.toString());
 							editor.putString("tabl_notes_prod" + i, y_col.toString());
 							editor.putString("tabl_offerid_prod" + i, y_offerid.toString());
+					editor.putInt("colortablrawprod"+i, 0);
+					if( pref.getInt("sound_opov_price", 0) == 0 && Double.parseDouble(pref.getString("edit_price_opmax", "999.0")) + 0.0000 >= y){
+						editor.putInt("colortablrawprod"+i, 1);
+					}
 					}
 					
 					editor.commit();

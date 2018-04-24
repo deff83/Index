@@ -42,7 +42,41 @@ public class Bot_1
 		}
 		return bot1;
 	}
+	private synchronized void sravn(int coin, int flag_typ, double price){
+		if (flag_typ == 0){
+			o = Opiration.getOpiration();
+			o.pricelist(coin, 1);
+			ArrayList<Double> t = o.getlistpricex();
+			Double pricebit = t.get(0);
+			if (pricebit < price-0.0001){
+				editor.putInt("minpriceopovfoin", 1);
+				editor.commit();
+			}
+		}
+		if (flag_typ == 1){
+			o = Opiration.getOpiration();
+			o.pricelist(coin, 1);
+			ArrayList<Double> t = o.getlistpricey();
+			Double pricebit = t.get(0);
+			if (pricebit > price+0.0001){
+				editor.putInt("maxpriceopovfoin", 1);
+				editor.commit();
+			}
+		}
+	} 
 	public synchronized void f(){//стоплос периодически вызывается
+		if( shp.getInt("sound_opov_price", 0) == 0){
+		sravn(60,0, Double.parseDouble(shp.getString("edit_price_opmin", "0.0")));
+		sravn(60,1, Double.parseDouble(shp.getString("edit_price_opmax", "999.9")));
+		}
+		//узнать цену битка
+		o = Opiration.getOpiration();
+		o.pricelist(60, 1);
+		ArrayList<Double> t = o.getlistpricex();
+		Double pricebit = t.get(0);
+		editor.putString("pricebit", pricebit.toString());
+		editor.commit();
+		
 		hstoplos = shp.getStringSet("z_stoplos", new HashSet<String>());
 		hmyz = shp.getStringSet("myz",  new HashSet<String>());
 		String idzsrab = newz_stoplos();

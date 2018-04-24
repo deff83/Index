@@ -10,6 +10,7 @@ import android.graphics.*;
 
 public class OpovActivity extends Activity
 {
+	
 	SharedPreferences pref;
 	Context context = null;
 	SharedPreferences.Editor editor = null;
@@ -20,9 +21,14 @@ public class OpovActivity extends Activity
 	//поля верхней цены
 	EditText price_edit2;
 	TextView price_pluse;
+	//поля цены оповещения
+	EditText price_min, price_max;
+	TextView btctext;
 	//список в выдвижной панели
 	private String[] mCatTitles;
     private ListView mDrawerListView;
+	//флаги перекдючателей
+	Integer flag_switch_sound_opov_gran, flag_switch_sound_opov_price;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -45,6 +51,11 @@ public class OpovActivity extends Activity
 		//инициализация полей верхней цены
 		price_edit2 = (EditText) findViewById(R.id.price_edit2);
 		price_pluse = (TextView) findViewById(R.id.price_plus);
+		//инициализация полей оповещерия цены коина
+		price_max = (EditText) findViewById(R.id.price_maxop);
+		price_min = (EditText) findViewById(R.id.price_minop);
+		btctext = (TextView) findViewById(R.id.btctextv);
+		
 		//запись при старте в edit нижняя цена
 		try {
 			if(pref.contains("edit_price")){
@@ -57,6 +68,29 @@ public class OpovActivity extends Activity
 				price_edit2.setText(pref.getString("edit_price2", ""));
 			} 
 		} catch (Exception e){}
+		//запись при старте в edit цена продажи
+		try {
+			if(pref.contains("edit_price_opmin")){
+				price_min.setText(pref.getString("edit_price_opmin", ""));
+			}
+		} catch (Exception e){}
+		//запись при старте в edit цена покупки
+		try {
+			if(pref.contains("edit_price_opmax")){
+				price_max.setText(pref.getString("edit_price_opmax", ""));
+			} 
+		} catch (Exception e){}
+		//если после этого записи в editах нет то написать
+		String editmin = price_min.getText().toString();
+		String editmax = price_max.getText().toString();
+		if (editmin.equals("")){
+			editmin = "0.0";
+			price_min.setText("0.0");
+		}
+		if (editmax.equals("")){
+			editmax = "999.9";
+			price_max.setText("999.9");
+		}
 		//слушатель,  layot
 		interceptor = (RelativeLayout) findViewById(R.id.rel_layout3);
 		interceptor.setOnTouchListener(new OnTouchListener() {
@@ -67,6 +101,8 @@ public class OpovActivity extends Activity
 						imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
 						price_edit.setFocusable(false);
 						price_edit2.setFocusable(false);
+						price_max.setFocusable(false);
+						price_min.setFocusable(false);
 					}
 					return v.performClick();
 				}
@@ -81,10 +117,71 @@ public class OpovActivity extends Activity
 				return v.performClick();
 			}
 		};
+		OnClickListener onclicklist = new OnClickListener(){
+			@Override
+			public void onClick(View v){
+				price_min.setText(pref.getString("tabl0", "0.0"));
+				price_max.setText(pref.getString("tabl_prod0", "999.9"));
+			}
+		};
+		btctext.setOnClickListener(onclicklist);
 		//вешаем на каждый edit один слушатель
 		price_edit.setOnTouchListener(on_touch_listener3);
 		price_edit2.setOnTouchListener(on_touch_listener3);
-		
+		price_max.setOnTouchListener(on_touch_listener3);
+		price_min.setOnTouchListener(on_touch_listener3);
+		//переключатель границ портфеля
+		Switch switch_sound_opov_gran = (Switch) findViewById(R.id.switch1);
+		flag_switch_sound_opov_gran = 0;
+		flag_switch_sound_opov_gran = pref.getInt("sound_opov_gran", 0);
+		if (flag_switch_sound_opov_gran == 0){
+			switch_sound_opov_gran.setChecked(true);//вкл
+
+		}
+		if(flag_switch_sound_opov_gran == 1){
+
+
+		}
+
+		if (switch_sound_opov_gran != null) {
+			switch_sound_opov_gran.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						if(isChecked){
+							editor.putInt("sound_opov_gran", 0);
+
+							editor.commit();
+						} else{editor.putInt("sound_opov_gran",1);  editor.commit();}
+					}
+				});
+		}
+		//переключатель цены коина
+		Switch switch_sound_opov_price = (Switch) findViewById(R.id.switch2);
+		flag_switch_sound_opov_price = 0;
+		flag_switch_sound_opov_price = pref.getInt("sound_opov_price", 0);
+		if (flag_switch_sound_opov_price == 0){
+			switch_sound_opov_price.setChecked(true);//вкл
+
+		}
+		if(flag_switch_sound_opov_price == 1){
+
+
+		}
+
+		if (switch_sound_opov_price != null) {
+			switch_sound_opov_price.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						if(isChecked){
+							editor.putInt("sound_opov_price", 0);
+
+							editor.commit();
+						} else{editor.putInt("sound_opov_price",1);  editor.commit();}
+					}
+				});
+		}
 	}
 
 	@Override
@@ -145,6 +242,9 @@ public class OpovActivity extends Activity
 		editor.putString("edit_price", edit);
 		editor.putString("price_plus","0");
 		editor.putString("price_minus", "0");
+		//запись цены оповещений
+		editor.putString("edit_price_opmin", price_min.getText().toString());
+		editor.putString("edit_price_opmax", price_max.getText().toString());
 		editor.commit();
 		// TODO: Implement this method
 		super.onStop();
@@ -161,6 +261,9 @@ public class OpovActivity extends Activity
 		try{
 			editor.putString("edit_price", edit);
 			editor.putString("edit_price2",edit2);
+			//запись цены оповещений
+			editor.putString("edit_price_opmin", price_min.getText().toString());
+			editor.putString("edit_price_opmax", price_max.getText().toString());
 			editor.commit();
 		} catch (Exception e){}
 		// TODO: Implement this method

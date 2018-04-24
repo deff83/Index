@@ -34,12 +34,39 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_weight="1"
-		android:text="стоп_лос ордера"/>
+		android:text="стоп_лос"/>
+		<Button
+			android:id="@+id/stop_los_del"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="убрать"/>
 	</LinearLayout>
-	<Button
-		android:id="@+id/stop_los_del"
-		android:layout_width="wrap_content"
+	<LinearLayout
+		android:id="@+id/layout_perestanov"
 		android:layout_height="wrap_content"
-		android:layout_weight="1"
-		android:text="убрать стоп_лос"/>
+		android:layout_width="match_parent"
+		android:orientation="horizontal">
+		<EditText
+			android:id="@+id/editperestanov"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:ems="4"
+			android:focusable="false"
+			android:imeOptions="actionDone"
+			android:inputType="numberDecimal" />
+		<Button
+			android:id="@+id/startperestanov"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="перестановка"/>
+		<Button
+			android:id="@+id/stopperestanov"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="стоп"/>
+	</LinearLayout>
 </LinearLayout>

@@ -8,22 +8,25 @@ import android.app.*;
 import android.content.res.*;
 import android.support.v4.app.*;
 import android.content.*;
+import android.media.*;
+import java.util.*;
 
 
 
 
 public class MessageReceiver extends BroadcastReceiver {
 	
-	
-	
+	private static Timer timer_sound;
+	MediaPlayer player;
+	SharedPreferences pref;
 	SharedPreferences.Editor editor = null;
 	
     @Override
     public void onReceive(Context context, Intent intent) {
 		
-		
+		player = MediaPlayer.create(context, R.raw.sound1);
 	
-		//String name_intent = intent.getStringExtra("intent_service_name");
+		//ntent.getStringExtra("intent_service_name");
 		//if (name_intent.equals("coin")){
 		//	String coin_price = intent.getStringExtra("coin_price");
 			//coin_prices(coin_price);
@@ -37,9 +40,42 @@ public class MessageReceiver extends BroadcastReceiver {
 	//Double price_edit = intent.getDoubleExtra("price_edit", 0.0);
 	//Double price_edit2 = intent.getDoubleExtra("price_edit2", 999.9);
 		
+
+		
 		//получение файла данных
-		SharedPreferences 
+		 
 			pref = context.getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		editor = pref.edit();
+		//проверка если оповещение сработает
+		if (pref.getInt("srabopov", 0) == 1){
+			if (timer_sound == null){
+				timer_sound = new Timer();
+			timer_sound.schedule(new TimerTask(){
+
+
+					@Override
+					public void run() {
+sound();
+
+					}}, 0L,  18000);
+					//оповецение о звуке
+					
+					
+					
+			}
+			//editor.putInt("srabopov", 0);
+			editor.commit();
+		} else {
+			
+			try{
+
+				timer_sound.cancel();}
+			catch (Exception e){}
+			timer_sound = null;
+		}
+			
+			
+			
 	String ty_str = pref.getString("edit_price", "0.0");
 	String ty_str2 = pref.getString("edit_price2", "999.9");
 	Double price_edit = Double.parseDouble(ty_str);
@@ -69,8 +105,8 @@ public class MessageReceiver extends BroadcastReceiver {
 		//проверка на ноль цены
 		if (price != 0.0){
 		//сравнение цены с нижней границей
-		if (price <= price_edit + price_minuse_double){
-			
+			if (price <= price_edit + price_minuse_double && pref.getInt("sound_opov_gran", 0) == 0){
+			sound();
 			price_minuse_double = Math.round((minus - 0.05)* 100.0) / 100.0;
 			
 		Intent intent_receiver = new Intent(context, MainActivity.class);
@@ -90,7 +126,8 @@ public class MessageReceiver extends BroadcastReceiver {
 		NotificationManagerCompat notificationManager =
             NotificationManagerCompat.from(context);
 		
-		
+			//editor.putInt("srabopov", 1);
+			editor.commit();
 		
 		notificationManager.notify(notificationId, notificationBuilder.build());
 			
@@ -102,8 +139,8 @@ public class MessageReceiver extends BroadcastReceiver {
 			
 		}
 		//сравнение цены с верхней границей
-		if (price >= price_edit2 + price_pluse_double){
-			
+			if (price >= price_edit2 + price_pluse_double && pref.getInt("sound_opov_gran", 0) == 0){
+			sound();
 			price_pluse_double = Math.round((plus + 0.05)* 100.0) / 100.0;
 			
 			Intent intent_receiver = new Intent(context, MainActivity.class);
@@ -124,7 +161,8 @@ public class MessageReceiver extends BroadcastReceiver {
 				NotificationManagerCompat.from(context);
 
 
-
+			//editor.putInt("srabopov", 1);
+			editor.commit();
 			notificationManager.notify(notificationId, notificationBuilder.build());
 
 
@@ -162,7 +200,8 @@ public class MessageReceiver extends BroadcastReceiver {
 				NotificationManagerCompat.from(context);
 
 
-
+			editor.putInt("srabopov", 1);
+			editor.commit();
 			notificationManager.notify(notificationId, notificationBuilder.build());
 			
 			editor.putInt("col_izm_res", 0);
@@ -187,14 +226,80 @@ public class MessageReceiver extends BroadcastReceiver {
 				NotificationManagerCompat.from(context);
 
 
-
+			//editor.putInt("srabopov", 1);
+			editor.commit();
 			notificationManager.notify(notificationId, notificationBuilder.build());
 
 			editor.putInt("col_izm_res", 0);
 		}
 		
+		if (pref.getInt("minpriceopovfoin", 0) == 1){
+			Opiration o = Opiration.getOpiration();
+			
+			ArrayList<Double> t = o.getlistpricex();
+			Double pricebit = t.get(0);
+			sound();
+			//код оповещения
+			Intent intent_receiver = new Intent(context, MainActivity.class);
+			PendingIntent pi_receiver = PendingIntent.getActivity(context, 006, intent_receiver, PendingIntent.FLAG_ONE_SHOT);
+			int notificationId = 006;     //id оповещения
+
+			NotificationCompat.Builder notificationBuilder =
+				new NotificationCompat.Builder(context)
+				.setContentIntent(pi_receiver)
+				.setSmallIcon(R.drawable.btc)
+				.setContentTitle("цена снизилась!")
+				.setContentText(pricebit.toString())
+				.setTicker("цена снизилась!")						//текст в строке заголовка
+				.setDefaults(Notification.DEFAULT_SOUND)
+				.setAutoCancel(true);
+
+			NotificationManagerCompat notificationManager =
+				NotificationManagerCompat.from(context);
+
+
 		
-		
+			editor.commit();
+			notificationManager.notify(notificationId, notificationBuilder.build());
+			editor.putString("edit_price_opmin", pricebit.toString());
+			editor.putInt("sound_opov_price", 1);
+			editor.putInt("minpriceopovfoin", 0);
+			editor.commit();
+		}
+		if (pref.getInt("maxpriceopovfoin", 0) == 1){
+			
+			sound();
+			Opiration o = Opiration.getOpiration();
+			
+			ArrayList<Double> t = o.getlistpricey();
+			Double pricebit = t.get(0);
+			//код оповещения
+			Intent intent_receiver = new Intent(context, MainActivity.class);
+			PendingIntent pi_receiver = PendingIntent.getActivity(context, 007, intent_receiver, PendingIntent.FLAG_ONE_SHOT);
+			int notificationId = 007;     //id оповещения
+
+			NotificationCompat.Builder notificationBuilder =
+				new NotificationCompat.Builder(context)
+				.setContentIntent(pi_receiver)
+				.setSmallIcon(R.drawable.btc)
+				.setContentTitle("цена поднялась!")
+				.setContentText(pricebit.toString())
+				.setTicker("цена поднялась!")						//текст в строке заголовка
+				.setDefaults(Notification.DEFAULT_SOUND)
+				.setAutoCancel(true);
+
+			NotificationManagerCompat notificationManager =
+				NotificationManagerCompat.from(context);
+
+
+
+			editor.commit();
+			notificationManager.notify(notificationId, notificationBuilder.build());
+			editor.putString("edit_price_opmax", pricebit.toString());
+			editor.putInt("sound_opov_price", 1);
+			editor.putInt("maxpriceopovfoin", 0);
+			editor.commit();
+		}
 		
 			//editor.putString("otvet_coin", "0");
 			//int activity_true = pref.getInt("activity_true", 1);
@@ -203,6 +308,12 @@ public class MessageReceiver extends BroadcastReceiver {
 			//	}
 		
 		editor.commit();
+	}
+	private void sound(){
+		int flag_switch_sound_opov = pref.getInt("sound_opov", 0);
+		if (flag_switch_sound_opov == 0){
+		player.start();
+		}
 	}
 	//}
 }
