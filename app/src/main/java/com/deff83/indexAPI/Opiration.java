@@ -128,7 +128,7 @@ public class Opiration
 		return 0;
 	}
 	
-	public void pricelist(int zCoin, int size){
+	public synchronized void pricelist(int zCoin, int size){
 		//запрос прайс листа
 		String signature_baz = base64_shifr(1, 0, zCoin);
 		//OkHttpClient client3 = new OkHttpClient();

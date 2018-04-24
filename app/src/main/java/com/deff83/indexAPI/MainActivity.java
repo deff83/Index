@@ -64,6 +64,8 @@ public class MainActivity extends Activity
 	String rab;
 	ProgressBar prog_b;
 	ProgressBar prog_b0;
+	//слушатель таблицы прайс листа
+	OnClickListener prlistener;
 	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -99,6 +101,11 @@ public class MainActivity extends Activity
 		swipe.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
 			@Override
 			public void onRefresh() {
+				//если звук включен
+				if (pref.getInt("srabopov", 0) == 1){
+					editor.putInt("srabopov", 0);
+					editor.commit();
+				}
 				rab_gud.setText("обновление...");
 				startService(ir);
 				
@@ -139,6 +146,13 @@ public class MainActivity extends Activity
 			editor.commit();
 		 }
 		 };
+		 //слушатель прайса
+		prlistener = new OnClickListener(){
+			@Override
+			public void onClick(View v){
+				Toast.makeText(MainActivity.this, v.getId(), Toast.LENGTH_SHORT).show();
+		}
+		};
 		//слушатель таблицы заявок
 		gettablz = new OnClickListener(){
 			 @Override
@@ -309,6 +323,13 @@ public class MainActivity extends Activity
 	@Override
 	protected void onStart()
 	{
+		//если звук включен
+		if (pref.getInt("srabopov", 0) == 1){
+			editor.putInt("srabopov", 0);
+			editor.commit();
+		}
+		
+		
 		Toast.makeText(this, "Добро пожаловать...", Toast.LENGTH_SHORT).show();
 		// создаем BroadcastReceiver, слушатель главного MainActivity приложения
 		try{int y = Integer.parseInt(pref.getString("sizeSh", "20"));}
@@ -544,6 +565,10 @@ public class MainActivity extends Activity
 					tr = (TableRow) findViewById(i + 3000);
 					TextView tv = (TextView) tr.findViewById(R.id.col1);
 					TextView tv2 = (TextView) tr.findViewById(R.id.col4);
+					
+					
+					//tr.setOnClickListener(prlistener);
+					//tv2.setOnClickListener(prlistener);
 			String xx = pref.getString("tabl" + i, "");
 			String xv = pref.getString("tabl_prod" + i, "");
 			//размер шрифта
@@ -563,12 +588,18 @@ public class MainActivity extends Activity
 			String xv_notes = pref.getString("tabl_notes_prod" + i, "");
 			tv_notes.setText(xx_notes);
 			tv2_notes.setText(xv_notes);
+			
+			
 					//
 					if (offerid.equals("0")){
 						tv.setTypeface(null);
 						tv.setBackgroundColor(getResources().getColor(R.color.colorTabl));
 						tv_notes.setBackgroundColor(getResources().getColor(R.color.colorTabl));
-						
+						//установка цвета оповещения цены
+						if (pref.getInt("colortablraw"+i, 0)==1){
+							tv.setBackgroundColor(getResources().getColor(R.color.colortg));
+							tv_notes.setBackgroundColor(getResources().getColor(R.color.colortg));
+						}
 					} else{
 						tv.setTypeface(null, Typeface.BOLD);
 						tv.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
@@ -578,11 +609,16 @@ public class MainActivity extends Activity
 						tv2.setTypeface(null);
 						tv2.setBackgroundColor(getResources().getColor(R.color.colorTabl));
 						tv2_notes.setBackgroundColor(getResources().getColor(R.color.colorTabl));
+						if (pref.getInt("colortablrawprod"+i, 0)==1){
+							tv2.setBackgroundColor(getResources().getColor(R.color.colortg));
+							tv2_notes.setBackgroundColor(getResources().getColor(R.color.colortg));
+						}
 					}else{
 						tv2.setTypeface(null, Typeface.BOLD);
 						tv2.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
 						tv2_notes.setBackgroundColor(getResources().getColor(R.color.colorMyZayvka));
 					}
+		
 		}
 		text_error.setText("");
 		swipe.setRefreshing(false);
@@ -698,9 +734,12 @@ private class DrawerItemClickListener implements ListView.OnItemClickListener {
 				intent = new Intent(MainActivity.this, Myzayvk_act.class);
 				break;
 			case 3:
-				intent = new Intent(MainActivity.this, Setting.class);
+				intent = new Intent(MainActivity.this, Information.class);
 				break;
 			case 4:
+				intent = new Intent(MainActivity.this, Setting.class);
+				break;
+			case 5:
 				intent = new Intent(MainActivity.this, LoginActivity.class);
 				editor.putInt("verification", 0);
 				editor.putInt("col_tabl", 0);

@@ -22,6 +22,8 @@ public class Setting extends Activity
 	EditText chPost;
 	EditText sizeSh;
 	EditText coltablp;
+	//
+	Integer flag_switch_sound_opov;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -108,11 +110,40 @@ public class Setting extends Activity
 		chPost.setOnTouchListener(on_touch_listener2_setting);
 		sizeSh.setOnTouchListener(on_touch_listener2_setting);
 		coltablp.setOnTouchListener(on_touch_listener2_setting);
+		
+		//переключатель
+		Switch switch_sound_opov = (Switch) findViewById(R.id.sound_switch);
+		flag_switch_sound_opov = 0;
+		flag_switch_sound_opov = pref.getInt("sound_opov", 0);
+		if (flag_switch_sound_opov == 0){
+			switch_sound_opov.setChecked(true);//вкл
+			
+		}
+		if(flag_switch_sound_opov == 1){
+			
+
+		}
+		
+		if (switch_sound_opov != null) {
+			switch_sound_opov.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						if(isChecked){
+							editor.putInt("sound_opov", 0);
+							
+							editor.commit();
+						} else{editor.putInt("sound_opov",1);  editor.commit();}
+					}
+				});
+		}
 	}
 
 	@Override
 	protected void onStart()
 	{
+		//Toast.makeText(this, "" +pref.getInt("sound_opov", 8),
+					//  Toast.LENGTH_SHORT).show();
 		// TODO: Implement this method
 		super.onStart();
 	}

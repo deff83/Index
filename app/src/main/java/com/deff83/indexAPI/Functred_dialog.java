@@ -19,6 +19,9 @@ package com.deff83.indexAPI;
 		Integer zCoin;
 		Integer colstoplos;
 		EditText stoplos_edit;
+		EditText editperest;
+		//поля для перестановки
+		Integer z_notes, z_coin, z_id;
 		//алушатель кнопки
 		OnClickListener listbutton;
 		@Override
@@ -39,11 +42,12 @@ package com.deff83.indexAPI;
 			setContentView(R.layout.funct_red);
 			int j_z = pref.getInt("j_redz", 0);
 			//поля на которые нажали
-			final Integer z_coin = pref.getInt("my_offer_" + j_z, 0);
-			final int z_id =pref.getInt("my_offer_" + j_z + "offerid", 0);
+			z_coin = pref.getInt("my_offer_" + j_z, 0);
+			z_id =pref.getInt("my_offer_" + j_z + "offerid", 0);
 			final String z_price = pref.getString("my_offer_"+j_z+"price", "0.0");
-			final int z_notes = pref.getInt("my_offer_" + j_z+"notes", 0);
+			z_notes = pref.getInt("my_offer_" + j_z+"notes", 0);
 			stoplos_edit = (EditText) findViewById(R.id.stoplosedit);
+			editperest =(EditText) findViewById(R.id.editperestanov);
 			if (h.contains(z_id+"")==false){
 			Double x = 0.0;
 			try{x = Double.parseDouble(pref.getString("tabl0", "0"));}catch(Exception e){}
@@ -56,58 +60,7 @@ package com.deff83.indexAPI;
 			but_min.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						// нажато "редактировать заявку"
-						Toast.makeText(getBaseContext(), "подождите", Toast.LENGTH_SHORT).show();
-						final Thread perepostthread;
-						final String price_dialog_str_mind = "ошибка";
-						Runnable runnablex = new Runnable() {
-							@Override
-							public void run() {
-						int kind_upz = pref.getInt("kind_upz", 0);
-						String price_dialog_str_min = "---";
-						Double jk;
-						String isbid = "";
-						Opiration o = Opiration.getOpiration();
-						
-						ArrayList<Double> g = new ArrayList();
-						if (kind_upz == 0){
-							o.pricelist(z_coin, 1);
-							
-							g = o.getlistpricex();
-							price_dialog_str_min = g.get(0).toString();
-							jk = Double.parseDouble(price_dialog_str_min)+0.0001;
-							price_dialog_str_min = String.format(Locale.US, "%.4f",jk);
-							isbid = "true";
-						}
-						if(kind_upz == 1){
-							o.pricelist(z_coin, 1);
-							
-							g = o.getlistpricey();
-							price_dialog_str_min = g.get(0).toString();
-							jk = Double.parseDouble(price_dialog_str_min)-0.0001;
-							price_dialog_str_min = String.format(Locale.US, "%.4f",jk);
-							isbid = "false";
-						}
-						int x = o.del(z_id);
-						if (x==1){
-							//	Toast.makeText(getApplicationContext(), "Цена постановки: "+price_dialog_str_mind, Toast.LENGTH_SHORT).show();
-						o.add(z_coin, z_notes, isbid,Double.parseDouble(price_dialog_str_min));
-						}
-						//editor.putInt("j_del", z_id);
-						//editor.putInt("del", 1);
-						//editor.putInt("task2", 1);
-						//editor.putString("pricebuyauto", price_dialog_str_min);
-						//editor.putInt("coinauto", z_coin);
-							//	System.out.println(z_coin);
-						//editor.commit();
-						
-						}
-						};
-						
-						
-						perepostthread = new Thread(runnablex);
-						perepostthread.start();
-						finish();
+						perestanov();
 					}
 				});
 				//стоп лос
@@ -159,7 +112,30 @@ package com.deff83.indexAPI;
 						}
 					}
 			});
-		
+		//кнопка начать перестановку
+		Button startperest = (Button) findViewById(R.id.startperestanov);
+		startperest.setOnClickListener(new OnClickListener(){
+					@Override
+					public void onClick(View v){
+						editor.putString("cenaperest", editperest.getText().toString());
+						editor.putInt("idperest", z_id);//тут остановился
+						editor.putInt("coinperest", z_coin);
+						editor.putInt("perestanov", 1);
+						editor.commit();
+					}
+		});
+			//кнопка начать перестановку
+			Button stopperest = (Button) findViewById(R.id.stopperestanov);
+			startperest.setOnClickListener(new OnClickListener(){
+					@Override
+					public void onClick(View v){
+						editor.putInt("perestanov", 0);
+						editor.commit();
+					}
+				});
+			
+			
+			
 			//слушатель edit, установка акиивности вызов клавиатуры
 			OnTouchListener on_touch_listener3 = new OnTouchListener() {
 				@Override
@@ -172,6 +148,7 @@ package com.deff83.indexAPI;
 			};
 			//вешаем на каждый edit один слушатель
 			stoplos_edit.setOnTouchListener(on_touch_listener3);
+			editperest.setOnTouchListener(on_touch_listener3);
 		}
 
 		@Override
@@ -197,6 +174,59 @@ package com.deff83.indexAPI;
 			super.onStop();
 		}
 
+	public void perestanov(){
+		// нажато "редактировать заявку"
+		Toast.makeText(getBaseContext(), "подождите", Toast.LENGTH_SHORT).show();
+		final Thread perepostthread;
+		final String price_dialog_str_mind = "ошибка";
+		Runnable runnablex = new Runnable() {
+			@Override
+			public void run() {
+				int kind_upz = pref.getInt("kind_upz", 0);
+				String price_dialog_str_min = "---";
+				Double jk;
+				String isbid = "";
+				Opiration o = Opiration.getOpiration();
 
+				ArrayList<Double> g = new ArrayList();
+				if (kind_upz == 0){
+					o.pricelist(z_coin, 1);
+
+					g = o.getlistpricex();
+					price_dialog_str_min = g.get(0).toString();
+					jk = Double.parseDouble(price_dialog_str_min)+0.0001;
+					price_dialog_str_min = String.format(Locale.US, "%.4f",jk);
+					isbid = "true";
+				}
+				if(kind_upz == 1){
+					o.pricelist(z_coin, 1);
+
+					g = o.getlistpricey();
+					price_dialog_str_min = g.get(0).toString();
+					jk = Double.parseDouble(price_dialog_str_min)-0.0001;
+					price_dialog_str_min = String.format(Locale.US, "%.4f",jk);
+					isbid = "false";
+				}
+				int x = o.del(z_id);
+				if (x==1){
+					//	Toast.makeText(getApplicationContext(), "Цена постановки: "+price_dialog_str_mind, Toast.LENGTH_SHORT).show();
+					o.add(z_coin, z_notes, isbid,Double.parseDouble(price_dialog_str_min));
+				}
+				//editor.putInt("j_del", z_id);
+				//editor.putInt("del", 1);
+				//editor.putInt("task2", 1);
+				//editor.putString("pricebuyauto", price_dialog_str_min);
+				//editor.putInt("coinauto", z_coin);
+				//	System.out.println(z_coin);
+				//editor.commit();
+
+			}
+		};
+
+
+		perepostthread = new Thread(runnablex);
+		perepostthread.start();
+		finish();
+	}
 
 	}

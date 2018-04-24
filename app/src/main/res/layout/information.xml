@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.DrawerLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/drawer_layout_inform"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
+
+	<FrameLayout
+		android:id="@+id/content_frame_info"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"/>
+
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:id="@+id/rel_layout_info">
+
+		<LinearLayout
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:orientation="vertical">
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:text="Цены при которых изменится возможность покупки количество биткоинов"
+				android:layout_width="match_parent"
+				android:gravity="center"
+				android:layout_margin="2dp"/>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal">
+
+				<LinearLayout
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:orientation="vertical"
+					android:gravity="center"
+					android:layout_weight="1">
+
+					<TextView
+						android:layout_height="wrap_content"
+						android:text="min цена"
+						android:layout_width="wrap_content"
+						android:layout_margin="2dp"/>
+
+					<TextView
+						android:id="@+id/textmin"
+						android:layout_height="wrap_content"
+						android:text=""
+						android:layout_width="wrap_content"
+						android:layout_margin="2dp"/>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:orientation="vertical"
+					android:gravity="center"
+					android:layout_weight="1">
+
+					<TextView
+						android:layout_height="wrap_content"
+						android:text="количество сейчас"
+						android:layout_width="wrap_content"
+						android:layout_margin="2dp"/>
+
+					<TextView
+						android:id="@+id/colbit"
+						android:layout_height="wrap_content"
+						android:text=""
+						android:layout_width="wrap_content"
+						android:layout_margin="2dp"/>
+
+				</LinearLayout>
+
+				<LinearLayout
+					android:layout_height="wrap_content"
+					android:layout_width="wrap_content"
+					android:orientation="vertical"
+					android:gravity="center"
+					android:layout_weight="1">
+
+					<TextView
+						android:layout_height="wrap_content"
+						android:text="max цена"
+						android:layout_width="wrap_content"
+						android:layout_margin="2dp"/>
+
+					<TextView
+						android:id="@+id/textmax"
+						android:layout_height="wrap_content"
+						android:text=""
+						android:layout_width="wrap_content"
+						android:layout_margin="2dp"/>
+
+				</LinearLayout>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+	</RelativeLayout>
+
+	<ListView
+		android:id="@+id/left_drawer"
+		android:layout_width="240dp"
+		android:layout_height="match_parent"
+		android:layout_gravity="start"
+		android:background="#fff"
+		android:choiceMode="singleChoice"
+		android:divider="@android:color/transparent"
+		android:dividerHeight="0dp"/>
+
+</android.support.v4.widget.DrawerLayout>
+
