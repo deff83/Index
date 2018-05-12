@@ -34,6 +34,7 @@
 			android:text="Убрать заявку"/>
 		</LinearLayout>
 		<LinearLayout
+			android:id="@+id/layout_start_stop2"
 			android:layout_below="@+id/layout_start_stop"
 			android:layout_height="wrap_content"
 			android:layout_width="match_parent"
@@ -51,7 +52,24 @@
 				android:layout_weight="1"
 				android:text="продать все"/>
 		</LinearLayout>
-
+		<LinearLayout
+			android:layout_below="@+id/layout_start_stop2"
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="horizontal">
+			<Button
+				android:id="@+id/func3"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="очистить данные"/>
+			<Button
+				android:id="@+id/func4"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="----"/>
+		</LinearLayout>
 	</RelativeLayout>
 	<ListView
         android:id="@+id/left_drawer"

@@ -95,6 +95,7 @@ public class MainActivity extends Activity
 		 prog_b =(ProgressBar) findViewById(R.id.progressbar);
 		 prog_b0 = (ProgressBar) findViewById(R.id.progressbar0);
 		final Intent ir = new Intent(getApplication(), PlayService.class);
+		final Intent ir2 = new Intent(getApplication(), Sirvice_widjet.class);
 		//создаем объект свайпа
 		swipe = (SwipeRefreshLayout) findViewById(R.id.swipe_container);
 		//слушптель свайпа
@@ -108,7 +109,7 @@ public class MainActivity extends Activity
 				}
 				rab_gud.setText("обновление...");
 				startService(ir);
-				
+				startService(ir2);
 			}
 		});
 		//текст ошибки
@@ -150,7 +151,7 @@ public class MainActivity extends Activity
 		prlistener = new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				Toast.makeText(MainActivity.this, v.getId(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, v.getId()+"", Toast.LENGTH_SHORT).show();
 		}
 		};
 		//слушатель таблицы заявок
@@ -356,9 +357,9 @@ public class MainActivity extends Activity
 				try{
 					String coin_price = intent.getStringExtra("coin_price");
 					String list_price = intent.getStringExtra("list_price");
-					Double price_intent = intent.getDoubleExtra("price", 0.0);
+					Double price_intent = intent.getDoubleExtra("price", 0.0) - 35;
 					String ostatok = pref.getString("ostatok", "");
-					String price_intent_string = price_intent.toString();
+					String price_intent_string = String.format(Locale.US, "%.2f",  price_intent);
 					TextView text_balance = (TextView) findViewById(R.id.text2);
 					text_balance.setText(price_intent_string + "$" + ostatok);
 					coin_prices(coin_price);
@@ -636,8 +637,10 @@ public class MainActivity extends Activity
 		}
 	}
 	Set<String> h;
+	Set<String> per;
 	public void tabl_z(){
 		h = pref.getStringSet("z_stoplos", new HashSet());
+		per = pref.getStringSet("z_perest_id", new HashSet());
 		int col_izm = pref.getInt("col_izm", 0);
 		int col_z = pref.getInt("col_z", 0);
 		int col_tabl = pref.getInt("col_tabl", 0);
@@ -688,6 +691,15 @@ public class MainActivity extends Activity
 					kindtw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaStoplos));
 					pricetw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaStoplos));
 					notestw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaStoplos));
+				}
+				//проверка на присутствие перестановки
+				if (per.contains(offerid+"")){
+					toolidtw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaper));
+					offeridtw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaper));
+					nametw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaper));
+					kindtw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaper));
+					pricetw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaper));
+					notestw.setBackgroundColor(getResources().getColor(R.color.colorMyZayvkaper));
 				}
 				
 				//проверка нажата ли таблица для установки цвета

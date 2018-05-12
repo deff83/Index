@@ -5,6 +5,7 @@ import android.content.*;
 import android.widget.*;
 import android.view.*;
 import android.view.View.*;
+import java.util.*;
 
 public class Userfunction extends Activity
 {
@@ -41,7 +42,21 @@ public class Userfunction extends Activity
 		listbutton = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-	
+						switch(v.getId()){
+							case R.id.func3:
+								/*Set<String> gtyj = pref.getStringSet("z_perest_id", new HashSet());
+								Set<String> o = new HashSet<String>();
+								for (String gb : gtyj){
+									o.add(gb+"");
+								}
+								gtyj.removeAll(o);
+								Toast.makeText(Userfunction.this, "рпсорорпс", Toast.LENGTH_SHORT).show();
+								editor.putStringSet("z_perest_id", gtyj);*/
+								editor.remove("z_perest_id");
+								editor.remove("z_perest_price");
+								editor.commit();
+								break;
+						}
 						int i = pref.getInt("col_z", 0);
 						//выполнение функции удаления заявок
 						if (i != 0){
@@ -55,6 +70,8 @@ public class Userfunction extends Activity
 									editor.commit();
 									Toast.makeText(getApplicationContext(),   "исполнено ", Toast.LENGTH_SHORT).show();		
 									break;
+								
+									
 							}
 						}
 									
@@ -64,8 +81,10 @@ public class Userfunction extends Activity
 		
 		Button but_del_all = (Button) findViewById(R.id.button_del_all);
 		Button but_del = (Button) findViewById(R.id.button_del);
+		Button but_clen_data = (Button) findViewById(R.id.func3);
 		but_del_all.setOnClickListener(listbutton);
 		but_del.setOnClickListener(listbutton);
+		but_clen_data.setOnClickListener(listbutton);
 	}
 
 	@Override

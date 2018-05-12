@@ -3,6 +3,7 @@ import android.content.*;
 import android.app.*;
 import java.security.*;
 import android.util.*;
+import android.util.Base64;
 import java.io.*;
 import okhttp3.*;
 import org.json.*;
@@ -21,9 +22,11 @@ public class Opiration
 	private static OkHttpClient clientx;
 	private static OkHttpClient clienty;
 	private static OkHttpClient clientz;
-	
+	private int myzyavk;
 	private ArrayList<Double> pricelistx;
-	
+	public int getmyz(){
+		return myzyavk;
+	}
 	public ArrayList getlistpricex(){
 		return pricelistx;
 	}
@@ -129,6 +132,7 @@ public class Opiration
 	}
 	
 	public synchronized void pricelist(int zCoin, int size){
+		myzyavk = 0;
 		//запрос прайс листа
 		String signature_baz = base64_shifr(1, 0, zCoin);
 		//OkHttpClient client3 = new OkHttpClient();
@@ -155,11 +159,18 @@ public class Opiration
 				Double z = 0.0;
 				Integer z_col, z_offerid;
 				pricelistx = new ArrayList();
+				int kl = 0;
 				for(int i= 0; i < size; i++){
 					JSONObject json_54 = jsonArray.getJSONObject(i);
 					z = json_54.getDouble("price");
 					z_col = json_54.getInt("notes");
 					z_offerid = json_54.getInt("offerid");
+					if(i == 0){
+					if (z_offerid != 0){
+						myzyavk = 1;
+						kl++;
+					}
+					}
 					pricelistx.add(z);
 				}
 				int j = size;
@@ -186,7 +197,16 @@ public class Opiration
 					y = json_45.getDouble("price");
 					y_col = json_45.getInt("notes");
 					y_offerid = json_45.getInt("offerid");
+					if (i == 0){
+					if (y_offerid != 0){
+						myzyavk =2;
+						kl++;
+					}
 					pricelisty.add(y);
+					}
+					if (kl==2){
+						myzyavk = 3;
+					}
 				}
 
 				

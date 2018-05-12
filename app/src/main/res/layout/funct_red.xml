@@ -57,13 +57,13 @@
 			android:imeOptions="actionDone"
 			android:inputType="numberDecimal" />
 		<Button
-			android:id="@+id/startperestanov"
+			android:id="@+id/startperestanovlay"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
 			android:text="перестановка"/>
 		<Button
-			android:id="@+id/stopperestanov"
+			android:id="@+id/stopperestanovlay"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"

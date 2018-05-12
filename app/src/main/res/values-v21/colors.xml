@@ -13,5 +13,14 @@
 	<color name="colorMyZayvkaStoplos">#ff99dd</color>
 	<color name="titl_tablz">#ccccff</color>
 	<color name="titl_tablz2">#ccffcc</color>
-	<color name="colortg">#bbbbbb</color>
+	<color name="colortg">#cccccc</color>
+	<color name="colorwidback">#333333</color>
+	<color name="colorwidbackbord">#555555</color>
+	<color name="colorwidjgreen">#00ff00</color>
+	<color name="colorwidjgreenbl">#335533</color>
+	<color name="colorwidjred">#ff0000</color>
+	<color name="colorwidjredbl">#553333</color>
+	<color name="colorwidjtext">#ff0911</color>
+	<color name="colorwidjtextnull">#cccccc</color>
+	<color name="colorMyZayvkaper">#00ffff</color>
 </resources>

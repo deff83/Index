@@ -21,15 +21,19 @@ package com.deff83.indexAPI;
 		EditText stoplos_edit;
 		EditText editperest;
 		//поля для перестановки
-		Integer z_notes, z_coin, z_id;
+		Integer z_notes, z_coin, z_id, z_kind;
 		//алушатель кнопки
 		OnClickListener listbutton;
+		String price_dialog_str_min;
+		String z_price;
 		@Override
 		public void onCreate(Bundle savedInstanceState)
 		{
 			pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
 			editor = pref.edit();
 			final Set<String> h = pref.getStringSet("z_stoplos",  new HashSet<String>());
+			final Set<String> per = pref.getStringSet("z_perest_id", new HashSet<String>());
+			final Set<String> perpr = pref.getStringSet("z_perest_price", new HashSet<String>());
 			editor.putInt("add", 0);
 			editor.commit();
 			zCoin = pref.getInt("zCoin", 60);
@@ -44,7 +48,8 @@ package com.deff83.indexAPI;
 			//поля на которые нажали
 			z_coin = pref.getInt("my_offer_" + j_z, 0);
 			z_id =pref.getInt("my_offer_" + j_z + "offerid", 0);
-			final String z_price = pref.getString("my_offer_"+j_z+"price", "0.0");
+			z_kind =pref.getInt("my_offer_" + j_z + "kind", 0);
+			z_price = pref.getString("my_offer_"+j_z+"price", "0.0");
 			z_notes = pref.getInt("my_offer_" + j_z+"notes", 0);
 			stoplos_edit = (EditText) findViewById(R.id.stoplosedit);
 			editperest =(EditText) findViewById(R.id.editperestanov);
@@ -55,6 +60,10 @@ package com.deff83.indexAPI;
 			}else{
 				stoplos_edit.setText(pref.getString("stoplosust" +z_id, "0"));
 			}
+			//устанавливаем в поле edit цену перестановки
+			if (per.contains(z_id+"")){
+				editperest.setText(pref.getString("perstprice" +z_id, "0"));
+				}
 			//кнопка установить цену с минимальным отрывом перед стаканом
 			Button but_min= (Button) findViewById(R.id.refresh_z);
 			but_min.setOnClickListener(new OnClickListener() {
@@ -113,24 +122,56 @@ package com.deff83.indexAPI;
 					}
 			});
 		//кнопка начать перестановку
-		Button startperest = (Button) findViewById(R.id.startperestanov);
+		Button startperest = (Button) findViewById(R.id.startperestanovlay);
 		startperest.setOnClickListener(new OnClickListener(){
 					@Override
 					public void onClick(View v){
-						editor.putString("cenaperest", editperest.getText().toString());
-						editor.putInt("idperest", z_id);//тут остановился
+						
+						Double perestpr = 0.0;
+						try{
+							perestpr = Double.parseDouble(editperest.getText().toString());
+						} catch (Exception e){}
+						Toast.makeText(getApplicationContext(), "start"+ z_id, Toast.LENGTH_SHORT).show();
+						editor.putString("perstprice"+z_id, editperest.getText().toString());
+						editor.putString("pricezper"+z_id, z_price);
+						editor.putInt("kindperest"+z_id, z_kind);
+						editor.putInt("noteperest"+z_id, z_notes);//тут остановился
 						editor.putInt("coinperest", z_coin);
-						editor.putInt("perestanov", 1);
+						editor.putString("priceperestanovki" + z_price, editperest.getText().toString());
+
+						editor.putInt("priceperestanovkikind" + z_price, z_kind);
+						editor.putInt("priceperestanovkinotes"+z_price, z_notes);//тут остановился
+						editor.putInt("priceperestanovkicoin"+z_price, z_coin);
 						editor.commit();
+						if (per.contains(z_id+"")==false){
+							per.add(z_id+"");
+							editor.putStringSet("z_perest_id", per);
+							Toast.makeText(getApplicationContext(), "перестановка назначена на заявке"+ z_price, Toast.LENGTH_SHORT).show();
+						
+						editor.putInt("perestanov"+z_id, 1);
+						
+						//информация по цене
+						editor.commit();
+						}
+						finish();
 					}
 		});
-			//кнопка начать перестановку
-			Button stopperest = (Button) findViewById(R.id.stopperestanov);
-			startperest.setOnClickListener(new OnClickListener(){
+			//кнопка стоп перестановку
+			Button stopperest = (Button) findViewById(R.id.stopperestanovlay);
+			stopperest.setOnClickListener(new OnClickListener(){
 					@Override
 					public void onClick(View v){
-						editor.putInt("perestanov", 0);
+						if (per.contains(z_id+"")==true){
+							per.remove(z_id+"");
+						}
+						if (perpr.contains(z_price)){
+							perpr.remove(z_price);
+						}
+						editor.putInt("perestanov"+z_id, 0);
+						editor.putStringSet("z_perest_id", per);
 						editor.commit();
+						Toast.makeText(getApplicationContext(), "перестанвка убрана на заявке "+ z_id, Toast.LENGTH_SHORT).show();
+						finish();
 					}
 				});
 			
@@ -183,7 +224,7 @@ package com.deff83.indexAPI;
 			@Override
 			public void run() {
 				int kind_upz = pref.getInt("kind_upz", 0);
-				String price_dialog_str_min = "---";
+				 price_dialog_str_min = "---";
 				Double jk;
 				String isbid = "";
 				Opiration o = Opiration.getOpiration();
@@ -209,7 +250,16 @@ package com.deff83.indexAPI;
 				}
 				int x = o.del(z_id);
 				if (x==1){
-					//	Toast.makeText(getApplicationContext(), "Цена постановки: "+price_dialog_str_mind, Toast.LENGTH_SHORT).show();
+					editor.putString("strmin", price_dialog_str_mind);
+					editor.commit();
+					
+					runOnUiThread(new Runnable() {
+    public void run() {
+		Toast.makeText(getApplicationContext(), "Цена постановки: "+price_dialog_str_min, Toast.LENGTH_SHORT).show();
+        
+    }
+});
+					//
 					o.add(z_coin, z_notes, isbid,Double.parseDouble(price_dialog_str_min));
 				}
 				//editor.putInt("j_del", z_id);
