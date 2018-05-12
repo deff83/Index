@@ -19,6 +19,7 @@ import android.util.*;
 import java.security.*;
 
 
+
 public class PlayService extends Service {
 	//глобальная переменная запуска службы
 	public static Boolean serviceIndexRunning = false;
@@ -324,10 +325,32 @@ public class PlayService extends Service {
 			//System.out.println(response2);
 			//ответ тела post запроса
 	String coin_price2 = response2.body().string(); 
-
-			
+			try{
+				JSONObject jsonObject;
+				jsonObject = new JSONObject(coin_price2);
+				JSONArray jsonarray = jsonObject.getJSONArray("value");
 				
+				for (int i = 0; i < jsonarray.length(); i++) {
+					JSONObject friend = jsonarray.getJSONObject(i);
+					String name = friend.getString("name");
+					Integer id_coin = friend.getInt("id");
+					
+					String price = friend.getString("price");
+					editor.putInt("toolflag"+id_coin, 0);
+					if (Double.parseDouble(pref.getString("toolcena" + id_coin, "0.0")) > Double.parseDouble(price)){
+						editor.putInt("toolflag"+id_coin, 1);
+					}
+					if (Double.parseDouble(pref.getString("toolcena" + id_coin, "0.0")) < Double.parseDouble(price)){
+						editor.putInt("toolflag"+id_coin, 2);
+					}
+					editor.putString("toolcena"+id_coin, price);
+					editor.putString("toolname"+id_coin, name);
+					editor.commit();
+					}
 				
+				} catch (JSONException e){
+					//ошибка обработка JSON обьекта
+				}
 			
 			
 				intent.putExtra("coin_price", coin_price2);
@@ -671,7 +694,7 @@ public class PlayService extends Service {
 
 				byte[] zl = digest.digest(r.getBytes("UTF-8"));
 
-				base64 = Base64.encodeToString(zl, Base64.NO_WRAP);
+				base64 = Base64.encodeToString(zl, Base64.NO_WRAP);  //android.util.   в API28
 			}catch (UnsupportedEncodingException e){}
 		}catch (NoSuchAlgorithmException e){}
 		return base64;

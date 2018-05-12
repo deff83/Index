@@ -4,6 +4,7 @@ import java.util.*;
 
 public class Bot_1
 {
+	
 	private SharedPreferences shp;
 	private SharedPreferences.Editor editor;
 	private static Bot_1 bot1;
@@ -11,6 +12,10 @@ public class Bot_1
 	private Opiration o;
 	private Set<String> hmyz;
 	private Set<String> hstoplos;
+	//поля перестановки цены
+	
+	Integer z_coin, z_notes;
+	String isbid, price_dialog_str_min, price_dialog_str_mind;
 	//поля сработанной заявки
 	private String prise_srab;
 	private String notes_srab;
@@ -29,6 +34,7 @@ public class Bot_1
 	public void setBotcontext(Context context){
 		this.context = context;
 		shp = context.getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		
 		editor = shp.edit();
 	}
 	private Bot_1(){
@@ -64,16 +70,118 @@ public class Bot_1
 			}
 		}
 	} 
+	Double pricebitper, pricebitpper;
 	public synchronized void f(){//стоплос периодически вызывается
+	try{
+		//узнать цену битка
+		o = Opiration.getOpiration();
+		o.pricelist(60, 1);
+		ArrayList<Double> tper = o.getlistpricex();
+		 pricebitper = tper.get(0);
+		ArrayList<Double> tpper = o.getlistpricey();
+		 pricebitpper = tpper.get(0);
+		//перестановка цены
+		Set<String>  per = shp.getStringSet("z_perest_id", new HashSet<String>());
+		Set<String> priceperset = shp.getStringSet("z_perest_price", new HashSet<String>());
+		Set<String> u = shp.getStringSet("myz", new HashSet<String>());
+		for (String g : u){
+			String pricepoid = shp.getString("price_po_idoffer"+g,"0");
+			if (priceperset.contains(pricepoid)){
+				per.add(g);
+				editor.putString("perstprice"+g, shp.getString("priceperestanovki" + pricepoid, "999"));
+				editor.putString("pricezper"+g, pricepoid);
+				editor.putInt("kindperest"+g,  shp.getInt("priceperestanovkikind" + pricepoid, 7));
+				editor.putInt("noteperest"+g, shp.getInt("priceperestanovkinotes"+pricepoid, 0));//тут остановился
+				editor.putInt("coinperest", shp.getInt("priceperestanovkicoin"+pricepoid, 60));
+				priceperset.remove(pricepoid);
+				editor.putStringSet("z_perest_price", priceperset);
+				editor.putStringSet("z_perest_id", per);
+				editor.commit();
+			}
+		}
+		
+		//jhgvjhhh
+		Set<String>  peri = shp.getStringSet("z_perest_id", new HashSet<String>());
+		Set<String> priceperseti = shp.getStringSet("z_perest_price", new HashSet<String>());
+		for(String zidper : peri){
+			//try{
+				//String tyup = "9.2";
+				//String tpop = "9.2";
+			String tyup = shp.getString("perstprice"+zidper, "0.0");
+			String tpop = shp.getString("pricezper"+zidper, "0.0");
+			Double priceper = Double.parseDouble(tyup+"");
+			Double zpriceper = Double.parseDouble(tpop+"");
+			if (priceperseti.contains(tpop)==false){
+				priceperseti.add(tpop);
+				editor.putStringSet("z_perest_price", priceperseti);
+				editor.putStringSet("z_perest_id", peri);
+				editor.commit();
+			}
+			if (shp.getInt("kindperest"+zidper, 0)==0){
+			if (pricebitpper > priceper){
+			 if(pricebitpper< zpriceper){
+				 int yp = shp.getInt("noteperest" + zidper, 0);
+				 int zid = Integer.parseInt(zidper);
+				 int kind_up = 0;
+				 int z_con = shp.getInt("coinperest"+zidper, 60);
+				 perestanov(z_con, kind_up,  zid, yp, tpop);
+				 }
+			 }
+			}
+				if (shp.getInt("kindperest"+zidper, 0)==1){
+					if(pricebitper<priceper){
+					if(pricebitper> zpriceper ){
+						int yp = shp.getInt("noteperest" + zidper, 0);
+						int zid = Integer.parseInt(zidper);
+						int kind_up = 1;
+						int z_con = shp.getInt("coinperest"+zidper, 60);
+						perestanov(z_con, kind_up,  zid, yp, tpop);
+						}
+					}
+				}
+			
+			//}catch(Exception e){}
+			
+		}
+		
+		editor.putStringSet("z_perest_price", priceperseti);
+		editor.commit();
+		
+		ArrayList<Double> t = o.getlistpricex();
+		Double pricebit = t.get(0);
+		ArrayList<Double> tp = o.getlistpricey();
+		Double pricebitp = tp.get(0);
+		int g = o.getmyz();
+		
 		if( shp.getInt("sound_opov_price", 0) == 0){
 		sravn(60,0, Double.parseDouble(shp.getString("edit_price_opmin", "0.0")));
 		sravn(60,1, Double.parseDouble(shp.getString("edit_price_opmax", "999.9")));
 		}
-		//узнать цену битка
-		o = Opiration.getOpiration();
-		o.pricelist(60, 1);
-		ArrayList<Double> t = o.getlistpricex();
-		Double pricebit = t.get(0);
+		
+		//проверка на изменение
+		editor.putInt("colorwidmin", 0);
+		editor.putInt("colorwidmax", 0);
+		if(Double.parseDouble(shp.getString("widjetmin", "0.0"))< pricebit){
+			editor.putInt("colorwidmin", 2);
+			
+		}
+		if(Double.parseDouble(shp.getString("widjetmin", "0.0"))> pricebit){
+			editor.putInt("colorwidmin", 1);
+
+		}
+		if(Double.parseDouble(shp.getString("widjetmax", "999.0"))< pricebitp){
+			editor.putInt("colorwidmax", 2);
+
+		}
+		if(Double.parseDouble(shp.getString("widjetmax", "999.0"))> pricebitp){
+			editor.putInt("colorwidmax", 1);
+
+		}
+		editor.putInt("widjmyzvr", g);
+		
+		editor.putString("widjetmin", pricebit.toString());
+		editor.putString("widjetmax", pricebitp.toString());
+		
 		editor.putString("pricebit", pricebit.toString());
 		editor.commit();
 		
@@ -93,7 +201,7 @@ public class Bot_1
 			editor.remove("stoploscoin"+idzsrab);
 			editor.commit();
 		}
-		
+		}catch(Exception e){}
 	}
 	private String newz_stoplos(){		//проверка в списке стоплоса если в мои заявки нет этого ордера
 		for (String hstoplo : hstoplos){
@@ -273,5 +381,64 @@ public class Bot_1
 		}
 		return Double.parseDouble(price_dialog_str_min);
 	}
-	
+	public void perestanov(int z_coin, int kind_upz, int z_id, int z_notes, String priz){
+		
+		price_dialog_str_mind = "ttt";
+		price_dialog_str_min = "---";
+		Double jk;
+		isbid = "";
+		Opiration o = Opiration.getOpiration();
+
+		ArrayList<Double> g = new ArrayList();
+		if (kind_upz == 1){
+			o.pricelist(z_coin, 1);
+
+			g = o.getlistpricex();
+			price_dialog_str_min = g.get(0).toString();
+			jk = Double.parseDouble(price_dialog_str_min)+0.0001;
+			price_dialog_str_min = String.format(Locale.US, "%.4f",jk);
+			isbid = "true";
+		}
+		if(kind_upz == 0){
+			o.pricelist(z_coin, 1);
+
+			g = o.getlistpricey();
+			price_dialog_str_min = g.get(0).toString();
+			jk = Double.parseDouble(price_dialog_str_min)-0.0001;
+			price_dialog_str_min = String.format(Locale.US, "%.4f",jk);
+			isbid = "false";//продажа
+		}
+		int x = o.del(z_id);
+		if (x==1){
+			//editor.putString("strmin", price_dialog_str_mind);
+			//editor.commit();
+			Set<String> priceperset = shp.getStringSet("z_perest_price", new HashSet<String>());
+			Set<String>  per = shp.getStringSet("z_perest_id", new HashSet<String>());
+			o.add(z_coin, z_notes, isbid,Double.parseDouble(price_dialog_str_min));
+			
+			editor.putString("infor","ставка переставлена на " + price_dialog_str_min + " ,в количестве " + z_notes + " нот");
+			editor.putInt("flagtextinform", 1);
+			priceperset.add(price_dialog_str_min);
+			editor.putStringSet("z_perest_price", priceperset);
+			editor.putString("priceperestanovki"+price_dialog_str_min, shp.getString("perstprice"+z_id, "999"));
+			editor.putInt("priceperestanovkikind"+price_dialog_str_min, kind_upz);
+			editor.putInt("priceperestanovkinotes"+price_dialog_str_min, z_notes);
+			editor.putInt("priceperestanovkicoin"+price_dialog_str_min, z_coin);
+			editor.commit();
+			
+			
+			if (priceperset.contains(priz+"")==true){
+				priceperset.remove(priz+"");
+				editor.putStringSet("z_perest_price", priceperset);
+				
+				editor.commit();
+			
+		}
+		if (per.contains(z_id+"")==true){
+			per.remove(z_id+"");
+			editor.putStringSet("z_perest_id", per);
+			editor.commit();
+		}
+		}
+	}
 }

@@ -17,15 +17,22 @@ import java.util.*;
 public class MessageReceiver extends BroadcastReceiver {
 	
 	private static Timer timer_sound;
-	MediaPlayer player;
+	private static MediaPlayer player;
 	SharedPreferences pref;
 	SharedPreferences.Editor editor = null;
 	
     @Override
     public void onReceive(Context context, Intent intent) {
-		
+		//получение файла данных
+
+		pref = context.getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		editor = pref.edit();
 		player = MediaPlayer.create(context, R.raw.sound1);
-	
+		int i = pref.getInt("flagtextinform", 0);
+		if(i == 1){
+			funcinfo(pref.getString("infor", "нет сообщения"), context);
+		}
+		//Toast.makeText(context, "рпсорорпс", Toast.LENGTH_SHORT).show();
 		//ntent.getStringExtra("intent_service_name");
 		//if (name_intent.equals("coin")){
 		//	String coin_price = intent.getStringExtra("coin_price");
@@ -42,10 +49,7 @@ public class MessageReceiver extends BroadcastReceiver {
 		
 
 		
-		//получение файла данных
-		 
-			pref = context.getSharedPreferences("CAT", Context.MODE_PRIVATE);
-		editor = pref.edit();
+		
 		//проверка если оповещение сработает
 		if (pref.getInt("srabopov", 0) == 1){
 			if (timer_sound == null){
@@ -314,6 +318,11 @@ sound();
 		if (flag_switch_sound_opov == 0){
 		player.start();
 		}
+	}
+	private void funcinfo(String text, Context ctxt){
+		Toast.makeText(ctxt, text, Toast.LENGTH_SHORT).show();
+		editor.putInt("flagtextinform", 0);
+		editor.commit();
 	}
 	//}
 }

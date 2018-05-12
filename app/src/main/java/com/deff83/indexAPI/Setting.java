@@ -22,6 +22,7 @@ public class Setting extends Activity
 	EditText chPost;
 	EditText sizeSh;
 	EditText coltablp;
+	EditText widjchast;
 	//
 	Integer flag_switch_sound_opov;
 	@Override
@@ -71,6 +72,8 @@ public class Setting extends Activity
 		sizeSh = (EditText) findViewById(R.id.Shrift);
 		//поле количество заявок в прасе
 		coltablp = (EditText) findViewById(R.id.editcoltabl);
+		//поле частоты нажатие на виджет
+		widjchast = (EditText) findViewById(R.id.widjchast);
 		//запись при старте в edit
 		
 			
@@ -80,6 +83,7 @@ public class Setting extends Activity
 			
 				coltablp.setText(pref.getString("tabl_hight", "10"));
 			
+				widjchast.setText("" + pref.getInt("chastwidj", 2));
 		
 		//слушатель,  layot
 		interceptor = (RelativeLayout) findViewById(R.id.rel_layout2_setting);
@@ -92,6 +96,19 @@ public class Setting extends Activity
 						chPost.setFocusable(false);
 						sizeSh.setFocusable(false);
 						coltablp.setFocusable(false);
+						widjchast.setFocusable(false);
+							// сохраниние нулевых значений в файле, и значений введенных в edit
+							
+		editor.putString("chPost", chPost.getText().toString());
+		editor.putString("sizeSh", sizeSh.getText().toString());
+		editor.putString("tabl_hight", coltablp.getText().toString());
+		String yujh = widjchast.getText().toString();
+		if (yujh.equals("")){
+			yujh = "2";
+			widjchast.setText("2");
+		}
+		editor.putInt("chastwidj", Integer.parseInt(widjchast.getText().toString()));
+		editor.commit();
 					}
 					return v.performClick();
 				}
@@ -110,6 +127,7 @@ public class Setting extends Activity
 		chPost.setOnTouchListener(on_touch_listener2_setting);
 		sizeSh.setOnTouchListener(on_touch_listener2_setting);
 		coltablp.setOnTouchListener(on_touch_listener2_setting);
+		widjchast.setOnTouchListener(on_touch_listener2_setting);
 		
 		//переключатель
 		Switch switch_sound_opov = (Switch) findViewById(R.id.sound_switch);
@@ -155,6 +173,12 @@ public class Setting extends Activity
 		String shPost = chPost.getText().toString();
 		String size = sizeSh.getText().toString();
 		String colt = coltablp.getText().toString();
+		String yujh = widjchast.getText().toString();
+		if (yujh.equals("")){
+			yujh = "2";
+			
+		}
+		Integer widch = Integer.parseInt(yujh);
 		if (shPost.equals("")){
 			shPost = "10";
 			chPost.setText("10");
@@ -171,6 +195,7 @@ public class Setting extends Activity
 		editor.putString("chPost", shPost);
 		editor.putString("sizeSh", size);
 		editor.putString("tabl_hight", colt);
+		editor.putInt("chastwidj", widch);
 		editor.commit();
 		// TODO: Implement this method
 		super.onStop();

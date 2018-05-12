@@ -176,7 +176,10 @@ public class OpovActivity extends Activity
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 						if(isChecked){
 							editor.putInt("sound_opov_price", 0);
-
+							//запись цены оповещений
+							editor.putString("edit_price_opmin", price_min.getText().toString());
+							editor.putString("edit_price_opmax", price_max.getText().toString());
+							
 							editor.commit();
 						} else{editor.putInt("sound_opov_price",1);  editor.commit();}
 					}

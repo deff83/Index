@@ -98,9 +98,22 @@
 						android:layout_margin="2dp"/>
 
 				</LinearLayout>
-
+				
 			</LinearLayout>
-
+			<TextView
+				android:id="@+id/testtextp"
+				android:layout_height="wrap_content"
+				android:text="----"
+				android:layout_width="match_parent"
+				android:gravity="center"
+				android:layout_margin="2dp"/>
+			<TextView
+				android:id="@+id/testtextp2"
+				android:layout_height="wrap_content"
+				android:text="----"
+				android:layout_width="match_parent"
+				android:gravity="center"
+				android:layout_margin="2dp"/>
 		</LinearLayout>
 
 	</RelativeLayout>

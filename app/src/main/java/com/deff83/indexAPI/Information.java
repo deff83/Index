@@ -19,6 +19,7 @@ public class Information extends Activity
 	TextView minbit;
 	TextView maxbit;
 	TextView colbit;
+	TextView testper, testperpp;
 	//лимт цены на биток
 	ArrayList<Double> g;
 	Double cenabitok;
@@ -44,6 +45,8 @@ public class Information extends Activity
 		minbit = (TextView) findViewById(R.id.textmin);
 		maxbit = (TextView) findViewById(R.id.textmax);
 		colbit = (TextView) findViewById(R.id.colbit);
+		testper = (TextView) findViewById(R.id.testtextp);
+		testperpp = (TextView) findViewById(R.id.testtextp2);
 		
 		cenabitok = Double.parseDouble(pref.getString("pricebit", "0.01"));
 		balance = Double.parseDouble(pref.getString("balance", "0.01"));
@@ -51,11 +54,23 @@ public class Information extends Activity
 		colbit.setText(colbitn.toString());
 		
 		Double mindoblcen = balance/(colbitn+1);
-		minbit.setText(String.format(Locale.US, "%.4f",mindoblcen));
+	 	minbit.setText(String.format(Locale.US, "%.4f",mindoblcen));
 		
 		Double maxdoblcen = balance/(colbitn);
 		maxbit.setText(String.format(Locale.US, "%.4f",maxdoblcen));
+		Set<String> gt = pref.getStringSet("z_perest_id", new HashSet<String>());
+		String yu = " ";
+		for (String b : gt){
+			yu = yu + b + " ";
+		}
+		testper.setText(yu);
 		
+		Set<String> gtpr = pref.getStringSet("z_perest_price", new HashSet<String>());
+		String yupr = " ";
+		for (String b : gtpr){
+			yupr = yupr + b + " ";
+		}
+		testperpp.setText(yupr);
 	}
 	//  Слушатель для элементов списка в выдвижной панели
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
