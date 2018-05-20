@@ -10,6 +10,8 @@ import android.support.v4.app.*;
 import android.content.*;
 import android.media.*;
 import java.util.*;
+import android.preference.*;
+import android.text.*;
 
 
 
@@ -25,13 +27,15 @@ public class MessageReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 		//получение файла данных
 
-		pref = context.getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		//pref = context.getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
 		editor = pref.edit();
-		player = MediaPlayer.create(context, R.raw.sound1);
+		
 		int i = pref.getInt("flagtextinform", 0);
 		if(i == 1){
 			funcinfo(pref.getString("infor", "нет сообщения"), context);
 		}
+		try{
 		//Toast.makeText(context, "рпсорорпс", Toast.LENGTH_SHORT).show();
 		//ntent.getStringExtra("intent_service_name");
 		//if (name_intent.equals("coin")){
@@ -39,7 +43,7 @@ public class MessageReceiver extends BroadcastReceiver {
 			//coin_prices(coin_price);
 		//}
 		//if (name_intent.equals("balance")){
-		
+		//player = MediaPlayer.create(context, R.raw.sound1);
 		
 		//получаем значение полученного сообщения, параметр price
 	Double price = intent.getDoubleExtra("price",0.0);
@@ -312,15 +316,20 @@ sound();
 			//	}
 		
 		editor.commit();
+		}catch(Exception e){
+			editor.putString("infor", e.toString());
+			editor.putInt("flagtextinform", 1);
+			editor.commit();
+		}
 	}
 	private void sound(){
 		int flag_switch_sound_opov = pref.getInt("sound_opov", 0);
 		if (flag_switch_sound_opov == 0){
-		player.start();
+		//player.start();
 		}
 	}
 	private void funcinfo(String text, Context ctxt){
-		Toast.makeText(ctxt, text, Toast.LENGTH_SHORT).show();
+		Toast.makeText(ctxt, Html.fromHtml(text), Toast.LENGTH_SHORT).show();
 		editor.putInt("flagtextinform", 0);
 		editor.commit();
 	}

@@ -8,6 +8,7 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.ActionMenuView.*;
 import android.graphics.*;
 import java.util.*;
+import android.preference.*;
 
 public class Sirvice_widjet extends Service
 {
@@ -31,12 +32,16 @@ public class Sirvice_widjet extends Service
 			//создание службы
 			@Override
 			public void onCreate() {
-				super.onCreate();
-				pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-				editor = pref.edit();
-
 				
-				 Toast.makeText(this, "Служба создана",
+				super.onCreate();
+				//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+				pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+				editor = pref.edit();
+				/*if(pref.getInt("sound_widjet", 0)==1){
+					stopSelf();
+				}*/
+				
+				 Toast.makeText(this, "Виджет запущен",
 				  Toast.LENGTH_SHORT).show();
 				  rlay = new RelativeLayout(this);
 				rlay.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -77,7 +82,7 @@ public class Sirvice_widjet extends Service
 				windowManager.addView(rlay, myParams); 
 				
 				try{  
-				rlay.setOnClickListener(new View.OnClickListener(){
+				/*rlay.setOnClickListener(new OnClickListener(){
 					@Override
 					public void onClick(View v){
 						
@@ -85,7 +90,7 @@ public class Sirvice_widjet extends Service
 								//new Intent().setComponent(new ComponentName("com.deff83.indexAPI", MainActivity.class));
 								
 					}
-				});
+				});*/
 					//for moving the picture on touch and slide  
 			rlay.setOnTouchListener(new View.OnTouchListener() {  
 							WindowManager.LayoutParams paramsT = myParams;  
@@ -159,6 +164,12 @@ public class Sirvice_widjet extends Service
 				BroadcastReceiver br = new BroadcastReceiver() {
 					// действия при получении сообщений
 					public void onReceive(Context context, Intent intent) {
+						if(pref.getInt("sound_widjet", 0)==1){
+							
+							//Toast.makeText(this, "Служба запущена", Toast.LENGTH_SHORT).show();
+							windowManager.removeView(rlay);
+							stopSelf();
+						}
 						tv1.setText(" " + pref.getString("widjetmin", "0.00")+" ");
 						tv2.setText(" " + pref.getString("widjetmax", "999.9")+" ");
 						int g = pref.getInt("widjmyzvr", 0);
@@ -365,16 +376,16 @@ public class Sirvice_widjet extends Service
 			public int onStartCommand(Intent intent, int flags, int startId) {
 				tv1.setText(pref.getString("widjetmin", "0.00"));
 				tv2.setText(pref.getString("widjetmax", "999.9"));
-				//Toast.makeText(this, "Служба запущена", Toast.LENGTH_SHORT).show();
+				//
 				
 				return Service.START_STICKY;
 			}
 			//остановка службы
 			@Override
 			public void onDestroy() {
-
 				
-				Toast.makeText(this, "Служба остановлена",
+				
+				Toast.makeText(this, "Виджет остановлен",
 							   Toast.LENGTH_SHORT).show();
 				super.onDestroy();
 

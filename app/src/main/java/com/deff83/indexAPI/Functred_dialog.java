@@ -8,6 +8,7 @@ package com.deff83.indexAPI;
 	import android.view.inputmethod.*;
 	import android.view.ViewDebug.*;
 	import java.util.*;
+import android.preference.*;
 
 	public class Functred_dialog extends Activity
 	{
@@ -29,7 +30,8 @@ package com.deff83.indexAPI;
 		@Override
 		public void onCreate(Bundle savedInstanceState)
 		{
-			pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+			//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+			pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
 			editor = pref.edit();
 			final Set<String> h = pref.getStringSet("z_stoplos",  new HashSet<String>());
 			final Set<String> per = pref.getStringSet("z_perest_id", new HashSet<String>());

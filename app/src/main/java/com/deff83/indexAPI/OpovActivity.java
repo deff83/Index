@@ -7,6 +7,7 @@ import android.content.*;
 import android.view.View.*;
 import android.view.inputmethod.*;
 import android.graphics.*;
+import android.preference.*;
 
 public class OpovActivity extends Activity
 {
@@ -32,7 +33,8 @@ public class OpovActivity extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
 		editor = pref.edit();
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
@@ -186,7 +188,29 @@ public class OpovActivity extends Activity
 				});
 		}
 	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		int id = item.getItemId();
+		switch(id){
+			case R.id.menuPurchasesListSortOrderCategory:
+				Intent intent = new Intent(OpovActivity.this, Oproecte.class);
+				startActivity(intent);
+				break;
+		}
+		// TODO: Implement this method
+		return super.onOptionsItemSelected(item);
+	}
 
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// TODO: Implement this method
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+		return true;
+	}
 	@Override
 	protected void onStart()
 	{
@@ -282,7 +306,33 @@ public class OpovActivity extends Activity
 				case 0:
 					intent = new Intent(OpovActivity.this, MainActivity.class);
 					break;
+				
+				
 				case 1:
+					intent = new Intent(OpovActivity.this, Userfunction.class);
+					break;
+				case 2:
+					intent = new Intent(OpovActivity.this, Myzayvk_act.class);
+					break;
+				case 3:
+					intent = new Intent(OpovActivity.this, Information.class);
+					break;
+				case 4:
+					editor.putInt("messflag", 1);
+					editor.commit();
+					intent = new Intent(OpovActivity.this, Chat.class);
+					break;
+
+				case 6:
+					intent = new Intent(OpovActivity.this, LoginActivity.class);
+					editor.putInt("verification", 0);
+					editor.putInt("col_tabl", 0);
+					editor.putInt("tabl_hight", 0);
+					editor.commit();
+					Intent i = new Intent(OpovActivity.this, PlayService.class);
+					stopService(i);
+					break;
+				case 5:
 					intent = new Intent(OpovActivity.this, Setting.class);
 					break;
 			}

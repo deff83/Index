@@ -154,6 +154,50 @@
 		                android:inputType="number" />
 
 		        </LinearLayout>
+				<LinearLayout
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginBottom="1dp"
+		            android:background="@color/colorTabl" >
+					<TextView
+
+		                android:layout_width="0px"
+		                android:layout_height="wrap_content"
+		                android:layout_marginLeft="10dp"
+		                android:layout_weight="5"
+		                android:text="Виджет"
+		                android:textSize="20sp" />
+					<Switch
+						android:id="@+id/sound_switch_widjet"
+						android:layout_width="0px"
+						android:layout_height="wrap_content"
+						android:layout_weight="4"
+						android:textOff="выкл"
+						android:textOn="вкл"
+						android:textSize="12sp"/>
+				</LinearLayout>
+				<LinearLayout
+		            android:layout_width="match_parent"
+		            android:layout_height="wrap_content"
+		            android:layout_marginBottom="1dp"
+		            android:background="@color/colorTabl" >
+					<TextView
+
+		                android:layout_width="0px"
+		                android:layout_height="wrap_content"
+		                android:layout_marginLeft="10dp"
+		                android:layout_weight="5"
+		                android:text="Запросы чата"
+		                android:textSize="20sp" />
+					<Switch
+						android:id="@+id/sound_switch_chat"
+						android:layout_width="0px"
+						android:layout_height="wrap_content"
+						android:layout_weight="4"
+						android:textOff="выкл"
+						android:textOn="вкл"
+						android:textSize="12sp"/>
+				</LinearLayout>
 		        <LinearLayout
 		            android:id="@+id/layout_start_stop"
 		            android:layout_width="match_parent"
@@ -201,7 +245,7 @@
 		            </LinearLayout>
 
 		        </LinearLayout>
-
+			
 				
 		    </LinearLayout>
 		</ScrollView>

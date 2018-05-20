@@ -5,6 +5,7 @@ import android.content.*;
 import android.widget.*;
 import android.view.*;
 import java.util.*;
+import android.preference.*;
 
 public class Information extends Activity
 {
@@ -29,13 +30,14 @@ public class Information extends Activity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
 		editor = pref.edit();
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.information);
 		//список в выдвижной панели
-		mCatTitles = getResources().getStringArray(R.array.setting);
+		mCatTitles = getResources().getStringArray(R.array.information);
         mDrawerListView = (ListView) findViewById(R.id.left_drawer);
         // подключим адаптер для списка
         mDrawerListView.setAdapter(new ArrayAdapter<String>(this,
@@ -72,14 +74,70 @@ public class Information extends Activity
 		}
 		testperpp.setText(yupr);
 	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		int id = item.getItemId();
+		switch(id){
+			case R.id.menuPurchasesListSortOrderCategory:
+				Intent intent = new Intent(Information.this, Oproecte.class);
+				startActivity(intent);
+				break;
+		}
+		// TODO: Implement this method
+		return super.onOptionsItemSelected(item);
+	}
+
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// TODO: Implement this method
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+		return true;
+	}
 	//  Слушатель для элементов списка в выдвижной панели
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			if (position == 0){
-				Intent intent = new Intent(Information.this, MainActivity.class);
-				startActivity(intent);
+			Intent intent = null;
+			switch (position){
+				case 0:
+					intent = new Intent(Information.this, MainActivity.class);
+					break;
+
+
+
+				case 1:
+					intent = new Intent(Information.this, OpovActivity.class);
+					break;
+				case 2:
+					intent = new Intent(Information.this, Userfunction.class);
+					break;
+				case 3:
+					intent = new Intent(Information.this, Myzayvk_act.class);
+					break;
+				case 4:
+					editor.putInt("messflag", 1);
+					editor.commit();
+					intent = new Intent(Information.this, Chat.class);
+					break;
+
+				case 6:
+					intent = new Intent(Information.this, LoginActivity.class);
+					editor.putInt("verification", 0);
+					editor.putInt("col_tabl", 0);
+					editor.putInt("tabl_hight", 0);
+					editor.commit();
+					Intent i = new Intent(Information.this, PlayService.class);
+					stopService(i);
+					break;
+				case 5:
+					intent = new Intent(Information.this, Setting.class);
+					break;
 			}
+			startActivity(intent);
 		}
 	}
 }

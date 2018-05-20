@@ -3,11 +3,15 @@
     package="com.deff83.indexAPI" >
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />  
-    <application
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+		<application
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
+		android:name=".MyApplication"
+			
 		>
 		<service 
 			android:enabled="true" 
@@ -36,7 +40,11 @@
         </activity>
 		<activity
             android:name=".OpovActivity"
-            android:label="@string/app_name" >
+            android:label="@string/opovesh" >
+		</activity>
+		<activity
+            android:name=".Chat"
+            android:label="@string/chat" >
 		</activity>
 		<activity
             android:name=".Userfunction"
@@ -44,7 +52,7 @@
 		</activity>
 		<activity
             android:name=".Setting"
-            android:label="@string/app_name" >
+            android:label="@string/setting" >
 		</activity>
 		<activity
             android:name=".Information"
@@ -68,6 +76,7 @@
 			android:excludeFromRecents="true"
 		>
 		</activity>
+		
 		<activity 
 			android:name=".LoginActivity"
 			android:label="@string/login_activ"
@@ -75,6 +84,13 @@
 			android:excludeFromRecents="true"
 		>
 		</activity>
+			<activity 
+				android:name=".Oproecte"
+				android:label="@string/oproecte"
+				
+				android:excludeFromRecents="true"
+			>
+			</activity>
     </application>
 
 </manifest>

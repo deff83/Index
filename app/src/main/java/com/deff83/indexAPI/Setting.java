@@ -6,6 +6,7 @@ import android.widget.*;
 import android.view.View.*;
 import android.view.*;
 import android.view.inputmethod.*;
+import android.preference.*;
 
 public class Setting extends Activity
 {
@@ -24,11 +25,12 @@ public class Setting extends Activity
 	EditText coltablp;
 	EditText widjchast;
 	//
-	Integer flag_switch_sound_opov;
+	Integer flag_switch_sound_opov, flag_switch_sound_widget, flag_switch_sound_chat;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
 		editor = pref.edit();
 
 
@@ -155,8 +157,85 @@ public class Setting extends Activity
 					}
 				});
 		}
+		//переключатель widjet
+		Switch switch_sound_widjet = (Switch) findViewById(R.id.sound_switch_widjet);
+		flag_switch_sound_widget = 0;
+		flag_switch_sound_widget = pref.getInt("sound_widjet", 0);
+		if (flag_switch_sound_widget == 0){
+			switch_sound_widjet.setChecked(true);//вкл
+
+		}
+		if(flag_switch_sound_widget == 1){
+
+
+		}
+
+		if (switch_sound_widjet != null) {
+			switch_sound_widjet.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						if(isChecked){
+							editor.putInt("sound_widjet", 0);
+
+							editor.commit();
+							Intent i = new Intent(Setting.this, Sirvice_widjet.class);
+			
+			startService(i);
+						} else{editor.putInt("sound_widjet",1);  editor.commit();}
+					}
+				});
+		}
+		//переключатель chat
+		Switch switch_sound_chat = (Switch) findViewById(R.id.sound_switch_chat);
+		flag_switch_sound_chat = 1;
+		flag_switch_sound_chat = pref.getInt("sound_chat", 1);
+		if (flag_switch_sound_chat == 0){
+			switch_sound_chat.setChecked(true);//вкл
+
+		}
+		if(flag_switch_sound_chat == 1){
+
+
+		}
+
+		if (switch_sound_chat != null) {
+			switch_sound_chat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+					@Override
+					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+						if(isChecked){
+							editor.putInt("sound_chat", 0);
+
+							
+						} else{editor.putInt("sound_chat",1);  editor.commit();}
+					}
+				});
+		}
+	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		int id = item.getItemId();
+		switch(id){
+			case R.id.menuPurchasesListSortOrderCategory:
+				Intent intent = new Intent(Setting.this, Oproecte.class);
+				startActivity(intent);
+				break;
+		}
+		// TODO: Implement this method
+		return super.onOptionsItemSelected(item);
 	}
 
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// TODO: Implement this method
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+		return true;
+	}
 	@Override
 	protected void onStart()
 	{
@@ -223,10 +302,42 @@ public class Setting extends Activity
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			if (position == 0){
-				Intent intent = new Intent(Setting.this, MainActivity.class);
-				startActivity(intent);
+			Intent intent = null;
+			switch (position){
+				case 0:
+					intent = new Intent(Setting.this, MainActivity.class);
+					break;
+				case 1:
+					intent = new Intent(Setting.this, OpovActivity.class);
+					break;
+				case 2:
+					intent = new Intent(Setting.this, Userfunction.class);
+					break;
+				case 3:
+					intent = new Intent(Setting.this, Myzayvk_act.class);
+					break;
+				case 4:
+					intent = new Intent(Setting.this, Information.class);
+					break;
+				case 5:
+					editor.putInt("messflag", 1);
+					editor.commit();
+					intent = new Intent(Setting.this, Chat.class);
+					break;
+				
+				case 6:
+					intent = new Intent(Setting.this, LoginActivity.class);
+					editor.putInt("verification", 0);
+					editor.putInt("col_tabl", 0);
+					editor.putInt("tabl_hight", 0);
+					editor.commit();
+					Intent i = new Intent(Setting.this, PlayService.class);
+					stopService(i);
+					break;
 			}
+			
+			startActivity(intent);
+			
 		}
 	}
 }

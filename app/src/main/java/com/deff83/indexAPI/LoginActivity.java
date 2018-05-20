@@ -6,6 +6,7 @@ import android.widget.*;
 import android.view.View.*;
 import android.view.*;
 import android.view.inputmethod.*;
+import android.preference.*;
 
 
 public class LoginActivity extends Activity
@@ -21,7 +22,8 @@ public class LoginActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		
-		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
 		editor = pref.edit();
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);

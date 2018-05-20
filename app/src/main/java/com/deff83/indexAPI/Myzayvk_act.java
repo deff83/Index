@@ -7,6 +7,7 @@
 	import android.view.*;
 	import android.view.inputmethod.*;
 import android.widget.LinearLayout.*;
+import android.preference.*;
 
 public class Myzayvk_act extends Activity
 	{
@@ -38,7 +39,8 @@ public class Myzayvk_act extends Activity
 		@Override
 		protected void onCreate(Bundle savedInstanceState)
 		{
-			pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+			//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+			pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
 			editor = pref.edit();
 
 
@@ -225,10 +227,43 @@ public void tabl(){
 		private class DrawerItemClickListener implements ListView.OnItemClickListener {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (position == 0){
-					Intent intent = new Intent(Myzayvk_act.this, MainActivity.class);
-					startActivity(intent);
+				Intent intent = null;
+				switch (position){
+					case 0:
+						intent = new Intent(Myzayvk_act.this, MainActivity.class);
+						break;
+
+
+
+					case 1:
+						intent = new Intent(Myzayvk_act.this, OpovActivity.class);
+						break;
+					case 2:
+						intent = new Intent(Myzayvk_act.this, Userfunction.class);
+						break;
+					case 3:
+						intent = new Intent(Myzayvk_act.this, Information.class);
+						break;
+					case 4:
+						editor.putInt("messflag", 1);
+						editor.commit();
+						intent = new Intent(Myzayvk_act.this, Chat.class);
+						break;
+
+					case 6:
+						intent = new Intent(Myzayvk_act.this, LoginActivity.class);
+						editor.putInt("verification", 0);
+						editor.putInt("col_tabl", 0);
+						editor.putInt("tabl_hight", 0);
+						editor.commit();
+						Intent i = new Intent(Myzayvk_act.this, PlayService.class);
+						stopService(i);
+						break;
+					case 5:
+						intent = new Intent(Myzayvk_act.this, Setting.class);
+						break;
 				}
+				startActivity(intent);
 			}
 		}
 	}

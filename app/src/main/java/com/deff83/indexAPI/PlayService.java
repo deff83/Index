@@ -17,7 +17,8 @@ import android.content.*;
 import android.util.*;
 
 import java.security.*;
-
+//import org.apache.commons.codec.*;
+import android.preference.*;
 
 
 public class PlayService extends Service {
@@ -43,7 +44,8 @@ public class PlayService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
 		editor = pref.edit();
 		
 		editor.putInt("serv", 1);
@@ -57,10 +59,12 @@ public class PlayService extends Service {
     }
 	Timer timer_server;
 	Timer timer_server2;
+	Timer timer_server3;
 	Timer timer_bot;
 	Integer fin;
 	Integer timer_schedule;
 	Thread myThread2;
+	Thread myThreadmess;
 	//запуск службы
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
@@ -97,7 +101,27 @@ public class PlayService extends Service {
 		};
 		myThread0 = new Thread(runnablex);
 		myThread0.start();
-		
+		//chat mess
+		Runnable runnablemess = new Runnable() {
+			@Override
+			public void run() {
+				
+				
+
+				timer_server3 = new Timer();
+
+				timer_server3.schedule(new TimerTask(){
+
+
+						@Override
+						public void run() {
+
+							mess();
+						}}, 0L, timer_schedule * 4000);
+			}
+		};
+		myThreadmess = new Thread(runnablemess);
+		myThreadmess.start();
 		
 		final Thread myThread_bot;
 		try{
@@ -131,9 +155,9 @@ public class PlayService extends Service {
 		
 		
 		
-		editor.putInt("fin", 1);
+		//editor.putInt("fin", 1);
 		
-		editor.commit();
+		//editor.commit();
 		//Toast.makeText(this, "старт",
 					//   Toast.LENGTH_SHORT).show();
 		
@@ -159,10 +183,10 @@ public class PlayService extends Service {
 				@Override
 				public void run() {
 					
-
+try{
 							//выполнение функции POST запроса
 							request(ty, ty2);
-
+} catch (Exception e){}
 
 						
 
@@ -205,7 +229,7 @@ public class PlayService extends Service {
 		super.onDestroy();
         
     }
-	OkHttpClient client;
+	OkHttpClient client, client2;
 	Intent intent;
 	String login;
 	String password;
@@ -224,11 +248,132 @@ public class PlayService extends Service {
 	}
 	String signature_baz;
 	//do time consuming operations
-	public void request (Double ty, Double ty2) {
+	String idmesstr;
+	private void mess(){
+		try{
+			if(pref.getInt("sound_chat", 1)==0){
+			client2 = new OkHttpClient();
+			//if(pref.getInt("messflag", 0)== 1){
+			Integer colmesget = pref.getInt("colmes", 0);
+			String lastId = pref.getString("idmes" + colmesget, "1569955");
+			//id в чате
+			String urlmes = "http://events.webmoney.ru/api/discuss/GetListPushes?eventId=268270102&groupUid=6be4dadf-c7ab-44e1-a1bc-b5ba4fa961c0&lastId="+lastId+"";
+			//RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+			Request requesturl = new Request.Builder()
+				.url(urlmes)
+
+				.build();
+			Response responseurl = null;
+
+
+
+			responseurl = client2.newCall(requesturl).execute();
+			//System.out.println(response);
+			//ответ тела post запроса
+			String answirurl = responseurl.body().string(); 
+			try{
+
+				JSONArray jsonArray;
+				jsonArray = new JSONArray(answirurl);
+				int url_length = jsonArray.length();
+				int jstart=0;
+				if (url_length > 100){jstart=url_length - 100;}
+				Integer colmes = pref.getInt("colmes", 0);
+				String newmes = "";
+				idmesstr = pref.getString("idmes" + colmes, "1569955");
+				for (int j = jstart; j<url_length; j++){
+
+					JSONObject idmesobj = jsonArray.getJSONObject(j);
+					Integer idmes = idmesobj.getInt("discusId");
+					idmesstr = idmes.toString();
+
+					//editor.putString("mess" + colmes, "");
+
+					//editor.commit();
+
+
+					//запрос текста сообщения
+					try {
+						String urlmesriv = "http://events.webmoney.ru/api/discuss/get2?discussId="+idmesstr+"&groupUid=6be4dadf-c7ab-44e1-a1bc-b5ba4fa961c0";
+						//RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+						Request requestmesriv = new Request.Builder()
+							.url(urlmesriv)
+
+							.build();
+						Response responsemesriv = null;
+
+
+
+						responsemesriv = client2.newCall(requestmesriv).execute();
+						String answirmesriv = responsemesriv.body().string(); 
+						try{
+							JSONObject jsonObjectmes;
+							jsonObjectmes = new JSONObject(answirmesriv);
+							String textmes = jsonObjectmes.getString("message");
+							JSONObject author = jsonObjectmes.getJSONObject("author");
+							String nickname = author.getString("nickname");
+							editor.putString("mess" + colmes, textmes);
+							editor.putString("nick"+colmes, nickname);
+
+							if(j==0){
+								newmes = newmes + nickname + " : " +textmes; 
+							}
+							if(j < 7 & j >0){
+								newmes = newmes + "\n" + nickname + " : " +textmes ; 
+							}
+						}
+						catch (JSONException e){
+							editor.putString("mess" + colmes, "errorJsonMes");
+
+						}
+
+					} catch (Exception e){editor.putString("mess" + colmes, "error");
+
+					}
+					colmes++;
+
+
+
+
+				}
+				editor.putInt("colmes", colmes);
+				editor.putString("idmes" + colmes, idmesstr);
+				if(newmes.equals("")==false){
+					editor.putString("infor",newmes);
+					editor.putInt("flagtextinform", 1);
+				}
+
+
+
+
+
+
+
+				editor.putInt("lengthmes", url_length);
+				editor.apply();
+				jsonArray = null;
+
+			}
+			catch (JSONException e){
+				editor.putString("infor", "errorJson");
+				editor.putInt("flagtextinform", 1);
+				editor.apply();
+			}
+
+			zapisimess();}
+		}catch(Exception e){
+			editor.putString("infor", "error");
+			editor.putInt("flagtextinform", 1);
+			editor.apply();
+		}
+		
+	}
+	private void request (Double ty, Double ty2) {
 		
 		
 		
 	try{
+		
 		zCoin = pref.getInt("zCoin", 60);
 		if (pref.getInt("toolup", 0)==1){
 		editor.putInt("toolup", 0);
@@ -237,6 +382,11 @@ public class PlayService extends Service {
 		//создание объекта ответа
 		signature_baz = base64_shifr(3, 0);
 		client = new OkHttpClient();
+		
+		
+		
+		//конец тесты
+		
 		String json = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'" + signature_baz + "'}}";
 		RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
 		Request request = new Request.Builder()
@@ -288,11 +438,11 @@ public class PlayService extends Service {
 					editor.putInt("port_kind"+j, kind_port);
 					editor.putInt("port_by"+j, by);
 					editor.putInt("port_count_id" + id_port, notes_port);
-					editor.commit();
-					editor.commit();
+					editor.apply();
+					//editor.commit();
 				}
 				editor.putString("ostatok", " (" + String.format(Locale.US, "%.4f", ostatok) + "$)");
-				editor.commit();
+				editor.apply();
 			//	intent.putExtra("intent_service_name", "balance");
 				//intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
 				//отправка широковещательного сообщения
@@ -518,7 +668,9 @@ public class PlayService extends Service {
 					editor.putString(my_offer_tool+"name", name);
 					Integer kind = json_my_offer.getInt("kind");
 					editor.putInt(my_offer_tool+"kind",kind);
-					String price = json_my_offer.getString("price");
+					String price2 = json_my_offer.getString("price");
+					Double r = Double.parseDouble(price2);
+					String price = String.format(Locale.US, "%.4f",  r);
 					editor.putString("price_po_idoffer" + offerid, price);
 					editor.putString(my_offer_tool+"price",price);
 					Integer notes = json_my_offer.getInt("notes");
@@ -526,7 +678,7 @@ public class PlayService extends Service {
 					x = my_offer_tool;
 				}
 				editor.putStringSet("myz", hz);
-				editor.commit();
+				editor.apply();
 				
 				
 				
@@ -564,7 +716,23 @@ public class PlayService extends Service {
 		zapisi();
 	}catch(Exception e){}
 	}
-	
+	public void zapisimess(){
+		//создание намерения CAT
+		String CAT_ACTION2 = "MES";
+		intent.setAction(CAT_ACTION2);
+		//intent.putExtra("intent_service_name", "tabl_price");
+		intent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+		//отправка широковещательного сообщения
+		client2 = null;
+		//client2 = null;
+
+		//int res = pref.getInt("res", 0);
+		//if (res == 0){ 
+		sendBroadcast(intent);
+		//	}
+		//editor.putInt("fin", 1);
+		editor.commit();
+	}
 	public void zapisi(){
 		//создание намерения CAT
 		String CAT_ACTION = "CAT";
@@ -694,7 +862,7 @@ public class PlayService extends Service {
 
 				byte[] zl = digest.digest(r.getBytes("UTF-8"));
 
-				base64 = Base64.encodeToString(zl, Base64.NO_WRAP);  //android.util.   в API28
+				base64 = android.util.Base64.encodeToString(zl, android.util.Base64.NO_WRAP);
 			}catch (UnsupportedEncodingException e){}
 		}catch (NoSuchAlgorithmException e){}
 		return base64;

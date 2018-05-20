@@ -8,6 +8,7 @@ import android.view.*;
 import android.view.inputmethod.*;
 import android.view.ViewDebug.*;
 import java.util.*;
+import android.preference.*;
 
 public class Buy_dialog extends Activity
 {
@@ -24,7 +25,8 @@ public class Buy_dialog extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
 		editor = pref.edit();
 		editor.putInt("add", 0);
 		editor.commit();
