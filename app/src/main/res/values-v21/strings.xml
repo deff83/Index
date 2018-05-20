@@ -2,6 +2,14 @@
 <resources>
 
     <string name="app_name">Index</string>
+	<string name="oproecte">О проекте</string>
+	<string name="chat">Чат Index</string>
+	<string name="setting">Настройки</string>
+	<string name="opovesh">Оповещения</string>
+
+
+
+
     <string name="hello_world">Hello world!</string>
 	<string name="buy_dialog">title</string>
 	<string name="text_price">Цена</string>
@@ -17,23 +25,68 @@
 		<item>функции_пользователя</item>
 		<item>портфель</item>
 		<item>информация</item>
+		<item>чат</item>
 		<item>настройки</item>
 		<item>Выход</item>
 	</string-array>
 	<string-array name="opoveshenia">
 		<item>назад</item>
+
+		<item>функции_пользователя</item>
+		<item>портфель</item>
+		<item>информация</item>
+		<item>чат</item>
 		<item>настройки</item>
+		<item>Выход</item>
 	</string-array>
 	<string-array name="userfunction">
 		<item>назад</item>
+
+		<item>оповещения</item>
+
+		<item>портфель</item>
+		<item>информация</item>
+		<item>чат</item>
 		<item>настройки</item>
+		<item>Выход</item>
+	</string-array>
+	<string-array name="chat">
+		<item>назад</item>
+		<item>оповещения</item>
+		<item>функции_пользователя</item>
+		<item>портфель</item>
+		<item>информация</item>
+		<item>настройки</item>
+		<item>Выход</item>
 	</string-array>
 	<string-array name="setting">
 		<item>назад</item>
+		<item>оповещения</item>
+		<item>функции_пользователя</item>
+		<item>портфель</item>
+		<item>информация</item>
+		<item>чат</item>
+		<item>Выход</item>
+	</string-array>
+	<string-array name="information">
+		<item>назад</item>
+		<item>оповещения</item>
+		<item>функции_пользователя</item>
+		<item>портфель</item>
 
+		<item>чат</item>
+		<item>настройки</item>
+		<item>Выход</item>
 	</string-array>
 	<string-array name="myz">
 		<item>назад</item>
+		<item>оповещения</item>
+		<item>функции_пользователя</item>
 
+		<item>информация</item>
+		<item>чат</item>
+		<item>настройки</item>
+		<item>Выход</item>
 	</string-array>
+	<string name ="oproectetext">о проекте</string>
 </resources>

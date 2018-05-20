@@ -6,6 +6,7 @@ import android.widget.*;
 import android.view.*;
 import android.view.View.*;
 import java.util.*;
+import android.preference.*;
 
 public class Userfunction extends Activity
 {
@@ -24,7 +25,8 @@ public class Userfunction extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
 		editor = pref.edit();
 		
 		
@@ -86,7 +88,29 @@ public class Userfunction extends Activity
 		but_del.setOnClickListener(listbutton);
 		but_clen_data.setOnClickListener(listbutton);
 	}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		int id = item.getItemId();
+		switch(id){
+			case R.id.menuPurchasesListSortOrderCategory:
+				Intent intent = new Intent(Userfunction.this, Oproecte.class);
+				startActivity(intent);
+				break;
+		}
+		// TODO: Implement this method
+		return super.onOptionsItemSelected(item);
+	}
 
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// TODO: Implement this method
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+		return true;
+	}
 	@Override
 	protected void onStart()
 	{
@@ -109,7 +133,34 @@ public class Userfunction extends Activity
 					case 0:
 						intent = new Intent(Userfunction.this, MainActivity.class);
 						break;
+					
+
+
 					case 1:
+						intent = new Intent(Userfunction.this, OpovActivity.class);
+						break;
+					case 2:
+						intent = new Intent(Userfunction.this, Myzayvk_act.class);
+						break;
+					case 3:
+						intent = new Intent(Userfunction.this, Information.class);
+						break;
+					case 4:
+						editor.putInt("messflag", 1);
+						editor.commit();
+						intent = new Intent(Userfunction.this, Chat.class);
+						break;
+
+					case 6:
+						intent = new Intent(Userfunction.this, LoginActivity.class);
+						editor.putInt("verification", 0);
+						editor.putInt("col_tabl", 0);
+						editor.putInt("tabl_hight", 0);
+						editor.commit();
+						Intent i = new Intent(Userfunction.this, PlayService.class);
+						stopService(i);
+						break;
+					case 5:
 						intent = new Intent(Userfunction.this, Setting.class);
 						break;
 				}

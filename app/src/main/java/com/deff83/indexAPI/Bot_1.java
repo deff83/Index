@@ -1,11 +1,12 @@
 package com.deff83.indexAPI;
 import android.content.*;
 import java.util.*;
+import android.preference.*;
 
 public class Bot_1
 {
 	
-	private SharedPreferences shp;
+	//private SharedPreferences shp;
 	private SharedPreferences.Editor editor;
 	private static Bot_1 bot1;
 	private  Context context;
@@ -16,7 +17,7 @@ public class Bot_1
 	
 	Integer z_coin, z_notes;
 	String isbid, price_dialog_str_min, price_dialog_str_mind;
-	//поля сработанной заявки
+	//поля сработанной заявки//
 	private String prise_srab;
 	private String notes_srab;
 	private Integer coin_srab;
@@ -31,9 +32,11 @@ public class Bot_1
 	private Integer noteszayvka = 1;
 	private Integer typ;
 	private Integer count_coins;
+	private  SharedPreferences shp;
 	public void setBotcontext(Context context){
 		this.context = context;
-		shp = context.getSharedPreferences("CAT", Context.MODE_PRIVATE);
+	 shp = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+		//shp = context.getSharedPreferences("CAT", Context.MODE_PRIVATE);
 		
 		editor = shp.edit();
 	}
@@ -80,6 +83,7 @@ public class Bot_1
 		 pricebitper = tper.get(0);
 		ArrayList<Double> tpper = o.getlistpricey();
 		 pricebitpper = tpper.get(0);
+		int gp = o.getmyz();
 		//перестановка цены
 		Set<String>  per = shp.getStringSet("z_perest_id", new HashSet<String>());
 		Set<String> priceperset = shp.getStringSet("z_perest_price", new HashSet<String>());
@@ -126,6 +130,15 @@ public class Bot_1
 				 int z_con = shp.getInt("coinperest"+zidper, 60);
 				 perestanov(z_con, kind_up,  zid, yp, tpop);
 				 }
+				if(pricebitpper== zpriceper){
+					if (gp == 0|| gp == 2){
+					int yp = shp.getInt("noteperest" + zidper, 0);
+					int zid = Integer.parseInt(zidper);
+					int kind_up = 0;
+					int z_con = shp.getInt("coinperest"+zidper, 60);
+					perestanov(z_con, kind_up,  zid, yp, tpop);
+					}
+					}
 			 }
 			}
 				if (shp.getInt("kindperest"+zidper, 0)==1){
@@ -137,6 +150,15 @@ public class Bot_1
 						int z_con = shp.getInt("coinperest"+zidper, 60);
 						perestanov(z_con, kind_up,  zid, yp, tpop);
 						}
+					if(pricebitper==zpriceper){
+						if(gp == 0 || gp == 1){
+							int yp = shp.getInt("noteperest" + zidper, 0);
+							int zid = Integer.parseInt(zidper);
+							int kind_up = 1;
+							int z_con = shp.getInt("coinperest"+zidper, 60);
+							perestanov(z_con, kind_up,  zid, yp, tpop);
+						}
+					}
 					}
 				}
 			

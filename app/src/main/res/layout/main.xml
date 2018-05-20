@@ -97,20 +97,27 @@
 						android:layout_height="fill_parent">
 
 						<LinearLayout
-							android:id="@+id/layout_tabl"
-							android:layout_height="wrap_content"
+							android:id="@+id/layout_tablx"
+							android:layout_height="match_parent"
 							android:layout_width="match_parent"
-							android:orientation="vertical">
-
+							android:gravity ="center"
+							android:orientation="vertical"
+							android:background="@drawable/drawpane">
+							<LinearLayout
+								android:id="@+id/layout_tabl"
+								android:layout_height="match_parent"
+								android:layout_width="wrap_content"
+								android:orientation="vertical">
 							<TableLayout
 								android:id="@+id/table"
 								android:layout_width="fill_parent"
 								android:layout_height="fill_parent"
 								android:background="@color/colorTablGran"
-								android:stretchColumns="0,5">
+								>
+							
 
 							</TableLayout>
-
+							</LinearLayout>
 						</LinearLayout>
 
 					</ScrollView>

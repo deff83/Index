@@ -1,0 +1,23 @@
+<menu 
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
+	
+	>
+    
+    <item
+        android:id="@+id/item_oproect"
+        android:title="о проекте"
+		android:orderInCategory="100"
+		android:icon="@drawable/logo48x48"
+		android:showAsAction="ifRoom">
+		<menu>
+		<item
+			android:id="@+id/menuPurchasesListSortOrderCategory"
+			android:orderInCategory="100"
+			android:showAsAction="never"
+			android:title="о проекте"/>     
+		</menu>
+	</item>
+    
+</menu>

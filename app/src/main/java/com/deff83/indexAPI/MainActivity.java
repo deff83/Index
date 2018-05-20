@@ -75,7 +75,8 @@ public class MainActivity extends Activity
 		buy = "покупка";
 		sale = "продажа";
 		del = 0;
-		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
 		editor = pref.edit();
 		editor.putInt("count_coin",0);
 		editor.putInt("activity_true", 1);
@@ -151,7 +152,7 @@ public class MainActivity extends Activity
 		prlistener = new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				Toast.makeText(MainActivity.this, v.getId()+"", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(MainActivity.this, v.getId(), Toast.LENGTH_SHORT).show();
 		}
 		};
 		//слушатель таблицы заявок
@@ -319,6 +320,31 @@ public class MainActivity extends Activity
 			rab_gud.setText("обновление...");
 			startService(i);
 		}}
+	
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		int id = item.getItemId();
+		switch(id){
+			case R.id.menuPurchasesListSortOrderCategory:
+				Intent intent = new Intent(MainActivity.this, Oproecte.class);
+				startActivity(intent);
+				break;
+		}
+		// TODO: Implement this method
+		return super.onOptionsItemSelected(item);
+	}
+
+	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// TODO: Implement this method
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+		return true;
 	}
 
 	@Override
@@ -560,7 +586,7 @@ public class MainActivity extends Activity
 		 						tableLayout.addView(tr);
 		 			}
 		 			count_tabl2 = 1;
-					editor.commit();
+					//editor.commit();
 		 }
 		for (int i = 0; i < tabl_hight; i++) {
 					tr = (TableRow) findViewById(i + 3000);
@@ -749,9 +775,14 @@ private class DrawerItemClickListener implements ListView.OnItemClickListener {
 				intent = new Intent(MainActivity.this, Information.class);
 				break;
 			case 4:
-				intent = new Intent(MainActivity.this, Setting.class);
+				editor.putInt("messflag", 1);
+				editor.commit();
+				intent = new Intent(MainActivity.this, Chat.class);
 				break;
 			case 5:
+				intent = new Intent(MainActivity.this, Setting.class);
+				break;
+			case 6:
 				intent = new Intent(MainActivity.this, LoginActivity.class);
 				editor.putInt("verification", 0);
 				editor.putInt("col_tabl", 0);
