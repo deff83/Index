@@ -10,34 +10,57 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"/>
 
-	<LinearLayout
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:orientation="vertical">
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content">
 
+		
+
+		<ImageView
+			android:id="@+id/iconmes"
+			android:layout_width="500dp"
+			android:layout_height="500dp"
+			android:layout_alignParentEnd="true"
+			android:layout_alignParentBottom="true"
+			android:src="@drawable/cat"/>
 		<TextView
-			android:id="@+id/downloadcoins"
+			android:id="@+id/fullfiat"
 			android:layout_height="wrap_content"
-			android:text="загрузка..."
+			android:text=""
 			android:layout_width="match_parent"
-			android:gravity="center"/>
+			android:gravity="center"
+			android:textSize="50sp"/>
 
-		<ScrollView
-			android:id="@+id/scrollvertz"
+		<LinearLayout
 			android:layout_width="fill_parent"
-			android:layout_height="fill_parent">
+			android:layout_height="fill_parent"
+			android:orientation="vertical">
 
-			<LinearLayout
-				android:id="@+id/layoutlin"
-				android:layout_height="500dp"
+			<TextView
+				android:id="@+id/downloadcoins"
+				android:layout_height="wrap_content"
+				android:text="загрузка..."
 				android:layout_width="match_parent"
-				android:orientation="vertical">
+				android:gravity="center"/>
 
-			</LinearLayout>
+			<ScrollView
+				android:id="@+id/scrollvertz"
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent">
 
-		</ScrollView>
+				<LinearLayout
+					android:id="@+id/layoutlin"
+					android:layout_height="500dp"
+					android:layout_width="match_parent"
+					android:orientation="vertical">
 
-	</LinearLayout>
+				</LinearLayout>
+
+			</ScrollView>
+
+		</LinearLayout>
+
+	</RelativeLayout>
 
 	<ListView
 		android:id="@+id/left_drawer4"

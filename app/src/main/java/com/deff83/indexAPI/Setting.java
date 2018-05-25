@@ -79,11 +79,11 @@ public class Setting extends Activity
 		//запись при старте в edit
 		
 			
-				chPost.setText(pref.getString("chPost", "10"));
+				chPost.setText(pref.getString("chPost", "2"));
 			
 				sizeSh.setText(pref.getString("sizeSh", "20"));
 			
-				coltablp.setText(pref.getString("tabl_hight", "10"));
+				coltablp.setText(pref.getString("tabl_hight", "30"));
 			
 				widjchast.setText("" + pref.getInt("chastwidj", 2));
 		
@@ -259,16 +259,16 @@ public class Setting extends Activity
 		}
 		Integer widch = Integer.parseInt(yujh);
 		if (shPost.equals("")){
-			shPost = "10";
-			chPost.setText("10");
+			shPost = "2";
+			chPost.setText("2");
 		}
 		if (size.equals("")){
 			size = "20";
 			sizeSh.setText("20");
 		}
 		if (colt.equals("")){
-			colt = "10";
-			coltablp.setText("10");
+			colt = "30";
+			coltablp.setText("30");
 		}
 		// сохраниние нулевых значений в файле, и значений введенных в edit
 		editor.putString("chPost", shPost);

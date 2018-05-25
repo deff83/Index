@@ -69,6 +69,20 @@
 			android:excludeFromRecents="true"
 			>
 		</activity>
+			<activity 
+				android:name=".Sps_dialog"
+				android:label="@string/sps1title"
+				android:theme="@style/Dialog"
+				android:excludeFromRecents="true"
+			>
+			</activity>
+			<activity 
+				android:name=".Sps_dialog2"
+				android:label="@string/sps2title"
+				android:theme="@style/Dialog"
+				android:excludeFromRecents="true"
+			>
+			</activity>
 		<activity 
 			android:name=".Functred_dialog"
 			android:label="@string/buy_dialog"

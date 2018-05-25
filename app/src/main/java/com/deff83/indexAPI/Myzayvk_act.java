@@ -30,12 +30,14 @@ public class Myzayvk_act extends Activity
 		//шрифт
 		Float floarsize;
 		//лайаут
+		FrameLayout framlay;
 		LinearLayout linerLayout2;
-		LinearLayout linmycoin;
+	RelativeLayout linmycoin;
 		//слушатель 
 		OnClickListener gettablz;
 		//текст загрузка
 		TextView load;
+		TextView fullfiat;
 		@Override
 		protected void onCreate(Bundle savedInstanceState)
 		{
@@ -47,6 +49,8 @@ public class Myzayvk_act extends Activity
 			// TODO: Implement this method
 			super.onCreate(savedInstanceState);
 			setContentView(R.layout.zayvki_activity);
+			framlay = (FrameLayout) findViewById(R.id.content_framez);
+			framlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.phonmyz2));
 			//лайаут
 			linerLayout2 = (LinearLayout) findViewById(R.id.layoutlin);
 			load = (TextView) findViewById(R.id.downloadcoins);
@@ -77,19 +81,48 @@ public class Myzayvk_act extends Activity
 			intFilt = new IntentFilter("CAT");
 			// регистрируем (включаем) BroadcastReceiver
 			registerReceiver(br, intFilt);
+			fullfiat = (TextView) findViewById(R.id.fullfiat);
+			fullfiat.setText(null);
 		}
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item)
+	{
+		int id = item.getItemId();
+		switch(id){
+			case R.id.menuPurchasesListSortOrderCategory:
+				Intent intent = new Intent(Myzayvk_act.this, Oproecte.class);
+				startActivity(intent);
+				break;
+		}
+		// TODO: Implement this method
+		return super.onOptionsItemSelected(item);
+	}
+
+
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu)
+	{
+		// TODO: Implement this method
+		getMenuInflater().inflate(R.menu.main_menu, menu);
+		return true;
+	}
 public void tabl(){
 	
 	int col_z = pref.getInt("portlength", 0);
 	load.setText(null);
+	fullfiat.setText("Full Fiat Money");
 	floarsize = Float.parseFloat(pref.getString("sizeSh", "20"));
-	
+	framlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.phonmyz2));
 	linerLayout2.removeAllViews();
 	for (int i = 0; i < col_z; i++){
 		int port_count =pref.getInt("port_notes" + i , 0);
+		//if(port_count == 0){port_count = 4;} для теста 
 		if (port_count != 0){
+			fullfiat.setText(null);
+			framlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.phonmyz1));
 		LayoutInflater inflate = LayoutInflater.from(this);
-		linmycoin = (LinearLayout) inflate.inflate(R.layout.mycoins, null);
+		linmycoin = (RelativeLayout) inflate.inflate(R.layout.mycoins, null);
 		linmycoin.setId(i + 5500);
 		TextView nameCoin;
 		TextView countCoin;

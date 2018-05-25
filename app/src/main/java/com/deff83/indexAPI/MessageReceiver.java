@@ -43,7 +43,7 @@ public class MessageReceiver extends BroadcastReceiver {
 			//coin_prices(coin_price);
 		//}
 		//if (name_intent.equals("balance")){
-		//player = MediaPlayer.create(context, R.raw.sound1);
+		player = MediaPlayer.create(context, R.raw.sound1);
 		
 		//получаем значение полученного сообщения, параметр price
 	Double price = intent.getDoubleExtra("price",0.0);
@@ -113,7 +113,7 @@ sound();
 		//проверка на ноль цены
 		if (price != 0.0){
 		//сравнение цены с нижней границей
-			if (price <= price_edit + price_minuse_double && pref.getInt("sound_opov_gran", 0) == 0){
+			if (price <= price_edit + price_minuse_double && pref.getInt("sound_opov_gran", 1) == 0){
 			sound();
 			price_minuse_double = Math.round((minus - 0.05)* 100.0) / 100.0;
 			
@@ -147,7 +147,7 @@ sound();
 			
 		}
 		//сравнение цены с верхней границей
-			if (price >= price_edit2 + price_pluse_double && pref.getInt("sound_opov_gran", 0) == 0){
+			if (price >= price_edit2 + price_pluse_double && pref.getInt("sound_opov_gran", 1) == 0){
 			sound();
 			price_pluse_double = Math.round((plus + 0.05)* 100.0) / 100.0;
 			
@@ -325,7 +325,7 @@ sound();
 	private void sound(){
 		int flag_switch_sound_opov = pref.getInt("sound_opov", 0);
 		if (flag_switch_sound_opov == 0){
-		//player.start();
+		player.start();
 		}
 	}
 	private void funcinfo(String text, Context ctxt){

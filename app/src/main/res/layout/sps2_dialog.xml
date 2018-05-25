@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical"
+	android:gravity="center">
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:text="Сессия: "
+			android:layout_width="wrap_content"/>
+
+		<TextView
+			android:layout_height="wrap_content"
+			android:layout_width="wrap_content"
+			android:id="@+id/sps2dialogSessia"/>
+
+	</LinearLayout>
+
+	<TextView
+		android:layout_height="wrap_content"
+		android:text="код подтверждения"
+		android:layout_width="wrap_content"/>
+
+	<EditText
+		android:layout_height="wrap_content"
+		android:ems="10"
+		android:layout_width="wrap_content"
+		android:id="@+id/sps2dialogEditCode"
+		android:focusable="false"
+		android:imeOptions="actionDone"
+		android:inputType="number"/>
+
+	<Button
+		android:layout_height="wrap_content"
+		android:text="Подтвердить"
+		android:layout_width="wrap_content"
+		android:id="@+id/sps2dialogButton2"/>
+
+	<Button
+		android:layout_height="wrap_content"
+		android:text="отмена"
+		android:layout_width="wrap_content"
+		android:id="@+id/sps2dialogButtoncancel"/>
+
+</LinearLayout>
+

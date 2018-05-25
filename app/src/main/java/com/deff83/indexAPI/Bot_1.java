@@ -76,6 +76,14 @@ public class Bot_1
 	Double pricebitper, pricebitpper;
 	public synchronized void f(){//стоплос периодически вызывается
 	try{
+		//цены bch
+		ArrayList<Double> tperbch, tpperbch;
+		Opiration o = Opiration.getOpiration();
+		o.pricelist(66, 1);
+		tperbch = o.getlistpricex();
+		Double pricebchper = tperbch.get(0);
+		tpperbch = o.getlistpricey();
+		Double pricebchpper = tpperbch.get(0);
 		//узнать цену битка
 		o = Opiration.getOpiration();
 		o.pricelist(60, 1);
@@ -96,7 +104,7 @@ public class Bot_1
 				editor.putString("pricezper"+g, pricepoid);
 				editor.putInt("kindperest"+g,  shp.getInt("priceperestanovkikind" + pricepoid, 7));
 				editor.putInt("noteperest"+g, shp.getInt("priceperestanovkinotes"+pricepoid, 0));//тут остановился
-				editor.putInt("coinperest", shp.getInt("priceperestanovkicoin"+pricepoid, 60));
+				editor.putInt("coinperest"+g, shp.getInt("priceperestanovkicoin"+pricepoid, 60));
 				priceperset.remove(pricepoid);
 				editor.putStringSet("z_perest_price", priceperset);
 				editor.putStringSet("z_perest_id", per);
@@ -108,6 +116,15 @@ public class Bot_1
 		Set<String>  peri = shp.getStringSet("z_perest_id", new HashSet<String>());
 		Set<String> priceperseti = shp.getStringSet("z_perest_price", new HashSet<String>());
 		for(String zidper : peri){
+			//цены по id заявки
+			Integer idcoin = shp.getInt("coinperest"+zidper, 60);
+			ArrayList<Double> tpercen, tppercen;
+			//Opiration ocen = Opiration.getOpiration();
+			o.pricelist(idcoin, 1);
+			tpercen = o.getlistpricex();
+			Double pricecen = tpercen.get(0);
+			tppercen = o.getlistpricey();
+			Double pricepcen = tppercen.get(0);
 			//try{
 				//String tyup = "9.2";
 				//String tpop = "9.2";
@@ -122,15 +139,15 @@ public class Bot_1
 				editor.commit();
 			}
 			if (shp.getInt("kindperest"+zidper, 0)==0){
-			if (pricebitpper > priceper){
-			 if(pricebitpper< zpriceper){
+			if (pricepcen > priceper){
+			 if(pricepcen< zpriceper){
 				 int yp = shp.getInt("noteperest" + zidper, 0);
 				 int zid = Integer.parseInt(zidper);
 				 int kind_up = 0;
 				 int z_con = shp.getInt("coinperest"+zidper, 60);
 				 perestanov(z_con, kind_up,  zid, yp, tpop);
 				 }
-				if(pricebitpper== zpriceper){
+				if(pricepcen== zpriceper){
 					if (gp == 0|| gp == 2){
 					int yp = shp.getInt("noteperest" + zidper, 0);
 					int zid = Integer.parseInt(zidper);
@@ -142,15 +159,15 @@ public class Bot_1
 			 }
 			}
 				if (shp.getInt("kindperest"+zidper, 0)==1){
-					if(pricebitper<priceper){
-					if(pricebitper> zpriceper ){
+					if(pricecen<priceper){
+					if(pricecen> zpriceper ){
 						int yp = shp.getInt("noteperest" + zidper, 0);
 						int zid = Integer.parseInt(zidper);
 						int kind_up = 1;
 						int z_con = shp.getInt("coinperest"+zidper, 60);
 						perestanov(z_con, kind_up,  zid, yp, tpop);
 						}
-					if(pricebitper==zpriceper){
+					if(pricecen==zpriceper){
 						if(gp == 0 || gp == 1){
 							int yp = shp.getInt("noteperest" + zidper, 0);
 							int zid = Integer.parseInt(zidper);
@@ -168,7 +185,7 @@ public class Bot_1
 		
 		editor.putStringSet("z_perest_price", priceperseti);
 		editor.commit();
-		
+		o.pricelist(60, 1); //узнаць цену чтобы установить на вижет
 		ArrayList<Double> t = o.getlistpricex();
 		Double pricebit = t.get(0);
 		ArrayList<Double> tp = o.getlistpricey();
@@ -204,7 +221,8 @@ public class Bot_1
 		editor.putString("widjetmin", pricebit.toString());
 		editor.putString("widjetmax", pricebitp.toString());
 		
-		editor.putString("pricebit", pricebit.toString());
+		editor.putString("pricebit", pricebitp.toString());
+		editor.putString("pricebchinfo", pricebchpper.toString());
 		editor.commit();
 		
 		hstoplos = shp.getStringSet("z_stoplos", new HashSet<String>());

@@ -4,7 +4,7 @@ import android.os.*;
 import okhttp3.*;
 import java.io.*;
 import android.widget.*;
-import org.apache.http.*;
+
 import org.w3c.dom.*;
 import java.util.*;
 import org.json.*;
@@ -92,6 +92,7 @@ public class MainActivity extends Activity
 			startActivity(exit);
 		}
         setContentView(R.layout.main);
+		
 		//прогрессбар
 		 prog_b =(ProgressBar) findViewById(R.id.progressbar);
 		 prog_b0 = (ProgressBar) findViewById(R.id.progressbar0);
@@ -134,6 +135,7 @@ public class MainActivity extends Activity
 			prog_b.setVisibility(ProgressBar.VISIBLE);
 			v.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_d));
 			int buttonId = v.getId() - 1000;
+			 
 			editor.putString(buttonId + "10002", "1");
 			for (int j = 0; j < count_coin; j++){
 					if (buttonId != j){
@@ -146,13 +148,15 @@ public class MainActivity extends Activity
 			editor.putInt("zCoin", vCoin);
 			editor.putInt("idCoin", buttonId);
 			editor.commit();
+			 String titl =" - "+ pref.getString("name_coin" + buttonId, "");
+			 setTitle("Index"+titl);
 		 }
 		 };
 		 //слушатель прайса
 		prlistener = new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				//Toast.makeText(MainActivity.this, v.getId(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainActivity.this, v.getId(), Toast.LENGTH_SHORT).show();
 		}
 		};
 		//слушатель таблицы заявок
@@ -364,15 +368,15 @@ public class MainActivity extends Activity
 				editor.putString("sizeSh", "20");
 				editor.commit();
 			} 
-		try{int y = Integer.parseInt(pref.getString("tabl_hight", "10"));}
+		try{int y = Integer.parseInt(pref.getString("tabl_hight", "30"));}
 		catch(Exception e)
 			{
-				editor.putString("tabl_hight", "10");
+				editor.putString("tabl_hight", "30");
 				editor.commit();
 			}
-		try{int y = Integer.parseInt(pref.getString("chPost", "10"));}
+		try{int y = Integer.parseInt(pref.getString("chPost", "2"));}
 		catch(Exception e){
-			editor.putString("chPost", "10");
+			editor.putString("chPost", "2");
 			editor.commit();
 		} 
 		//слушатель основного активити
@@ -508,6 +512,7 @@ public class MainActivity extends Activity
 							}
 							else {
 									but.setBackgroundDrawable(getResources().getDrawable(R.drawable.button_up));
+									
 									editor.putString(i_str + "2", "1");
 									editor.commit();
 							}
@@ -549,7 +554,7 @@ public class MainActivity extends Activity
 	String list;
 	//функция отображения прайса
 	public void tabl_price (String list_price){
-		int tabl_hight = Integer.parseInt(pref.getString("tabl_hight", "10"));
+		int tabl_hight = Integer.parseInt(pref.getString("tabl_hight", "30"));
 		list = list_price;
 		TableRow tr;
 		//размер шрифта

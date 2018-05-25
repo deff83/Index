@@ -17,7 +17,7 @@ import android.content.*;
 import android.util.*;
 
 import java.security.*;
-//import org.apache.commons.codec.*;
+
 import android.preference.*;
 
 
@@ -70,7 +70,7 @@ public class PlayService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
 		timer_schedule = 10;
 		try{
-			timer_schedule = Integer.parseInt(pref.getString("chPost", "10"));
+			timer_schedule = Integer.parseInt(pref.getString("chPost", "2"));
 		}catch(Exception e){}
 		final Thread myThread0;
 		try{
@@ -255,7 +255,10 @@ try{
 			client2 = new OkHttpClient();
 			//if(pref.getInt("messflag", 0)== 1){
 			Integer colmesget = pref.getInt("colmes", 0);
-			String lastId = pref.getString("idmes" + colmesget, "1569955");
+			String lastId = pref.getString("idmes" + colmesget, "x");
+			if (lastId.equals("x")){
+				lastId = getlasthundrid();
+			}
 			//id в чате
 			String urlmes = "http://events.webmoney.ru/api/discuss/GetListPushes?eventId=268270102&groupUid=6be4dadf-c7ab-44e1-a1bc-b5ba4fa961c0&lastId="+lastId+"";
 			//RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
@@ -280,7 +283,7 @@ try{
 				if (url_length > 100){jstart=url_length - 100;}
 				Integer colmes = pref.getInt("colmes", 0);
 				String newmes = "";
-				idmesstr = pref.getString("idmes" + colmes, "1569955");
+				idmesstr = pref.getString("idmes" + colmes, "x");
 				for (int j = jstart; j<url_length; j++){
 
 					JSONObject idmesobj = jsonArray.getJSONObject(j);
@@ -310,11 +313,19 @@ try{
 							JSONObject jsonObjectmes;
 							jsonObjectmes = new JSONObject(answirmesriv);
 							String textmes = jsonObjectmes.getString("message");
+							String datecreated = jsonObjectmes.getString("datecreated");
 							JSONObject author = jsonObjectmes.getJSONObject("author");
 							String nickname = author.getString("nickname");
+							String wmidmes = author.getString("wmid");
+							String attestat = author.getString("attestat");
+							JSONObject imgjson = author.getJSONObject("icon");
+							String urlimg = imgjson.getString("normal");
 							editor.putString("mess" + colmes, textmes);
 							editor.putString("nick"+colmes, nickname);
-
+							editor.putString("wmidmess"+colmes, wmidmes);
+							editor.putString("urlimg"+colmes, urlimg);
+							editor.putString("datecreated" + colmes, datecreated);
+							editor.putString("attestatmes"+colmes, attestat);
 							if(j==0){
 								newmes = newmes + nickname + " : " +textmes; 
 							}
@@ -350,8 +361,8 @@ try{
 
 
 				editor.putInt("lengthmes", url_length);
-				editor.apply();
-				jsonArray = null;
+				editor.commit();
+				//jsonArray = null;
 
 			}
 			catch (JSONException e){
@@ -367,6 +378,30 @@ try{
 			editor.apply();
 		}
 		
+	}
+	private String getlasthundrid(){
+		String lastid = "x";
+		try{
+			String urlmeshund = "http://events.webmoney.ru/api/discuss/Paging?eventId=268270102&direction=0&pageSize=90";
+		//RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
+		Request requesturlhund = new Request.Builder()
+			.url(urlmeshund)
+
+			.build();
+		Response responseurlhund = null;
+
+
+
+		responseurlhund = client2.newCall(requesturlhund).execute();
+			String answirmesrivhund = responseurlhund.body().string();
+			try{
+				JSONArray jsonArrayhund;
+				jsonArrayhund = new JSONArray(answirmesrivhund);
+				JSONObject jsonobj = jsonArrayhund.getJSONObject(0);
+				lastid = jsonobj.getString("id");
+		}catch(JSONException e){}
+		}catch(Exception e){}
+		return lastid;
 	}
 	private void request (Double ty, Double ty2) {
 		
@@ -387,6 +422,7 @@ try{
 		
 		//конец тесты
 		
+		//конец сообщения
 		String json = "{'ApiContext':{'Login':'"+login+"','Wmid':'"+wmid+"','Culture':'"+culture+"','Signature':'" + signature_baz + "'}}";
 		RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), json);
 		Request request = new Request.Builder()
@@ -543,7 +579,7 @@ try{
 		
 		
 		int count_tabl = pref.getInt("count_tabl", 0);
-			int tabl_hight = Integer.parseInt(pref.getString("tabl_hight", "10"));
+			int tabl_hight = Integer.parseInt(pref.getString("tabl_hight", "30"));
 		//Runnable runnable45 = new Runnable() {
 		//	@Override
 			//public void run() {
@@ -564,7 +600,7 @@ try{
 						editor.putString("tabl_notes" + i, z_col.toString());
 						editor.putString("tabl_offerid" + i, z_offerid.toString());
 						editor.putInt("colortablraw"+i, 0);
-					if( pref.getInt("sound_opov_price", 0) == 0 && Double.parseDouble(pref.getString("edit_price_opmin", "0.0")) - 0.0000<= z){
+					if( pref.getInt("sound_opov_price", 1) == 0 && Double.parseDouble(pref.getString("edit_price_opmin", "0.0")) - 0.0000<= z){
 						editor.putInt("colortablraw"+i, 1);
 						}
 					}
@@ -595,7 +631,7 @@ try{
 							editor.putString("tabl_notes_prod" + i, y_col.toString());
 							editor.putString("tabl_offerid_prod" + i, y_offerid.toString());
 					editor.putInt("colortablrawprod"+i, 0);
-					if( pref.getInt("sound_opov_price", 0) == 0 && Double.parseDouble(pref.getString("edit_price_opmax", "999.0")) + 0.0000 >= y){
+					if( pref.getInt("sound_opov_price", 1) == 0 && Double.parseDouble(pref.getString("edit_price_opmax", "999.0")) + 0.0000 >= y){
 						editor.putInt("colortablrawprod"+i, 1);
 					}
 					}

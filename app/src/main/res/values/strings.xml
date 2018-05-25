@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	
     <string name="app_name">Index</string>
 	<string name="oproecte">О проекте</string>
 	<string name="chat">Чат Index</string>
 	<string name="setting">Настройки</string>
 	<string name="opovesh">Оповещения</string>
-	
-	
+	<string name="sps1title">Сказать спасибо</string>
+	<string name="sps2title">Подтвердить</string>
 	
 	
     <string name="hello_world">Hello world!</string>
@@ -30,7 +30,7 @@
 		<item>Выход</item>
 	</string-array>
 	<string-array name="opoveshenia">
-		<item>назад</item>
+		<item>торги</item>
 		
 		<item>функции_пользователя</item>
 		<item>портфель</item>
@@ -40,7 +40,7 @@
 		<item>Выход</item>
 	</string-array>
 	<string-array name="userfunction">
-		<item>назад</item>
+		<item>торги</item>
 		
 		<item>оповещения</item>
 		
@@ -51,7 +51,7 @@
 		<item>Выход</item>
 	</string-array>
 	<string-array name="chat">
-		<item>назад</item>
+		<item>торги</item>
 		<item>оповещения</item>
 		<item>функции_пользователя</item>
 		<item>портфель</item>
@@ -60,7 +60,7 @@
 		<item>Выход</item>
 	</string-array>
 	<string-array name="setting">
-		<item>назад</item>
+		<item>торги</item>
 		<item>оповещения</item>
 		<item>функции_пользователя</item>
 		<item>портфель</item>
@@ -69,7 +69,7 @@
 		<item>Выход</item>
 	</string-array>
 	<string-array name="information">
-		<item>назад</item>
+		<item>торги</item>
 		<item>оповещения</item>
 		<item>функции_пользователя</item>
 		<item>портфель</item>
@@ -79,7 +79,7 @@
 		<item>Выход</item>
 	</string-array>
 	<string-array name="myz">
-		<item>назад</item>
+		<item>торги</item>
 		<item>оповещения</item>
 		<item>функции_пользователя</item>
 		
