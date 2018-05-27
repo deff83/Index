@@ -53,6 +53,7 @@
 						android:text=""
 						android:layout_width="wrap_content"
 						android:layout_margin="2dp"/>
+
 					<TextView
 						android:id="@+id/textmin2"
 						android:layout_height="wrap_content"
@@ -81,6 +82,7 @@
 						android:text=""
 						android:layout_width="wrap_content"
 						android:layout_margin="2dp"/>
+
 					<TextView
 						android:id="@+id/colbit2"
 						android:layout_height="wrap_content"
@@ -118,22 +120,27 @@
 						android:layout_margin="2dp"/>
 
 				</LinearLayout>
-				
+
 			</LinearLayout>
+
 			<TextView
 				android:id="@+id/testtextp"
 				android:layout_height="wrap_content"
 				android:text="----"
 				android:layout_width="match_parent"
 				android:gravity="center"
-				android:layout_margin="2dp"/>
+				android:layout_margin="2dp"
+				android:visibility="invisible"/>
+
 			<TextView
 				android:id="@+id/testtextp2"
 				android:layout_height="wrap_content"
 				android:text="----"
 				android:layout_width="match_parent"
 				android:gravity="center"
-				android:layout_margin="2dp"/>
+				android:layout_margin="2dp"
+				android:visibility="invisible"/>
+
 		</LinearLayout>
 
 	</RelativeLayout>

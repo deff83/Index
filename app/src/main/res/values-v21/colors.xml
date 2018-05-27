@@ -23,5 +23,7 @@
 	<color name="colorwidjtext">#ff0911</color>
 	<color name="colorwidjtextnull">#cccccc</color>
 	<color name="colorMyZayvkaper">#00ffff</color>
-	<color name="indigo">#ffffff</color>
+	<color name="indigo">#ccffffff</color>
+	<color name="prozrachn">#ffffffff</color>
+	<color name="send">#DA8DFF</color>
 </resources>

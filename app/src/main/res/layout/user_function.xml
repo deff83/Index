@@ -15,60 +15,35 @@
 		android:layout_height="match_parent"
 		android:orientation="vertical"
 		android:id="@+id/rel_layout">
-		<LinearLayout
-			android:id="@+id/layout_start_stop"
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			android:orientation="horizontal">
-		<Button
-			android:id="@+id/button_del_all"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="Убрать все заявки"/>
-		<Button
-			android:id="@+id/button_del"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="Убрать заявку"/>
-		</LinearLayout>
-		<LinearLayout
-			android:id="@+id/layout_start_stop2"
-			android:layout_below="@+id/layout_start_stop"
-			android:layout_height="wrap_content"
-			android:layout_width="match_parent"
-			android:orientation="horizontal">
-			<Button
-				android:id="@+id/func1"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="стоп лос"/>
-			<Button
-				android:id="@+id/func2"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="продать все"/>
-		</LinearLayout>
+		
 		<LinearLayout
 			android:layout_below="@+id/layout_start_stop2"
 			android:layout_height="wrap_content"
 			android:layout_width="match_parent"
-			android:orientation="horizontal">
+			android:orientation="vertical">
+		<Button
+			android:id="@+id/button_del_all"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_weight="1"
+			android:text="Убрать все заявки"/>
+		
+		
+			
+			<Button
+				android:id="@+id/func2"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_weight="1"
+				android:text="продать все"/>
+		
 			<Button
 				android:id="@+id/func3"
-				android:layout_width="wrap_content"
+				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
 				android:text="очистить данные"/>
-			<Button
-				android:id="@+id/func4"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="----"/>
+			
 		</LinearLayout>
 	</RelativeLayout>
 	<ListView

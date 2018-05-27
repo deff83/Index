@@ -149,7 +149,7 @@ public class MainActivity extends Activity
 			editor.putInt("idCoin", buttonId);
 			editor.commit();
 			 String titl =" - "+ pref.getString("name_coin" + buttonId, "");
-			 setTitle("Index"+titl);
+			 setTitle("Index API"+titl);
 		 }
 		 };
 		 //слушатель прайса
@@ -241,10 +241,11 @@ public class MainActivity extends Activity
 							 dialog.cancel();
 						 }
 					 })
-					 .setNeutralButton(R.string.serdialog, 
+					 
+					 .setNeutralButton(R.string.serdialog,        //для VIP
 					 new DialogInterface.OnClickListener() {
 						 public void onClick(DialogInterface dialog, int id) {
-							 //нажата кнопка другие функции
+							 /*//нажата кнопка другие функции
 							 Intent intent = new Intent(MainActivity.this, Functred_dialog.class);
 							 if (kind_z == 1){
 								 editor.putInt("kind_upz", 0);
@@ -255,7 +256,7 @@ public class MainActivity extends Activity
 							 //пердаем в Functred_dialog.class порядкового номера заявки
 							 editor.putInt("j_redz", j_z);
 							 editor.commit();
-							 startActivity(intent);
+							 startActivity(intent);*/
 							 }});
 				AlertDialog alert = builder.create();
 				alert.show();
@@ -387,7 +388,7 @@ public class MainActivity extends Activity
 				try{
 					String coin_price = intent.getStringExtra("coin_price");
 					String list_price = intent.getStringExtra("list_price");
-					Double price_intent = intent.getDoubleExtra("price", 0.0) - 35;
+					Double price_intent = intent.getDoubleExtra("price", 0.0);  //-35
 					String ostatok = pref.getString("ostatok", "");
 					String price_intent_string = String.format(Locale.US, "%.2f",  price_intent);
 					TextView text_balance = (TextView) findViewById(R.id.text2);

@@ -9,6 +9,7 @@ import android.preference.*;
 import android.view.View.*;
 
 import org.json.*;
+import android.graphics.*;
 
 public class Oproecte extends Activity
 {
@@ -22,6 +23,8 @@ public class Oproecte extends Activity
 	//поле теста тестов
 	private TextView textizm;
 	private BroadcastReceiver br;
+	//поле текста картинки
+	private ImageView myattestat;
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
@@ -34,6 +37,7 @@ public class Oproecte extends Activity
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.oproecte);
 		textizm = (TextView) findViewById(R.id.texttestresponse);
+		myattestat = (ImageView) findViewById(R.id.myattestat);
 		Button torgovat = (Button) findViewById(R.id.go_trade);
 		Button donat = (Button) findViewById(R.id.go_donat);
 		OnClickListener listener = new OnClickListener(){
@@ -54,7 +58,7 @@ public class Oproecte extends Activity
 		};
 		torgovat.setOnClickListener(listener);
 		donat.setOnClickListener(listener);
-		
+		myattestat.setImageBitmap(getimgattestat("формальный"));
 		
 		
 		
@@ -82,7 +86,32 @@ public class Oproecte extends Activity
 		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return true;
 	}
+	private Bitmap getimgattestat(String s){
 
+		Bitmap bmp=BitmapFactory.decodeResource(getResources(), R.drawable.attestatimg);
+		int widthcrat = bmp.getWidth()/14+1;
+		int x = widthcrat*10;
+		switch(s){
+			case "продавец":
+				x=widthcrat*4;
+				break;
+			case "персональный":
+				x=widthcrat*3;
+				break;
+			case "начальный":
+				x=widthcrat*2;
+				break;
+			case "псевдоним":
+				x=widthcrat*0;
+				break;
+			case "формальный":
+				x=widthcrat*1;
+				break;
+
+		}
+		Bitmap resizedbitmap=Bitmap.createBitmap(bmp,x,0, widthcrat, bmp.getHeight());
+		return resizedbitmap;
+	}
 	@Override
 	protected void onStart()
 	{

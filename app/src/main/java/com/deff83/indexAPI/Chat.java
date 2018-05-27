@@ -67,6 +67,7 @@ public class Chat extends Activity
 		//лайаут
 		linerLayout2 = (LinearLayout) findViewById(R.id.layoutlinmes);
 		load = (TextView) findViewById(R.id.downloadmes);
+		
 		//список в выдвижной панели
 		mCatTitles = getResources().getStringArray(R.array.chat);
 		mDrawerListView = (ListView) findViewById(R.id.left_drawermes);
@@ -139,7 +140,7 @@ public class Chat extends Activity
 					int sodtextscroll = scrollchat.getChildAt(0).getHeight();
 					int razn = sodtextscroll - heiscrol;
 					//Toast.makeText(Chat.this, x+ ":" +razn, Toast.LENGTH_SHORT).show();
-					if (x>razn -500){
+					if (x>razn -80){
 					scrollchat.post(new Runnable() {
 							@Override
 							public void run() {
@@ -171,6 +172,9 @@ public class Chat extends Activity
 			rab = rab + "► ";
 		}
 		load.setText(rab);
+		if(pref.getInt("sound_chat", 1)==1){
+			load.setText("выключен в настройках");
+		}
 		floarsize = Float.parseFloat(pref.getString("sizeSh", "20"));
 
 		
@@ -202,8 +206,10 @@ public class Chat extends Activity
 				//картинка аттестата
 
 				attestimg.setImageBitmap(getimgattestat(attestats));
-				//
-				namemes.setText(nickname);
+				//ник в сообщении
+				int limit = 25;
+				String subStr = nickname.length() > limit ? nickname.substring(0, limit) : nickname;
+				namemes.setText(subStr);
 				String datecr = date(datecreated);
 				datecreatedmes.setText(datecr);
 				//attestat.setText("  " + attestats);
@@ -260,6 +266,9 @@ lastcolmes = col_mes;
 		//отображение работы сервиса
 		
 		load.setText(rab);
+		if(pref.getInt("sound_chat", 1)==1){
+			load.setText("выключен в настройках");
+		}
 		floarsize = Float.parseFloat(pref.getString("sizeSh", "20"));
 
 		linerLayout2.removeAllViews();
@@ -297,8 +306,10 @@ lastcolmes = col_mes;
 			//ImageView ivPeakOver=(ImageView) findViewById(R.id.yourImageViewID);
 
 			
-			//
-			namemes.setText(nickname);
+			//ник в сообщение
+			int limit = 25;
+			String subStr = nickname.length() > limit ? nickname.substring(0, limit) : nickname;
+			namemes.setText(subStr);
 			String datecr = date(datecreated);
 			datecreatedmes.setText(datecr);
 			//attestat.setText("  " + attestats);
@@ -398,7 +409,7 @@ lastcolmes = col_mes;
 			case "начальный":
 				x=widthcrat*2;
 				break;
-			case "псевдонима":
+			case "псевдоним":
 				x=widthcrat*0;
 				break;
 			case "формальный":
