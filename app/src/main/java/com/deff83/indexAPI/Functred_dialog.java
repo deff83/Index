@@ -138,7 +138,7 @@ import android.preference.*;
 						editor.putString("pricezper"+z_id, z_price);
 						editor.putInt("kindperest"+z_id, z_kind);
 						editor.putInt("noteperest"+z_id, z_notes);//тут остановился
-						editor.putInt("coinperest", z_coin);
+						editor.putInt("coinperest"+z_id, z_coin);
 						editor.putString("priceperestanovki" + z_price, editperest.getText().toString());
 
 						editor.putInt("priceperestanovkikind" + z_price, z_kind);

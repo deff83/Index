@@ -4,7 +4,8 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	android:id="@+id/rel_layout_info">
+	android:id="@+id/rel_layout_info"
+	android:background="@drawable/drawinfo">
 
 	<LinearLayout
 		android:layout_height="wrap_content"
@@ -17,7 +18,12 @@
 			android:text="@string/oproectetext"
 			android:layout_width="match_parent"
 			android:layout_margin="2dp"/>
-
+		<TextView
+			android:layout_height="wrap_content"
+			android:text="@string/oproectetext"
+			android:layout_width="match_parent"
+			android:layout_margin="2dp"
+		android:id="@+id/texttestresponse"/>
 		<Button
 			android:id="@+id/go_donat"
 			android:layout_width="wrap_content"

@@ -82,15 +82,7 @@ package com.deff83.indexAPI;
 			windowManager.addView(rlay, myParams); 
 
 			try{  
-				/*rlay.setOnClickListener(new OnClickListener(){
-						@Override
-						public void onClick(View v){
-
-							//= new Intent(Sirvice_widjet.this, MainActivity.class);
-							//new Intent().setComponent(new ComponentName("com.deff83.indexAPI", MainActivity.class));
-
-						}
-					});*/
+				
 				//for moving the picture on touch and slide  
 				rlay.setOnTouchListener(new View.OnTouchListener() {  
 						WindowManager.LayoutParams paramsT = myParams;  

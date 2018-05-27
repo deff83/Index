@@ -17,9 +17,9 @@ public class Information extends Activity
 	private String[] mCatTitles;
     private ListView mDrawerListView;
 	//textview
-	TextView minbit;
-	TextView maxbit;
-	TextView colbit;
+	TextView minbit, minbch;
+	TextView maxbit, maxbch;
+	TextView colbit, colbch;
 	TextView testper, testperpp;
 	//лимт цены на биток
 	ArrayList<Double> g;
@@ -46,20 +46,30 @@ public class Information extends Activity
 		//устанавливаем количество вощможных покурок битка
 		minbit = (TextView) findViewById(R.id.textmin);
 		maxbit = (TextView) findViewById(R.id.textmax);
+		minbch = (TextView) findViewById(R.id.textmin2);
+		maxbch = (TextView) findViewById(R.id.textmax2);
+		colbch = (TextView) findViewById(R.id.colbit2);
 		colbit = (TextView) findViewById(R.id.colbit);
+		
 		testper = (TextView) findViewById(R.id.testtextp);
 		testperpp = (TextView) findViewById(R.id.testtextp2);
 		
 		cenabitok = Double.parseDouble(pref.getString("pricebit", "0.01"));
 		balance = Double.parseDouble(pref.getString("balance", "0.01"));
+		
+		Double pricebchpper = Double.parseDouble(pref.getString("pricebchinfo", "0.01"));
 		Integer colbitn = (int) Math.floor(balance/cenabitok);
-		colbit.setText(colbitn.toString());
-		
+		Integer colbchn = (int) Math.floor(balance/pricebchpper);
+		colbit.setText(colbitn.toString()+" BTC");
+		colbch.setText(colbchn.toString()+" BCH");
 		Double mindoblcen = balance/(colbitn+1);
+		Double mindoblbch = balance/(colbchn+1);
 	 	minbit.setText(String.format(Locale.US, "%.4f",mindoblcen));
-		
+		minbch.setText(String.format(Locale.US, "%.4f", mindoblbch));
 		Double maxdoblcen = balance/(colbitn);
+		Double maxdoblbch = balance/(colbchn);
 		maxbit.setText(String.format(Locale.US, "%.4f",maxdoblcen));
+		maxbch.setText(String.format(Locale.US, "%.4f", maxdoblbch));
 		Set<String> gt = pref.getStringSet("z_perest_id", new HashSet<String>());
 		String yu = " ";
 		for (String b : gt){

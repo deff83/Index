@@ -135,7 +135,7 @@ public class OpovActivity extends Activity
 		//переключатель границ портфеля
 		Switch switch_sound_opov_gran = (Switch) findViewById(R.id.switch1);
 		flag_switch_sound_opov_gran = 0;
-		flag_switch_sound_opov_gran = pref.getInt("sound_opov_gran", 0);
+		flag_switch_sound_opov_gran = pref.getInt("sound_opov_gran", 1);
 		if (flag_switch_sound_opov_gran == 0){
 			switch_sound_opov_gran.setChecked(true);//вкл
 
@@ -161,7 +161,7 @@ public class OpovActivity extends Activity
 		//переключатель цены коина
 		Switch switch_sound_opov_price = (Switch) findViewById(R.id.switch2);
 		flag_switch_sound_opov_price = 0;
-		flag_switch_sound_opov_price = pref.getInt("sound_opov_price", 0);
+		flag_switch_sound_opov_price = pref.getInt("sound_opov_price", 1);
 		if (flag_switch_sound_opov_price == 0){
 			switch_sound_opov_price.setChecked(true);//вкл
 
