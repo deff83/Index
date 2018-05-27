@@ -156,7 +156,7 @@ public class MainActivity extends Activity
 		prlistener = new OnClickListener(){
 			@Override
 			public void onClick(View v){
-				Toast.makeText(MainActivity.this, v.getId(), Toast.LENGTH_SHORT).show();
+				//Toast.makeText(MainActivity.this, v.getId(), Toast.LENGTH_SHORT).show();
 		}
 		};
 		//слушатель таблицы заявок
