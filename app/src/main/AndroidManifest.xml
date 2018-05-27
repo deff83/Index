@@ -83,6 +83,13 @@
 				android:excludeFromRecents="true"
 			>
 			</activity>
+			<activity 
+				android:name=".Succefull_dialog"
+				android:label="@string/spssucs"
+				android:theme="@style/Dialog"
+				android:excludeFromRecents="true"
+			>
+			</activity>
 		<activity 
 			android:name=".Functred_dialog"
 			android:label="@string/buy_dialog"

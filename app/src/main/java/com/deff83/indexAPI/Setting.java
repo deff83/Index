@@ -86,7 +86,12 @@ public class Setting extends Activity
 				coltablp.setText(pref.getString("tabl_hight", "30"));
 			
 				widjchast.setText("" + pref.getInt("chastwidj", 2));
-		
+		//функция изменения частоты запроса: не для вип
+		try{
+		if(Integer.valueOf(pref.getString("chPost", "2"))<5){            //не VIP
+			chPost.setText("5");
+		}
+		}catch(Exception e){chPost.setText("5");}
 		//слушатель,  layot
 		interceptor = (RelativeLayout) findViewById(R.id.rel_layout2_setting);
 		interceptor.setOnTouchListener(new OnTouchListener() {

@@ -4,42 +4,101 @@
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	android:orientation="vertical"
-	android:gravity="center">
+	android:gravity="center"
+	android:windowSoftInputMode="adjustResize">
 
-	<TextView
+	<LinearLayout
 		android:layout_height="wrap_content"
-		android:text="Ваш wmid"
-		android:layout_width="wrap_content"/>
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:gravity="center">
 
-	<EditText
-		android:layout_height="wrap_content"
-		android:ems="10"
-		android:layout_width="wrap_content"
-		android:inputType="number"
-		android:id="@+id/sps1dialogEditWmid"
-		android:focusable="false"
-		android:imeOptions="actionDone"
-		android:text="176017100636"/>
+		<ImageView
+			android:id="@+id/iconmes"
+			android:layout_width="60dp"
+			android:layout_height="60dp"
+			android:background="@drawable/logo48x48"
+			android:layout_margin="15dp"/>
 
-	<TextView
-		android:layout_height="wrap_content"
-		android:text="Сумма"
-		android:layout_width="wrap_content"/>
+		<LinearLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:orientation="vertical">
 
-	<EditText
-		android:layout_height="wrap_content"
-		android:ems="10"
-		android:layout_width="wrap_content"
-		android:inputType="numberDecimal"
-		android:id="@+id/sps1dialogEditAmount"
-		android:focusable="false"
-		android:imeOptions="actionDone"
-		android:text="0.1"/>
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="Wmid"
+					android:layout_width="wrap_content"
+					android:layout_weight="1.0"
+					android:textSize="16sp"/>
+
+				<EditText
+					android:layout_height="wrap_content"
+					android:ems="7"
+					android:layout_width="wrap_content"
+					android:inputType="number"
+					android:id="@+id/sps1dialogEditWmid"
+					android:focusable="false"
+					android:imeOptions="actionDone"
+					android:maxLength="12"
+					android:hint="Ваш wmid"/>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="horizontal">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="Сумма"
+					android:layout_width="wrap_content"
+					android:layout_weight="1.0"
+					android:textSize="16sp"/>
+
+				<EditText
+					android:layout_height="wrap_content"
+					android:ems="6"
+					android:layout_width="wrap_content"
+					android:inputType="numberDecimal"
+					android:id="@+id/sps1dialogEditAmount"
+					android:focusable="false"
+					android:imeOptions="actionDone"
+					android:hint="min 0.2"/>
+
+				<TextView
+					android:layout_height="match_parent"
+					android:text="$"
+					android:layout_width="wrap_content"
+					android:textSize="25sp"/>
+
+			</LinearLayout>
+
+			<EditText
+				android:layout_height="wrap_content"
+				android:inputType="textMultiLine"
+				android:layout_width="match_parent"
+				android:hint="Ваши предложения и пожелания нам..."
+				android:textSize="18sp"
+				android:lines="3"
+				android:gravity="top|left"
+				android:id="@+id/sps1dialogEditPoshel"
+				android:maxLength="200"/>
+
+		</LinearLayout>
+
+	</LinearLayout>
 
 	<Button
 		android:layout_height="wrap_content"
 		android:text="Отправить"
-		android:layout_width="wrap_content"
+		android:layout_width="match_parent"
 		android:id="@+id/sps1dialogButtonotpr"/>
 
 </LinearLayout>

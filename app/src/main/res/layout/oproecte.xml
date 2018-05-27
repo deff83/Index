@@ -13,30 +13,108 @@
 		android:orientation="vertical"
 		android:gravity="center">
 
-		<TextView
+		<LinearLayout
 			android:layout_height="wrap_content"
-			android:text="@string/oproectetext"
 			android:layout_width="match_parent"
-			android:layout_margin="2dp"/>
-		<TextView
-			android:layout_height="wrap_content"
-			android:text="@string/oproectetext"
+			android:orientation="horizontal"
+			android:gravity="top">
+
+			<ImageView
+				android:id="@+id/myattestat"
+				android:layout_width="80dp"
+				android:layout_height="80dp"
+				android:layout_margin="15dp"/>
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="vertical"
+				android:layout_marginTop="15dp">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="API Index.ru"
+					android:textAppearance="?android:attr/textAppearanceMedium"
+					android:layout_width="wrap_content"/>
+
+				<View
+					android:layout_height="1dp"
+					android:background="?android:attr/dividerVertical"
+					android:layout_width="match_parent"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:id="@+id/oproectetitle"
+					android:layout_width="match_parent"
+					android:layout_margin="2dp"
+					android:text="@string/oproectetitle"/>
+
+			</LinearLayout>
+
+		</LinearLayout>
+
+		<ScrollView
 			android:layout_width="match_parent"
-			android:layout_margin="2dp"
-		android:id="@+id/texttestresponse"/>
+			android:layout_height="wrap_content">
+
+			<LinearLayout
+				android:layout_height="wrap_content"
+				android:layout_width="match_parent"
+				android:orientation="vertical"
+				android:layout_weight="1">
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="@string/oproectetext"
+					android:layout_width="match_parent"
+					android:layout_margin="2dp"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="@string/oproectetext"
+					android:layout_width="match_parent"
+					android:layout_margin="2dp"
+					android:id="@+id/texttestresponse"
+					android:visibility="invisible"/>
+
+				<View
+					android:layout_height="1dp"
+					android:background="?android:attr/dividerVertical"
+					android:layout_width="match_parent"/>
+
+				<TextView
+					android:layout_height="wrap_content"
+					android:text="@string/oproectesendsps"
+					android:layout_width="match_parent"
+					android:layout_margin="2dp"/>
+				
+			</LinearLayout>
+
+		</ScrollView>
+
+	</LinearLayout>
+
+	<LinearLayout
+		android:layout_height="wrap_content"
+		android:layout_width="match_parent"
+		android:orientation="horizontal"
+		android:layout_alignParentBottom="true">
+
 		<Button
 			android:id="@+id/go_donat"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="Сказать спасибо"/>
+			android:text="Сказать спасибо"
+			android:background="@color/send"/>
 
 		<Button
 			android:id="@+id/go_trade"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_weight="1"
-			android:text="Торговать"/>
+			android:text="Торговать"
+			android:background="#3AFEDE"/>
 
 	</LinearLayout>
 

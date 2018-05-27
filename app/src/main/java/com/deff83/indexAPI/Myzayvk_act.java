@@ -117,7 +117,7 @@ public void tabl(){
 	linerLayout2.removeAllViews();
 	for (int i = 0; i < col_z; i++){
 		int port_count =pref.getInt("port_notes" + i , 0);
-		//if(port_count == 0){port_count = 4;} для теста 
+		//if(port_count == 0){port_count = 10;}// для теста 
 		if (port_count != 0){
 			fullfiat.setText(null);
 			framlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.phonmyz1));
@@ -149,7 +149,7 @@ public void tabl(){
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
 					imagecoin = new ImageView(this);
-					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,100);
+					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.bch);
 					linimg.addView(imagecoin, lp);
@@ -159,7 +159,7 @@ public void tabl(){
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
 					imagecoin = new ImageView(this);
-					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,100);
+					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.btc);
 					linimg.addView(imagecoin, lp);
@@ -169,7 +169,7 @@ public void tabl(){
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
 					imagecoin = new ImageView(this);
-					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,100);
+					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.btg);
 					linimg.addView(imagecoin, lp);
@@ -179,7 +179,7 @@ public void tabl(){
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
 					imagecoin = new ImageView(this);
-					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,100);
+					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.dash);
 					linimg.addView(imagecoin, lp);
@@ -189,7 +189,8 @@ public void tabl(){
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
 					imagecoin = new ImageView(this);
-					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,100);
+					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
+					
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.eth);
 					linimg.addView(imagecoin, lp);
@@ -199,7 +200,7 @@ public void tabl(){
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
 					imagecoin = new ImageView(this);
-					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,100);
+					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.ltc);
 					linimg.addView(imagecoin, lp);
@@ -209,7 +210,7 @@ public void tabl(){
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
 					imagecoin = new ImageView(this);
-					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,100);
+					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.xmr);
 					linimg.addView(imagecoin, lp);
@@ -219,7 +220,7 @@ public void tabl(){
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
 					imagecoin = new ImageView(this);
-					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,100);
+					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.xrp);
 					linimg.addView(imagecoin, lp);

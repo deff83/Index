@@ -22,6 +22,7 @@ public class Sps_dialog2 extends Activity
 	Button button2, buttoncancel;
 	EditText editcode;
 	TextView textsessia;
+	private Integer sessiasps;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
@@ -38,7 +39,7 @@ public class Sps_dialog2 extends Activity
 		buttoncancel = (Button) findViewById(R.id.sps2dialogButtoncancel);
 		editcode = (EditText) findViewById(R.id.sps2dialogEditCode);
 		textsessia = (TextView) findViewById(R.id.sps2dialogSessia);
-		Integer sessiasps = pref.getInt("sessiasps", 0);
+		sessiasps = pref.getInt("sessiasps", 0);
 		textsessia.setText(sessiasps.toString());
 		//слушатель edit, установка акиивности вызов клавиатуры
 		OnTouchListener on_touch_listener3 = new OnTouchListener() {
@@ -51,20 +52,23 @@ public class Sps_dialog2 extends Activity
 			}
 		};
 		//вешаем на каждый edit один слушатель
-		//wmidedit.setOnTouchListener(on_touch_listener3);
+		editcode.setOnTouchListener(on_touch_listener3);
 		//amountedit.setOnTouchListener(on_touch_listener3);
 
 		OnClickListener listenerbutton = new OnClickListener(){
 			@Override
 			public void onClick(View v){
 				switch(v.getId()){
-					case R.id.sps1dialogButtonotpr: //кнопка отправить
+					case R.id.sps2dialogButton2: //кнопка отправить
 						final Thread postthread;
 
 						Runnable runnablex = new Runnable() {
 							@Override
 							public void run() {
-								post2_sps();//функция первого post запроса
+								String codeenter = editcode.getText().toString();
+								if(codeenter.equals("")){codeenter="0";}
+								post2_sps(codeenter);//функция первого post запроса 
+								//передается код, в случае оплаты через счет ВМ - 0, 
 							};
 						};
 
@@ -72,6 +76,17 @@ public class Sps_dialog2 extends Activity
 						postthread.start();
 						break;
 					case R.id.sps2dialogButtoncancel:
+						final Thread postthreadcancel;
+
+						Runnable runnablexcancel = new Runnable() {
+							@Override
+							public void run() {
+								post2_sps("-1");//функция первого post запроса
+							};
+						};
+
+						postthreadcancel= new Thread(runnablexcancel);
+						postthreadcancel.start();
 						finish();
 						break;
 				}
@@ -104,31 +119,70 @@ public class Sps_dialog2 extends Activity
 		super.onStop();
 	}
 	private OkHttpClient client;
-	public void post2_sps(){
-		//  "отправка пост запроса"
-		//Toast.makeText(getBaseContext(), "подождите", Toast.LENGTH_SHORT).show();
-		client = new OkHttpClient();
-		
-		OkHttpClient client = new OkHttpClient();
-
-		//MediaType mediaType = MediaType.parse("application/json");
-
-		//RequestBody body = RequestBody.create(mediaType, "{\"wmid\": \""+wmiddonat+"\",\"lmi_payee_purse\": \""+pursedonat+"\",\"lmi_payment_no\": "+nomer+",\"lmi_payment_amount\": "+amount+",\"lmi_payment_desc\": \""+desc+"\",\"lmi_clientnumber\": \""+clientnumber+"\",\"lmi_clientnumber_type\": "+clienttype+",\"lmi_sms_type\": "+smstype+",\"secret_key\": \""+secretcode+"\",\"emulated_flag\":"+emulated_flag+"}");
-
-		/*Request request = new Request.Builder()
-			.url("http://merchant.webmoney.ru/conf/xml/XMLTransRequest.asp")
+	private String descans; //сообщение ошибки
+	public void post2_sps(String code){
+		 client = new OkHttpClient();
+		//Integer emulated_flag = 0; //флаг эмуляции
+		String pursedonat = "Z197552073362";
+		String wmiddonat = "280113070531";
+		//String desc = "IndexAPI";
+		String lang = "ru-RU";
+		//Integer nomer = 79001;
+		String secretcode = "92387804";
+		MediaType mediaType = MediaType.parse("application/json");
+		RequestBody body = RequestBody.create(mediaType, "{\"wmid\":\""+wmiddonat+"\",\"lmi_payee_purse\":\""+pursedonat+"\",\"lmi_wminvoiceid\": "+sessiasps+",\"lmi_clientnumber_code\": "+code+",\"secret_key\":\""+secretcode+"\",\"sign\":\"\",\"sha256\":\"\",\"md5\":\"\",\"lang\":\""+lang+"\"}");
+		Request request = new Request.Builder()
+			.url("https://merchant.webmoney.ru/conf/xml/XMLTransConfirm.asp")
 			.post(body)
+			//.addHeader("cookie", "ASPSESSIONIDCESSSDCR=AAAIMHIDGEJEOFGNDCGKNILI")
 			.addHeader("content-type", "application/json")
 			.build();
 		try{
-			Response response = client.newCall(request).execute();
-			//ответ тела post запроса
-			String answir = response.body().string(); */
+		Response response = client.newCall(request).execute();
+			String answir = response.body().string(); 
+			editor.putString("resptest", answir);
+			try{
+			JSONObject jsonObject;
+			jsonObject = new JSONObject(answir);
+			Integer retval = jsonObject.getInt("retval");
+
+			descans = jsonObject.getString("userdesc");
+				
+			if (retval == 0){
+				JSONObject operation = jsonObject.getJSONObject("operation");
+				Integer wmtransid = operation.getInt("wmtransid");
+				Double amount = operation.getDouble("amount");
+				if (wmtransid > 0){//если транзакция уже имеет идентификатор
+					getsuccefuldialog(amount);
+				}
+			}else{getdialog(retval);}
+			}catch(JSONException e){
+				editor.putString("resptest", e.toString());
+			}
 			
-
-
-
+		}catch(Exception e){
+			editor.putString("resptest", e.toString());
+			
+		}
+		editor.commit();
 		finish();
 	}
+	private void getdialog(Integer retval){
+		String textmesdialog = descans;
+		switch(retval){//обработка ошибок по retval не показанных в desc
+			case 557:
+				textmesdialog = descans + "\nСессия "+sessiasps+" отменена и недействительна!";
+				break;
+		}
+		editor.putInt("flagerrorsps", 1);
+		editor.putString("textmesdialog", textmesdialog);
+		editor.commit();
+	}
+	private void getsuccefuldialog(Double amount){
+		Intent i = new Intent(Sps_dialog2.this, Succefull_dialog.class);
+		i.putExtra("amount", amount);
+		startActivity(i);
+	}
+	
 
 }

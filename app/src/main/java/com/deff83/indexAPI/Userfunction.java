@@ -67,11 +67,7 @@ public class Userfunction extends Activity
 									editor.putInt("del_all", 1);
 									editor.commit();
 									break;
-								case R.id.button_del:
-									editor.putInt("del", 1);
-									editor.commit();
-									Toast.makeText(getApplicationContext(),   "исполнено ", Toast.LENGTH_SHORT).show();		
-									break;
+								
 								
 									
 							}
@@ -82,11 +78,12 @@ public class Userfunction extends Activity
 		
 		
 		Button but_del_all = (Button) findViewById(R.id.button_del_all);
-		Button but_del = (Button) findViewById(R.id.button_del);
+		Button but_sell_all = (Button) findViewById(R.id.func2);
 		Button but_clen_data = (Button) findViewById(R.id.func3);
 		but_del_all.setOnClickListener(listbutton);
-		but_del.setOnClickListener(listbutton);
+		but_sell_all.setOnClickListener(listbutton);
 		but_clen_data.setOnClickListener(listbutton);
+		but_sell_all.setEnabled(false);//неактивная кнопка
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)

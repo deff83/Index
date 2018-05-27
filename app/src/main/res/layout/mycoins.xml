@@ -9,56 +9,61 @@
 		android:id="@+id/card_view"
 		android:layout_gravity="center"
 		android:layout_width="match_parent"
-		android:layout_height="120dp"
+		android:layout_height="wrap_content"
 		card_view:cardCornerRadius="10dp"
 		style="@style/MyCardViewStyle"
-		android:alpha="0.7"
-		android:layout_marginLeft="5dp"
-		android:layout_marginRight="5dp">
-
-	</android.support.v7.widget.CardView>
-
-	<LinearLayout
-		android:layout_height="match_parent"
-		android:layout_width="match_parent"
-		android:orientation="horizontal"
-		android:layout_marginLeft="15dp"
-		android:layout_marginRight="15dp"
-		android:layout_marginTop="10dp"
-		>
-
-		<RelativeLayout
-			android:layout_height="100dp"
-			android:layout_width="0dp"
-			android:orientation="vertical"
-			android:layout_weight="1"
-			android:id="@+id/linimg">
-
-		</RelativeLayout>
+		android:alpha="1.0">
 
 		<LinearLayout
 			android:layout_height="match_parent"
-			android:layout_width="0dp"
-			android:layout_weight="1"
-			android:orientation="vertical"
-			android:gravity="left|center">
+			android:layout_width="match_parent"
+			android:orientation="horizontal"
+			android:layout_marginLeft="15dp"
+			android:layout_marginRight="15dp">
 
-			<TextView
-				android:id="@+id/namecoin"
-				android:layout_height="wrap_content"
-				android:text=""
-				android:textAppearance="?android:attr/textAppearanceLarge"
-				android:layout_width="wrap_content"/>
+			<LinearLayout
+				android:layout_height="100dp"
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:orientation="horizontal">
 
-			<TextView
-				android:id="@+id/countcoin"
-				android:layout_height="wrap_content"
-				android:text=""
-				android:layout_width="wrap_content"/>
+				<RelativeLayout
+					android:layout_height="match_parent"
+					android:orientation="vertical"
+					android:layout_width="match_parent"
+					android:id="@+id/linimg"
+					android:layout_marginTop="10dp"
+					android:layout_marginBottom="10dp">
+
+				</RelativeLayout>
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:layout_height="match_parent"
+				android:layout_width="0dp"
+				android:layout_weight="1"
+				android:orientation="vertical"
+				android:gravity="left|center">
+
+				<TextView
+					android:id="@+id/namecoin"
+					android:layout_height="wrap_content"
+					android:text=""
+					android:textAppearance="?android:attr/textAppearanceLarge"
+					android:layout_width="wrap_content"/>
+
+				<TextView
+					android:id="@+id/countcoin"
+					android:layout_height="wrap_content"
+					android:text=""
+					android:layout_width="wrap_content"/>
+
+			</LinearLayout>
 
 		</LinearLayout>
 
-	</LinearLayout>
+	</android.support.v7.widget.CardView>
 
 </RelativeLayout>
 

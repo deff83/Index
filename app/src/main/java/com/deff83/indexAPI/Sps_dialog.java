@@ -12,6 +12,9 @@ import java.util.*;
 import android.preference.*;
 import okhttp3.*;
 import org.json.*;
+import java.io.*;
+import android.graphics.*;
+import android.graphics.drawable.*;
 
 public class Sps_dialog extends Activity
 {
@@ -19,7 +22,9 @@ public class Sps_dialog extends Activity
 	Context context = null;
 	SharedPreferences.Editor editor = null;
 	private LinearLayout interceptor;
-	EditText wmidedit, amountedit; 
+	private static Double minSps = 0.2;
+	private Drawable originalBackground;
+	EditText wmidedit, amountedit, editposhel; 
 	Button button1;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
@@ -35,8 +40,14 @@ public class Sps_dialog extends Activity
 		setContentView(R.layout.sps1_dialog);
 		wmidedit = (EditText) findViewById(R.id.sps1dialogEditWmid);
 		amountedit = (EditText) findViewById(R.id.sps1dialogEditAmount);
+		editposhel = (EditText) findViewById(R.id.sps1dialogEditPoshel);
 		button1 = (Button) findViewById(R.id.sps1dialogButtonotpr);
+		
+		String wmid = pref.getString("wmid", "");
+		wmidedit.setText(wmid);
+		
 
+		originalBackground = amountedit.getBackground();
 
 		//слушатель edit, установка акиивности вызов клавиатуры
 		OnTouchListener on_touch_listener3 = new OnTouchListener() {
@@ -44,6 +55,7 @@ public class Sps_dialog extends Activity
 			public boolean onTouch(View v, MotionEvent event) {
 				if (event.getAction() == MotionEvent.ACTION_DOWN) {
 					v.setFocusableInTouchMode(true);
+					amountedit.setBackgroundDrawable(originalBackground);
 				}
 				return v.performClick();
 			}
@@ -57,6 +69,15 @@ public class Sps_dialog extends Activity
 			public void onClick(View v){
 				switch(v.getId()){
 					case R.id.sps1dialogButtonotpr: //кнопка отправить
+						Double amountx = 0.0;
+						try{
+							amountx = Double.parseDouble(amountedit.getText().toString()); //сумма
+						}catch(Exception e){}
+							if(amountx < minSps){//проверка на минимальную цену
+							amountedit.setBackgroundColor(R.color.colorRed);
+						break;
+						
+						}
 						final Thread postthread;
 
 						Runnable runnablex = new Runnable() {
@@ -110,8 +131,16 @@ private OkHttpClient client;
 		Integer emulated_flag = 0; //флаг эмуляции
 		String pursedonat = "Z197552073362";
 		String wmiddonat = "280113070531";
-		String desc = "IndexAPI";
-		
+		String poshel0 = editposhel.getText().toString();
+		String poshel = poshel0.replaceAll("\\n", " ");
+		String desc = "IndexAPI "+poshel;
+		String base64 = "SW5kZXhBUEk="; //в случае ошибки байтового разбрра
+		try{
+
+			byte[] zl = desc.getBytes("UTF-8");
+
+		 base64 = android.util.Base64.encodeToString(zl, android.util.Base64.NO_WRAP);
+		}catch (UnsupportedEncodingException e){}
 		Integer nomer = 79001;
 		String secretcode = "92387804"; //секрет код
 
@@ -121,6 +150,7 @@ private OkHttpClient client;
 		}catch(Exception e){
 			amount = 0.0;
 		}
+		
 		String clientnumber = "";//номер клиента
 		try{
 			clientnumber = wmidedit.getText().toString();
@@ -133,7 +163,7 @@ private OkHttpClient client;
 
 		MediaType mediaType = MediaType.parse("application/json");
 
-		RequestBody body = RequestBody.create(mediaType, "{\"wmid\": \""+wmiddonat+"\",\"lmi_payee_purse\": \""+pursedonat+"\",\"lmi_payment_no\": "+nomer+",\"lmi_payment_amount\": "+amount+",\"lmi_payment_desc\": \""+desc+"\",\"lmi_clientnumber\": \""+clientnumber+"\",\"lmi_clientnumber_type\": "+clienttype+",\"lmi_sms_type\": "+smstype+",\"secret_key\": \""+secretcode+"\",\"emulated_flag\":"+emulated_flag+"}");
+		RequestBody body = RequestBody.create(mediaType, "{\"wmid\": \""+wmiddonat+"\",\"lmi_payee_purse\": \""+pursedonat+"\",\"lmi_payment_no\": "+nomer+",\"lmi_payment_amount\": "+amount+",\"lmi_payment_desc_base64\": \""+base64+"\",\"lmi_clientnumber\": \""+clientnumber+"\",\"lmi_clientnumber_type\": "+clienttype+",\"lmi_sms_type\": "+smstype+",\"secret_key\": \""+secretcode+"\",\"emulated_flag\":"+emulated_flag+"}");
 
 		Request request = new Request.Builder()
 			.url("http://merchant.webmoney.ru/conf/xml/XMLTransRequest.asp")
@@ -162,7 +192,7 @@ private OkHttpClient client;
 				editor.commit();
 					runOnUiThread(new Runnable() {
 							public void run() {
-								Toast.makeText(getApplicationContext(), "текст внутри потока", Toast.LENGTH_SHORT).show();
+								//Toast.makeText(getApplicationContext(), "текст внутри потока", Toast.LENGTH_SHORT).show();
 								Intent i = new Intent(getApplicationContext(), Sps_dialog2.class);
 								startActivity(i);
 							}
@@ -174,10 +204,11 @@ private OkHttpClient client;
 			}
 			
 			}catch(JSONException e){}
-			editor.putString("infor",answir);
-			editor.putString("resptest", answir);
-		}catch(Exception e){editor.putString("infor",e.toString());}
-		editor.putInt("flagtextinform", 1);
+			//editor.putString("infor",answir);
+			editor.putString("resptest", poshel);
+		}catch(Exception e){//editor.putString("infor",e.toString());
+		}
+		//editor.putInt("flagtextinform", 1);
 		editor.commit();
 		
 

@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.deff83.indexAPI"
         minSdkVersion 16
-        targetSdkVersion 23
+        targetSdkVersion 19
         versionCode 1
         versionName "1.0"
 		//multiDexEnabled true
@@ -30,7 +30,7 @@ android {
       abortOnError false
   }
 }
- //sourceSets { main { assets.srcDirs = ['/res/raw'] } }   AIDE
+// sourceSets { main { assets.srcDirs = ['/res/raw'] } } 
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

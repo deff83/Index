@@ -112,7 +112,7 @@ public class Buy_dialog extends Activity
 		ok2.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					
+					/*
 							AlertDialog.Builder builder = new AlertDialog.Builder(Buy_dialog.this);
 							builder.setTitle("Bot")
 								.setMessage("бот вкл выкл")    
@@ -144,7 +144,7 @@ public class Buy_dialog extends Activity
 								})
 								;
 							AlertDialog alert = builder.create();
-							alert.show();
+							alert.show();*/
 					}
 				}
 		);

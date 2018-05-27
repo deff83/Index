@@ -68,10 +68,15 @@ public class PlayService extends Service {
 	//запуск службы
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-		timer_schedule = 10;
+		timer_schedule = 5;
 		try{
 			timer_schedule = Integer.parseInt(pref.getString("chPost", "2"));
 		}catch(Exception e){}
+		
+			if(timer_schedule<5){         //не VIP
+				timer_schedule=5;
+			}
+		
 		final Thread myThread0;
 		try{
 
@@ -117,7 +122,7 @@ public class PlayService extends Service {
 						public void run() {
 
 							mess();
-						}}, 0L, timer_schedule * 4000);
+						}}, 0L, timer_schedule * 5000);
 			}
 		};
 		myThreadmess = new Thread(runnablemess);

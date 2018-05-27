@@ -18,10 +18,9 @@
 
 		<ImageView
 			android:id="@+id/iconmes"
-			android:layout_width="500dp"
-			android:layout_height="500dp"
-			android:layout_alignParentEnd="true"
-			android:layout_alignParentBottom="true"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			
 			android:src="@drawable/cat"/>
 		<TextView
 			android:id="@+id/fullfiat"
