@@ -185,7 +185,8 @@ public class Bot_1
 		
 		editor.putStringSet("z_perest_price", priceperseti);
 		editor.commit();
-		o.pricelist(60, 1); //узнаць цену чтобы установить на вижет
+		Integer zCoinwidj = shp.getInt("zCoin", 60);
+		o.pricelist(zCoinwidj, 1); //узнаць цену чтобы установить на вижет
 		ArrayList<Double> t = o.getlistpricex();
 		Double pricebit = t.get(0);
 		ArrayList<Double> tp = o.getlistpricey();

@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "com.deff83.indexAPI"
         minSdkVersion 16
-        targetSdkVersion 19
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0"
 		//multiDexEnabled true
@@ -15,10 +15,10 @@ android {
 	signingConfigs {
 
 		   release {
-			   storeFile file("C:/Users/1/Documents/GitHub/teststore.jks")
-			   storePassword "*********"
-			   keyAlias "****"
-			   keyPassword "*********"
+			   storeFile file("C:/Users/1/Documents/GitHub/debug.keystore")
+			   storePassword "*******"
+			   keyAlias "androiddebugkey"
+			   keyPassword "******"
 		   }
 	}
     buildTypes {
@@ -30,7 +30,7 @@ android {
       abortOnError false
   }
 }
-// sourceSets { main { assets.srcDirs = ['/res/raw'] } } 
+ //sourceSets { main { assets.srcDirs = ['/res/raw'] } } 
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])

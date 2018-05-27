@@ -214,7 +214,8 @@ public class Sirvice_widjet extends Service
 							editor.putInt("colorwidmaxflag", 2);
 							editor.commit();
 						}
-						textpricetek.setText(pref.getString("toolcena" + 60, "----"));
+						Integer toolcenaCoin = pref.getInt("zCoin", 60);
+						textpricetek.setText(pref.getString("toolcena" + toolcenaCoin, "----"));
 						textpricetek.setTextColor(getResources().getColor(R.color.colorwidjtextnull));
 						if (pref.getInt("colorwidpriceflag", 0) == 1){
 							textpricetek.setBackgroundColor(getResources().getColor(R.color.colorwidjredbl));
