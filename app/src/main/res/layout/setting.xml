@@ -118,7 +118,7 @@
 		                android:layout_height="wrap_content"
 		                android:layout_marginLeft="10dp"
 		                android:layout_weight="5"
-		                android:text="Звук Media"
+		                android:text="Оповещения"
 		                android:textSize="20sp" />
 					<Switch
 						android:id="@+id/sound_switch"

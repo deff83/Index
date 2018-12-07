@@ -29,8 +29,8 @@ public class Setting extends Activity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		
 		editor = pref.edit();
 
 
@@ -48,7 +48,7 @@ public class Setting extends Activity
 		listbutton = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent i = new Intent(Setting.this, PlayService.class);
+				Intent i = new Intent(Setting.this, ServicePOST.class);
 				switch (v.getId()){
 					case R.id.button_start:	//запуск службы
 						try{
@@ -79,19 +79,19 @@ public class Setting extends Activity
 		//запись при старте в edit
 		
 			
-				chPost.setText(pref.getString("chPost", "2"));
+				chPost.setText(Parametr.getParametr().getChastota()+"");
 			
 				sizeSh.setText(pref.getString("sizeSh", "20"));
 			
-				coltablp.setText(pref.getString("tabl_hight", "30"));
+				coltablp.setText(Parametr.getParametr().getcolTableOffer()+"");
 			
 				widjchast.setText("" + pref.getInt("chastwidj", 2));
 		//функция изменения частоты запроса: не для вип
-		try{
-		if(Integer.valueOf(pref.getString("chPost", "2"))<5){            //не VIP
-			chPost.setText("5");
-		}
-		}catch(Exception e){chPost.setText("5");}
+		//try{
+		//if(Integer.valueOf(pref.getString("chPost", "2"))<5){            //не VIP
+		//	chPost.setText("5");
+		//}
+		//}catch(Exception e){chPost.setText("5");}
 		//слушатель,  layot
 		interceptor = (RelativeLayout) findViewById(R.id.rel_layout2_setting);
 		interceptor.setOnTouchListener(new OnTouchListener() {
@@ -106,16 +106,23 @@ public class Setting extends Activity
 						widjchast.setFocusable(false);
 							// сохраниние нулевых значений в файле, и значений введенных в edit
 							
-		editor.putString("chPost", chPost.getText().toString());
-		editor.putString("sizeSh", sizeSh.getText().toString());
-		editor.putString("tabl_hight", coltablp.getText().toString());
-		String yujh = widjchast.getText().toString();
-		if (yujh.equals("")){
-			yujh = "2";
-			widjchast.setText("2");
-		}
-		editor.putInt("chastwidj", Integer.parseInt(widjchast.getText().toString()));
-		editor.commit();
+							int chastot = 20;
+						try{chastot = Integer.valueOf(chPost.getText().toString());
+						}catch(Exception e){};
+						Parametr.getParametr().setChastota(chastot);
+						editor.putString("sizeSh", sizeSh.getText().toString());
+						int colTable = 20;
+						try{colTable = Integer.valueOf(coltablp.getText().toString());
+						}catch(Exception e){};
+						Parametr.getParametr().setcolTableOffer(colTable);
+						editor.putInt("col_Table", colTable);
+						String yujh = widjchast.getText().toString();
+						if (yujh.equals("")){
+							yujh = "2";
+							widjchast.setText("2");
+						}
+						editor.putInt("chastwidj", Integer.parseInt(widjchast.getText().toString()));
+						editor.commit();
 					}
 					return v.performClick();
 				}
@@ -184,10 +191,13 @@ public class Setting extends Activity
 							editor.putInt("sound_widjet", 0);
 
 							editor.commit();
-							Intent i = new Intent(Setting.this, Sirvice_widjet.class);
-			
-			startService(i);
-						} else{editor.putInt("sound_widjet",1);  editor.commit();}
+							Intent i = new Intent(Setting.this, WidjetPrice.class);
+							startService(i);
+						} else{
+							editor.putInt("sound_widjet",1);  editor.commit();
+							Intent i = new Intent(Setting.this, WidjetPrice.class);
+							stopService(i);
+							}
 					}
 				});
 		}
@@ -211,7 +221,7 @@ public class Setting extends Activity
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 						if(isChecked){
 							editor.putInt("sound_chat", 0);
-
+							editor.commit();
 							
 						} else{editor.putInt("sound_chat",1);  editor.commit();}
 					}
@@ -280,6 +290,11 @@ public class Setting extends Activity
 		editor.putString("sizeSh", size);
 		editor.putString("tabl_hight", colt);
 		editor.putInt("chastwidj", widch);
+		int colTable = 20;
+						try{colTable = Integer.valueOf(coltablp.getText().toString());
+						}catch(Exception e){};
+						Parametr.getParametr().setcolTableOffer(colTable);
+						editor.putInt("col_Table", colTable);
 		editor.commit();
 		// TODO: Implement this method
 		super.onStop();
@@ -313,7 +328,8 @@ public class Setting extends Activity
 					intent = new Intent(Setting.this, MainActivity.class);
 					break;
 				case 1:
-					intent = new Intent(Setting.this, OpovActivity.class);
+					
+					intent = new Intent(Setting.this, HistoryActivity.class);
 					break;
 				case 2:
 					intent = new Intent(Setting.this, Userfunction.class);
@@ -325,18 +341,15 @@ public class Setting extends Activity
 					intent = new Intent(Setting.this, Information.class);
 					break;
 				case 5:
-					editor.putInt("messflag", 1);
-					editor.commit();
+					
 					intent = new Intent(Setting.this, Chat.class);
 					break;
 				
 				case 6:
 					intent = new Intent(Setting.this, LoginActivity.class);
 					editor.putInt("verification", 0);
-					editor.putInt("col_tabl", 0);
-					editor.putInt("tabl_hight", 0);
 					editor.commit();
-					Intent i = new Intent(Setting.this, PlayService.class);
+					Intent i = new Intent(Setting.this, ServicePOST.class);
 					stopService(i);
 					break;
 			}

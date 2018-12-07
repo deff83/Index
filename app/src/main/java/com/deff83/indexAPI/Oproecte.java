@@ -11,7 +11,7 @@ import android.view.View.*;
 import org.json.*;
 import android.graphics.*;
 
-public class Oproecte extends Activity
+public class Oproecte extends Activity implements ISomeModel
 {
 	SharedPreferences pref;
 	Context context = null;
@@ -28,8 +28,8 @@ public class Oproecte extends Activity
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		
 		editor = pref.edit();
 		editor.putString("resptest", "null0");
 		editor.commit();
@@ -86,6 +86,15 @@ public class Oproecte extends Activity
 		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return true;
 	}
+	@Override
+	public void doUpdate(int argum){
+		runOnUiThread(new Runnable(){
+				@Override
+				public void run(){
+		izm();
+				}
+		});
+	}
 	private Bitmap getimgattestat(String s){
 
 		Bitmap bmp=BitmapFactory.decodeResource(getResources(), R.drawable.attestatimg);
@@ -116,20 +125,9 @@ public class Oproecte extends Activity
 	protected void onStart()
 	{
 		//слушатель
-		br = new BroadcastReceiver() {
-			// действия при получении сообщений
-			public void onReceive(Context context, Intent intent) {
-				try{
-					izm();
-				}
-				catch(Exception e){}
-			}
-		};
+		Parametr.getParametr().addListener(this);
 
-		// создаем фильтр для BroadcastReceiver
-		IntentFilter intFilt = new IntentFilter("CAT");
-		// регистрируем (включаем) BroadcastReceiver
-		registerReceiver(br, intFilt);
+		
 		// TODO: Implement this method
 		super.onStart();
 	}
@@ -137,9 +135,8 @@ public class Oproecte extends Activity
 	@Override
 	protected void onStop()
 	{
-		try{
-			unregisterReceiver(br);
-		}catch(Exception e){}
+		
+		Parametr.getParametr().removeListener(this);
 		// TODO: Implement this method
 		super.onStop();
 	}
@@ -150,8 +147,7 @@ public class Oproecte extends Activity
 		
 	}
 	private void izm(){
-		String response = pref.getString("resptest", "null");
-		textizm.setText(response);
+		
 		//Toast.makeText(Oproecte.this, "рпсорорпс", Toast.LENGTH_SHORT).show();
 		if(pref.getInt("flagerrorsps", 0)== 1){
 			editor.putInt("flagerrorsps", 0);

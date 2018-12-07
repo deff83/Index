@@ -24,7 +24,7 @@ import android.net.*;
 import com.squareup.picasso.*;
 import java.text.*;
 
-public class Chat extends Activity
+public class Chat extends Activity implements IChatModel
 {
 	SharedPreferences pref;
 	Context context = null;
@@ -37,9 +37,7 @@ public class Chat extends Activity
 	OnClickListener listbutton;
 	OnTouchListener rellaymes;
 	private Integer lastcolmes;
-	//слушатель
-	BroadcastReceiver br;
-	IntentFilter intFilt;
+	
 	ScrollView scrollchat;
 	//шрифт
 	Float floarsize;
@@ -52,12 +50,15 @@ public class Chat extends Activity
 	OnClickListener imglistener;
 	//текст загрузка
 	TextView load;
+	private int col_mes = 0;
 	private String rab;
+	private List<ChatMessage> listChatMessage = new ArrayList<>();
+	private List<ChatMessage> newlistChatMessage = new ArrayList<>();
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		
 		editor = pref.edit();
 		rab = "";
 
@@ -76,18 +77,21 @@ public class Chat extends Activity
 															R.layout.draw_list_item, mCatTitles));
 		mDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
 		scrollchat =(ScrollView) findViewById(R.id.scrollvertmes);
+		
 		//слушатель картпнок
 		imglistener = new OnClickListener() {
             @Override
             public void onClick(View v) {
 				int i = v.getId()-88008;
-				String wmid = pref.getString("wmidmess" + i, "");
+				ChatMessage chatMessage = listChatMessage.get(i);
+				
+				String wmid = chatMessage.getWmid();
                 Intent link=new Intent(Intent.ACTION_VIEW, Uri.parse("https://events.webmoney.ru/user/"+wmid));
                 startActivity(link);    
             }
         };
 		try{
-			tabl();
+			tabl2();
 			int x = scrollchat.getScrollY();
 			int heiscrol = scrollchat.getHeight();
 			int sodtextscroll = scrollchat.getChildAt(0).getHeight();
@@ -112,59 +116,62 @@ public class Chat extends Activity
 		rellaymes = new OnTouchListener(){
 			@Override
 			public boolean onTouch(View v, MotionEvent event){
-				
 						Intent i= new Intent(Chat.this, Oproecte.class);
 						startActivity(i);
-					
-						
-				
-				
 				return true;
 			}
 		};
 		butstopmes.setOnTouchListener(rellaymes);
 		editstop.setOnTouchListener(rellaymes);
-//if (scroller != null) {
+		ParametrChat.getParametrChat().addSinglListener(this);
 
-   
-
-		br = null;
-		br = new BroadcastReceiver() {
-			
-			// действия при получении сообщений
-			public void onReceive(Context context, Intent intent) {
-				try{
-					tabl2();
-					int x = scrollchat.getScrollY();
-					int heiscrol = scrollchat.getHeight();
-					int sodtextscroll = scrollchat.getChildAt(0).getHeight();
-					int razn = sodtextscroll - heiscrol;
-					//Toast.makeText(Chat.this, x+ ":" +razn, Toast.LENGTH_SHORT).show();
-					if (x>razn -80){
-					scrollchat.post(new Runnable() {
-							@Override
-							public void run() {
-								scrollchat.fullScroll(ScrollView.FOCUS_DOWN);
-							}
-						});
-						}
-					
-				}
-				catch(Exception e){}
-			}
-		};
 		
-		// создаем фильтр для BroadcastReceiver
-		intFilt = new IntentFilter("MES");
-		// регистрируем (включаем) BroadcastReceiver
-		registerReceiver(br, intFilt);
+	}
+	@Override
+	public void doUpdateChat(int arg){
+		switch (arg){
+			case 0:
+				runOnUiThread(new Runnable(){
+					@Override
+					public void run(){
+						load.setText("Чат выключен в настройках!");
+					}
+				});
+				break;
+			case 1:
+				runOnUiThread(new Runnable(){
+					@Override
+					public void run(){
+					try{
+								tabl2();
+								int x = scrollchat.getScrollY();
+								int heiscrol = scrollchat.getHeight();
+								int sodtextscroll = scrollchat.getChildAt(0).getHeight();
+								int razn = sodtextscroll - heiscrol;
+								//Toast.makeText(Chat.this, x+ ":" +razn, Toast.LENGTH_SHORT).show();
+								if (x>razn -80){
+								scrollchat.post(new Runnable() {
+										@Override
+										public void run() {
+											scrollchat.fullScroll(ScrollView.FOCUS_DOWN);
+										}
+									});
+									}
+								
+							}
+					catch(Exception e){};
+					}
+				});
+			break;
+		}
 	}
 	
 	public void tabl2(){
-
-		int col_mes = pref.getInt("colmes", 0);
-		//load.setText(null);
-		//отображение работы сервиса
+		listChatMessage = ParametrChat.getParametrChat().getListChatMessage();
+		newlistChatMessage = listChatMessage.subList(col_mes, listChatMessage.size());
+		
+		
+		
 		if (rab.equals("► ► ► ")){
 			rab = "";
 		}
@@ -172,15 +179,14 @@ public class Chat extends Activity
 			rab = rab + "► ";
 		}
 		load.setText(rab);
-		if(pref.getInt("sound_chat", 1)==1){
-			load.setText("выключен в настройках");
-		}
+		
 		floarsize = Float.parseFloat(pref.getString("sizeSh", "20"));
 
 		
 
 		try{
-			for (int i=lastcolmes; i<col_mes; i++){
+			for (int i=0; i<newlistChatMessage.size(); i++){
+				ChatMessage chatMessage = newlistChatMessage.get(i);
 				LayoutInflater inflate = LayoutInflater.from(this);
 				linmes = (LinearLayout) inflate.inflate(R.layout.line_mess, null);
 				
@@ -195,181 +201,53 @@ public class Chat extends Activity
 				//attestat = (TextView) linmes.findViewById(R.id.attestat);
 				imgmes = (ImageView) linmes.findViewById(R.id.iconmes);
 				attestimg = (ImageView) linmes.findViewById(R.id.attestimg);
-				imgmes.setId(88008+i);
+				imgmes.setId(88008+i+col_mes);
 				imgmes.setOnClickListener(imglistener);
-				String idmesstr = pref.getString("idmes" + i, "");
-				String nickname = pref.getString("nick" + i, "");
-				String wmidmesstr = pref.getString("wmidmess" + i, "");
-				String urlimg = pref.getString("urlimg" + i, "");
-				String datecreated = pref.getString("datecreated"+i, "");
-				String attestats = pref.getString("attestatmes"+i, "");
+				
+				String idmesstr = chatMessage.getId();
+				String nickname = chatMessage.getShort_nickname();
+				String wmidmesstr = chatMessage.getWmid();
+				String mess = chatMessage.getMess();
+				String urlimg = chatMessage.getUrlimg();
+				String datecreated = chatMessage.getMyFormatDate();
+				String attestats = chatMessage.getAttestats();
 				//картинка аттестата
 
 				attestimg.setImageBitmap(getimgattestat(attestats));
 				//ник в сообщении
-				int limit = 25;
-				String subStr = nickname.length() > limit ? nickname.substring(0, limit) : nickname;
-				namemes.setText(subStr);
-				String datecr = date(datecreated);
-				datecreatedmes.setText(datecr);
+				namemes.setText(nickname);
+				//дата
+				datecreatedmes.setText(datecreated);
 				//attestat.setText("  " + attestats);
 				wmidmes.setLinkTextColor(Color.RED);
-				
 				wmidmes.setLinksClickable(true);
 				wmidmes.setMovementMethod(LinkMovementMethod.getInstance());
-				String mess = pref.getString("mess" + i, "");
 				try{
-					//DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-					//DocumentBuilder builder = factory.newDocumentBuilder();
-
 					Document doc = Jsoup.parse(mess);
-					//builder.parse(new InputSource(new StringReader(mess)));
-					//NodeList as = doc.getElementsByTagName("a");
 					Elements as = doc.select("a.user-link");
 					for (Element a: as){
 						String texta = a.attr("nickname");
 						a.text(texta);
 						//a.attr("style", "color: #ffffff");
 						a.attr("href", "");
-
-
-
 					}
-					wmidmes.setText(Html.fromHtml(doc.toString()))
-						;
+					wmidmes.setText(Html.fromHtml(doc.toString()));
+					//аватарка
 					Picasso.with(this)
 							.load(urlimg)
 							.transform(new CircularTransform())
 							.into(imgmes);
 
-					//E  a = doc.getElementsByTagName("a");
 				}catch (Exception e){
 					wmidmes.setText(e.toString());
-					//wmidmes.setText(urlimg);
 				}
-				//wmidmes.setText(Html.fromHtml(mess));
-
 				linerLayout2.addView(linmes);
 			}
 		} catch (Exception e){}
-
-
-lastcolmes = col_mes;
-
-
-		//editor.commit();
+		col_mes = listChatMessage.size();
 	}
-	public void tabl(){
-
-		int col_mes = pref.getInt("colmes", 0);
-		//load.setText(null);
-		//отображение работы сервиса
-		
-		load.setText(rab);
-		if(pref.getInt("sound_chat", 1)==1){
-			load.setText("выключен в настройках");
-		}
-		floarsize = Float.parseFloat(pref.getString("sizeSh", "20"));
-
-		linerLayout2.removeAllViews();
-		lastcolmes = col_mes;
-		int istart = 0;
-		if (col_mes>100){istart = col_mes -100;}
-		try{
-		for (int i=istart; i<col_mes; i++){
-			LayoutInflater inflate = LayoutInflater.from(this);
-			linmes = (LinearLayout) inflate.inflate(R.layout.line_mess, null);
-			TextView namemes;
-			TextView wmidmes;
-			TextView datecreatedmes;
-			//TextView attestat;
-			ImageView imgmes, attestimg;
-			namemes = (TextView) linmes.findViewById(R.id.namemes);
-			wmidmes = (TextView) linmes.findViewById(R.id.wmidmes);
-			datecreatedmes = (TextView) linmes.findViewById(R.id.datecreatedmes);
-			//attestat = (TextView) linmes.findViewById(R.id.attestat);
-			imgmes = (ImageView) linmes.findViewById(R.id.iconmes);
-			attestimg = (ImageView) linmes.findViewById(R.id.attestimg);
-			imgmes.setId(88008+i);
-			imgmes.setOnClickListener(imglistener);
-			String idmesstr = pref.getString("idmes" + i, "");
-			String nickname = pref.getString("nick" + i, "");
-			String wmidmesstr = pref.getString("wmidmess" + i, "");
-			String urlimg = pref.getString("urlimg" + i, "");
-			String datecreated = pref.getString("datecreated"+i, "");
-			String attestats = pref.getString("attestatmes"+i, "");
-			//картинка аттестата
-			
-
-
-			attestimg.setImageBitmap(getimgattestat(attestats));
-			//ImageView ivPeakOver=(ImageView) findViewById(R.id.yourImageViewID);
-
-			
-			//ник в сообщение
-			int limit = 25;
-			String subStr = nickname.length() > limit ? nickname.substring(0, limit) : nickname;
-			namemes.setText(subStr);
-			String datecr = date(datecreated);
-			datecreatedmes.setText(datecr);
-			//attestat.setText("  " + attestats);
-			wmidmes.setLinkTextColor(Color.RED);
-			wmidmes.setLinksClickable(true);
-			wmidmes.setMovementMethod(LinkMovementMethod.getInstance());
-			String mess = pref.getString("mess" + i, "");
-			try{
-			//DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-			//DocumentBuilder builder = factory.newDocumentBuilder();
-		
-			Document doc = Jsoup.parse(mess);
-			//builder.parse(new InputSource(new StringReader(mess)));
-			//NodeList as = doc.getElementsByTagName("a");
-		Elements as = doc.select("a.user-link");
-		for (Element a: as){
-		String texta = a.attr("nickname");
-		a.text(texta);
-			//a.attr("style", "color: #ffffff");
-		a.attr("href", "");
-		
-		
-		
-		}
-				wmidmes.setText(Html.fromHtml(doc.toString()))
-				;
-				Picasso.with(this)
-						.load(urlimg)
-						.transform(new CircularTransform())
-						.into(imgmes);
-			//E  a = doc.getElementsByTagName("a");
-			}catch (Exception e){
-				wmidmes.setText(e.toString());
-				//wmidmes.setText(urlimg);
-			}
-			//wmidmes.setText(Html.fromHtml(mess));
-			
-			linerLayout2.addView(linmes);
-		}
-		} catch (Exception e){}
-		
-		
-		
-		
-
-		//editor.commit();
-	}
-	private String date(String input){
-		String output = "";
-		 // = "Thu Jun 18 20:56:02 EDT 2009";
-		try{
-		SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-		Date date = parser.parse(input);
-		SimpleDateFormat formatter = new SimpleDateFormat("HH:mm, ddMMMyyyy");
-		output = formatter.format(date);
-		}catch(Exception e){
-			output = e.toString();
-		}
-		return output;
-	}
+	
+	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
 	{
@@ -432,7 +310,7 @@ lastcolmes = col_mes;
 	@Override
 	protected void onStop()
 	{
-		
+		ParametrChat.getParametrChat().removeListener(this);
 		// TODO: Implement this method
 		super.onStop();
 	}
@@ -449,14 +327,14 @@ lastcolmes = col_mes;
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			Intent intent = null;
+			Intent intent = new Intent(Chat.this, MainActivity.class);
 			switch (position){
 				case 0:
 					
 					intent = new Intent(Chat.this, MainActivity.class);
 					break;
 				case 1:
-					intent = new Intent(Chat.this, OpovActivity.class);
+					intent = new Intent(Chat.this, HistoryActivity.class);
 					break;
 				case 2:
 					intent = new Intent(Chat.this, Userfunction.class);
@@ -475,15 +353,13 @@ lastcolmes = col_mes;
 				case 6:
 					intent = new Intent(Chat.this, LoginActivity.class);
 					editor.putInt("verification", 0);
-					editor.putInt("col_tabl", 0);
-					editor.putInt("tabl_hight", 0);
+				
 					editor.commit();
-					Intent i = new Intent(Chat.this, PlayService.class);
+					Intent i = new Intent(Chat.this, ServicePOST.class);
 					stopService(i);
 					break;
 			}
-			editor.putInt("messflag", 0);
-			editor.commit();
+			
 			startActivity(intent);
 			
 		

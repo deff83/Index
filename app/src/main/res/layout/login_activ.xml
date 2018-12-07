@@ -27,7 +27,8 @@
 			android:focusable="false"
 			android:imeOptions="actionDone"
 			android:layout_width="wrap_content"
-			android:gravity="center"/>
+			android:gravity="center"
+			/>
 
 		<TextView
 			android:id="@+id/text_login"
@@ -43,7 +44,8 @@
 			android:focusable="false"
 			android:imeOptions="actionDone"
 			android:layout_width="wrap_content"
-			android:gravity="center"/>
+			android:gravity="center"
+			/>
 
 		<TextView
 			android:id="@+id/text_pass"
@@ -60,7 +62,8 @@
 			android:imeOptions="actionDone"
 			android:layout_width="match_parent"
 			android:gravity="center"
-			android:textSize="12sp"/>
+			android:textSize="12sp"
+			/>
 
 		<Button
 			android:id="@+id/input"

@@ -29,8 +29,8 @@ public class Sps_dialog extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		
 		editor = pref.edit();
 
 		// TODO: Implement this method
@@ -43,7 +43,7 @@ public class Sps_dialog extends Activity
 		editposhel = (EditText) findViewById(R.id.sps1dialogEditPoshel);
 		button1 = (Button) findViewById(R.id.sps1dialogButtonotpr);
 		
-		String wmid = pref.getString("wmid", "");
+		String wmid = pref.getString("wmid", "poipoipopoi");
 		wmidedit.setText(wmid);
 		
 
@@ -225,6 +225,7 @@ private OkHttpClient client;
 				break;
 		}
 		editor.putInt("flagerrorsps", 1);
+		
 		editor.putString("textmesdialog", textmesdialog);
 		editor.commit();
 	}

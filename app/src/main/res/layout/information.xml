@@ -28,101 +28,73 @@
 				android:layout_width="match_parent"
 				android:gravity="center"
 				android:layout_margin="2dp"/>
+			<ScrollView
+						android:id="@+id/scrollvert"
+						android:layout_width="fill_parent"
+						android:layout_height="fill_parent">
 
-			<LinearLayout
-				android:layout_height="wrap_content"
-				android:layout_width="match_parent"
-				android:orientation="horizontal">
-
+						
 				<LinearLayout
 					android:layout_height="wrap_content"
-					android:layout_width="wrap_content"
-					android:orientation="vertical"
-					android:gravity="center"
-					android:layout_weight="1">
+					android:layout_width="match_parent"
+					android:orientation="horizontal">
 
-					<TextView
+					<LinearLayout
+						android:id="@+id/lay_info_min"
 						android:layout_height="wrap_content"
-						android:text="min цена"
 						android:layout_width="wrap_content"
-						android:layout_margin="2dp"/>
+						android:orientation="vertical"
+						android:gravity="center"
+						android:layout_weight="1">
 
-					<TextView
-						android:id="@+id/textmin"
-						android:layout_height="wrap_content"
-						android:text=""
-						android:layout_width="wrap_content"
-						android:layout_margin="2dp"/>
+						<TextView
+							android:layout_height="wrap_content"
+							android:text="min цена"
+							android:layout_width="wrap_content"
+							android:layout_margin="2dp"/>
 
-					<TextView
-						android:id="@+id/textmin2"
+						
+
+					</LinearLayout>
+
+					<LinearLayout
+						android:id="@+id/lay_info_col"
 						android:layout_height="wrap_content"
-						android:text=""
 						android:layout_width="wrap_content"
-						android:layout_margin="2dp"/>
+						android:orientation="vertical"
+						android:gravity="center"
+						android:layout_weight="1">
+
+						<TextView
+							android:layout_height="wrap_content"
+							android:text="количество сейчас"
+							android:layout_width="wrap_content"
+							android:layout_margin="2dp"/>
+
+						
+
+					</LinearLayout>
+
+					<LinearLayout
+						android:id="@+id/lay_info_max"
+						android:layout_height="wrap_content"
+						android:layout_width="wrap_content"
+						android:orientation="vertical"
+						android:gravity="center"
+						android:layout_weight="1">
+
+						<TextView
+							android:layout_height="wrap_content"
+							android:text="max цена"
+							android:layout_width="wrap_content"
+							android:layout_margin="2dp"/>
+
+						
+
+					</LinearLayout>
 
 				</LinearLayout>
-
-				<LinearLayout
-					android:layout_height="wrap_content"
-					android:layout_width="wrap_content"
-					android:orientation="vertical"
-					android:gravity="center"
-					android:layout_weight="1">
-
-					<TextView
-						android:layout_height="wrap_content"
-						android:text="количество сейчас"
-						android:layout_width="wrap_content"
-						android:layout_margin="2dp"/>
-
-					<TextView
-						android:id="@+id/colbit"
-						android:layout_height="wrap_content"
-						android:text=""
-						android:layout_width="wrap_content"
-						android:layout_margin="2dp"/>
-
-					<TextView
-						android:id="@+id/colbit2"
-						android:layout_height="wrap_content"
-						android:text=""
-						android:layout_width="wrap_content"
-						android:layout_margin="2dp"/>
-
-				</LinearLayout>
-
-				<LinearLayout
-					android:layout_height="wrap_content"
-					android:layout_width="wrap_content"
-					android:orientation="vertical"
-					android:gravity="center"
-					android:layout_weight="1">
-
-					<TextView
-						android:layout_height="wrap_content"
-						android:text="max цена"
-						android:layout_width="wrap_content"
-						android:layout_margin="2dp"/>
-
-					<TextView
-						android:id="@+id/textmax"
-						android:layout_height="wrap_content"
-						android:text=""
-						android:layout_width="wrap_content"
-						android:layout_margin="2dp"/>
-
-					<TextView
-						android:id="@+id/textmax2"
-						android:layout_height="wrap_content"
-						android:text=""
-						android:layout_width="wrap_content"
-						android:layout_margin="2dp"/>
-
-				</LinearLayout>
-
-			</LinearLayout>
-
+			</ScrollView>
 			<TextView
 				android:id="@+id/testtextp"
 				android:layout_height="wrap_content"

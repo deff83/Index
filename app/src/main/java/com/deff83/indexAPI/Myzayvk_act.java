@@ -6,13 +6,15 @@
 	import android.view.View.*;
 	import android.view.*;
 	import android.view.inputmethod.*;
-import android.widget.LinearLayout.*;
-import android.preference.*;
+	import android.util.*;
+	import java.util.*;
+	import android.widget.LinearLayout.*;
+	import android.preference.*;
 
-public class Myzayvk_act extends Activity
+public class Myzayvk_act extends Activity implements ISomeModel
 	{
 		SharedPreferences pref;
-		Context context = null;
+		
 		SharedPreferences.Editor editor = null;
 		private RelativeLayout interceptor;
 		//список в выдвижной панели
@@ -20,19 +22,14 @@ public class Myzayvk_act extends Activity
 		private ListView mDrawerListView;
 		//алушатель кнопки
 		OnClickListener listbutton;
-		//поля в нмстройках
-		EditText chPost;
-		EditText sizeSh;
-		EditText coltablp;
-		//слушатель
-		BroadcastReceiver br;
-		IntentFilter intFilt;
+		
+		
 		//шрифт
 		Float floarsize;
 		//лайаут
 		FrameLayout framlay;
 		LinearLayout linerLayout2;
-	RelativeLayout linmycoin;
+		RelativeLayout linmycoin;
 		//слушатель 
 		OnClickListener gettablz;
 		//текст загрузка
@@ -41,8 +38,8 @@ public class Myzayvk_act extends Activity
 		@Override
 		protected void onCreate(Bundle savedInstanceState)
 		{
-			//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-			pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+			pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+			
 			editor = pref.edit();
 
 
@@ -61,26 +58,11 @@ public class Myzayvk_act extends Activity
 			mDrawerListView.setAdapter(new ArrayAdapter<String>(this,
 																R.layout.draw_list_item, mCatTitles));
 			mDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
-			br = null;
-			br = new BroadcastReceiver() {
-				// действия при получении сообщений
-				public void onReceive(Context context, Intent intent) {
-					try{
-						tabl();
-					}
-					catch(Exception e){}
-				}
-			};
-			//слушатель таблицы заявок
-			gettablz = new OnClickListener(){
-				@Override
-				public void onClick(View v){
-				}
-			};
-			// создаем фильтр для BroadcastReceiver
-			intFilt = new IntentFilter("CAT");
-			// регистрируем (включаем) BroadcastReceiver
-			registerReceiver(br, intFilt);
+			
+					
+				
+			
+			
 			fullfiat = (TextView) findViewById(R.id.fullfiat);
 			fullfiat.setText(null);
 		}
@@ -108,47 +90,63 @@ public class Myzayvk_act extends Activity
 		return true;
 	}
 public void tabl(){
-	
-	int col_z = pref.getInt("portlength", 0);
+	List<MyCoin> listmyCoins = Parametr.getParametr().getListMyCoins();
+	int col_z = listmyCoins.size();
 	load.setText(null);
 	fullfiat.setText("Full Fiat Money");
 	floarsize = Float.parseFloat(pref.getString("sizeSh", "20"));
 	framlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.phonmyz2));
 	linerLayout2.removeAllViews();
 	for (int i = 0; i < col_z; i++){
-		int port_count =pref.getInt("port_notes" + i , 0);
-		//if(port_count == 0){port_count = 10;}// для теста 
-		if (port_count != 0){
-			fullfiat.setText(null);
-			framlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.phonmyz1));
-		LayoutInflater inflate = LayoutInflater.from(this);
+		MyCoin myCoin = listmyCoins.get(i);
+		int port_count = myCoin.getNotes();
+		fullfiat.setText(null);
+		framlay.setBackgroundDrawable(getResources().getDrawable(R.drawable.phonmyz1));
+		LayoutInflater inflate = LayoutInflater.from(Myzayvk_act.this);
 		linmycoin = (RelativeLayout) inflate.inflate(R.layout.mycoins, null);
 		linmycoin.setId(i + 5500);
 		TextView nameCoin;
-		TextView countCoin;
+		TextView countCoin, volumecoin;
 		
 		RelativeLayout linimg;
 		nameCoin = (TextView) linmycoin.findViewById(R.id.namecoin);
 		countCoin = (TextView) linmycoin.findViewById(R.id.countcoin);
-		
+		volumecoin = (TextView) linmycoin.findViewById(R.id.volumecoin);
 		linimg = (RelativeLayout) linmycoin.findViewById(R.id.linimg);
 		linmycoin.setOnClickListener(gettablz);
 		//
 		//шрифт
 		nameCoin.setTextSize(floarsize);
 		countCoin.setTextSize(floarsize);
-		String port_name = pref.getString("port_name" + i, "");
-		Integer idcoin = pref.getInt("port_id" + i, 0);
+		volumecoin.setTextSize(floarsize);
+		String port_name = myCoin.getName();
+		Integer idcoin = myCoin.getId();
+		
+		List<CoinTool> listCoinTool = Parametr.getParametr().getListCoinTool();
+		int col_tool = listCoinTool.size();
+		String valumeCoinpr = "";
+		for (int j = 0; j < col_tool; j++) {
+				CoinTool coinTool = listCoinTool.get(j);
+				int idcointool = coinTool.getId();
+				try{
+				if (idcointool==idcoin){
+					Double pricecointo = Double.valueOf(coinTool.getPrice());
+					Double valumDouble = pricecointo * port_count;
+					valumeCoinpr = String.format(Locale.US, "%.4f", valumDouble);	
+				}
+				}catch(Exception e){}
+		}
 		
 		nameCoin.setText(port_name);
 		countCoin.setText(String.valueOf(port_count));
+		volumecoin.setText(valumeCoinpr+"$");
 		
 		if (port_count > 10){port_count = 10;}
 		switch (idcoin){
 			case 66:
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
-					imagecoin = new ImageView(this);
+					imagecoin = new ImageView(Myzayvk_act.this);
 					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.bch);
@@ -158,7 +156,7 @@ public void tabl(){
 			case 60:
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
-					imagecoin = new ImageView(this);
+					imagecoin = new ImageView(Myzayvk_act.this);
 					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.btc);
@@ -168,7 +166,7 @@ public void tabl(){
 			case 67:
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
-					imagecoin = new ImageView(this);
+					imagecoin = new ImageView(Myzayvk_act.this);
 					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.btg);
@@ -178,7 +176,7 @@ public void tabl(){
 			case 71:
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
-					imagecoin = new ImageView(this);
+					imagecoin = new ImageView(Myzayvk_act.this);
 					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.dash);
@@ -188,7 +186,7 @@ public void tabl(){
 			case 64:
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
-					imagecoin = new ImageView(this);
+					imagecoin = new ImageView(Myzayvk_act.this);
 					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					
 					lp.leftMargin = 10*k;
@@ -199,7 +197,7 @@ public void tabl(){
 			case 69:
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
-					imagecoin = new ImageView(this);
+					imagecoin = new ImageView(Myzayvk_act.this);
 					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.ltc);
@@ -209,7 +207,7 @@ public void tabl(){
 			case 68:
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
-					imagecoin = new ImageView(this);
+					imagecoin = new ImageView(Myzayvk_act.this);
 					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.xmr);
@@ -219,7 +217,7 @@ public void tabl(){
 			case 70:
 				for (int k=0; k<port_count; k++){
 					ImageView imagecoin;
-					imagecoin = new ImageView(this);
+					imagecoin = new ImageView(Myzayvk_act.this);
 					RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(100,LayoutParams.MATCH_PARENT);
 					lp.leftMargin = 10*k;
 					imagecoin.setImageResource(R.drawable.xrp);
@@ -232,11 +230,30 @@ public void tabl(){
 		}
 	}
 	
-	editor.commit();
-}
+	
+
+	@Override
+	public void doUpdate(int argum){
+		//Toast.makeText(this, "doUpdate", Toast.LENGTH_SHORT).show();
+		
+		switch(argum){
+			case 4:
+			runOnUiThread(new Runnable(){
+			@Override
+			public void run(){
+			tabl();
+			}});
+			break;
+		}
+	}
 		@Override
 		protected void onStart()
 		{
+			Parametr.getParametr().addListener(this);
+			try{
+						tabl();
+					}
+					catch(Exception e){}
 			// TODO: Implement this method
 			super.onStart();
 		}
@@ -244,7 +261,7 @@ public void tabl(){
 		@Override
 		protected void onStop()
 		{
-			
+			Parametr.getParametr().removeListener(this);
 			// TODO: Implement this method
 			super.onStop();
 		}
@@ -263,14 +280,14 @@ public void tabl(){
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				Intent intent = null;
 				switch (position){
-					case 0:
+					default:
 						intent = new Intent(Myzayvk_act.this, MainActivity.class);
 						break;
 
 
 
 					case 1:
-						intent = new Intent(Myzayvk_act.this, OpovActivity.class);
+						intent = new Intent(Myzayvk_act.this, HistoryActivity.class);
 						break;
 					case 2:
 						intent = new Intent(Myzayvk_act.this, Userfunction.class);
@@ -279,18 +296,16 @@ public void tabl(){
 						intent = new Intent(Myzayvk_act.this, Information.class);
 						break;
 					case 4:
-						editor.putInt("messflag", 1);
-						editor.commit();
+						
 						intent = new Intent(Myzayvk_act.this, Chat.class);
 						break;
 
 					case 6:
 						intent = new Intent(Myzayvk_act.this, LoginActivity.class);
 						editor.putInt("verification", 0);
-						editor.putInt("col_tabl", 0);
-						editor.putInt("tabl_hight", 0);
+						
 						editor.commit();
-						Intent i = new Intent(Myzayvk_act.this, PlayService.class);
+						Intent i = new Intent(Myzayvk_act.this, ServicePOST.class);
 						stopService(i);
 						break;
 					case 5:
