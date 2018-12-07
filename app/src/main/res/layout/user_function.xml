@@ -31,18 +31,13 @@
 		
 			
 			<Button
-				android:id="@+id/func2"
+				android:id="@+id/sell_all"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:layout_weight="1"
-				android:text="продать все"/>
+				android:text="продать все заявки на продажу"/>
 		
-			<Button
-				android:id="@+id/func3"
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:layout_weight="1"
-				android:text="очистить данные"/>
+			
 			
 		</LinearLayout>
 	</RelativeLayout>

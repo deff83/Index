@@ -34,7 +34,7 @@
 
 				<TextView
 					android:layout_height="wrap_content"
-					android:text="API Index.ru (Deff83)"
+					android:text="API Index.ru (Deff83) v2.0"
 					android:textAppearance="?android:attr/textAppearanceMedium"
 					android:layout_width="wrap_content"/>
 

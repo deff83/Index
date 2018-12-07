@@ -6,8 +6,9 @@ import android.widget.*;
 import android.view.*;
 import java.util.*;
 import android.preference.*;
+import android.view.WindowManager.LayoutParams;
 
-public class Information extends Activity
+public class Information extends Activity implements ISomeModel
 {
 	SharedPreferences pref;
 	Context context = null;
@@ -24,14 +25,15 @@ public class Information extends Activity
 	//лимт цены на биток
 	ArrayList<Double> g;
 	Double cenabitok;
-	Double balance;
+	
 	Double minprice, maxprice;
+	private LinearLayout lay_info_min, lay_info_col, lay_info_max;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
 	{
-		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		
 		editor = pref.edit();
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
@@ -44,45 +46,14 @@ public class Information extends Activity
 															R.layout.draw_list_item, mCatTitles));
 		mDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
 		//устанавливаем количество вощможных покурок битка
-		minbit = (TextView) findViewById(R.id.textmin);
-		maxbit = (TextView) findViewById(R.id.textmax);
-		minbch = (TextView) findViewById(R.id.textmin2);
-		maxbch = (TextView) findViewById(R.id.textmax2);
-		colbch = (TextView) findViewById(R.id.colbit2);
-		colbit = (TextView) findViewById(R.id.colbit);
+		lay_info_min = (LinearLayout) findViewById(R.id.lay_info_min);
+		lay_info_col = (LinearLayout) findViewById(R.id.lay_info_col);
+		lay_info_max = (LinearLayout) findViewById(R.id.lay_info_max);
 		
 		testper = (TextView) findViewById(R.id.testtextp);
 		testperpp = (TextView) findViewById(R.id.testtextp2);
 		
-		cenabitok = Double.parseDouble(pref.getString("pricebit", "0.01"));
-		balance = Double.parseDouble(pref.getString("balance", "0.01"));
 		
-		Double pricebchpper = Double.parseDouble(pref.getString("pricebchinfo", "0.01"));
-		Integer colbitn = (int) Math.floor(balance/cenabitok);
-		Integer colbchn = (int) Math.floor(balance/pricebchpper);
-		colbit.setText(colbitn.toString()+" BTC");
-		colbch.setText(colbchn.toString()+" BCH");
-		Double mindoblcen = balance/(colbitn+1);
-		Double mindoblbch = balance/(colbchn+1);
-	 	minbit.setText(String.format(Locale.US, "%.4f",mindoblcen));
-		minbch.setText(String.format(Locale.US, "%.4f", mindoblbch));
-		Double maxdoblcen = balance/(colbitn);
-		Double maxdoblbch = balance/(colbchn);
-		maxbit.setText(String.format(Locale.US, "%.4f",maxdoblcen));
-		maxbch.setText(String.format(Locale.US, "%.4f", maxdoblbch));
-		Set<String> gt = pref.getStringSet("z_perest_id", new HashSet<String>());
-		String yu = " ";
-		for (String b : gt){
-			yu = yu + b + " ";
-		}
-		testper.setText(yu);
-		
-		Set<String> gtpr = pref.getStringSet("z_perest_price", new HashSet<String>());
-		String yupr = " ";
-		for (String b : gtpr){
-			yupr = yupr + b + " ";
-		}
-		testperpp.setText(yupr);
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
@@ -107,6 +78,108 @@ public class Information extends Activity
 		getMenuInflater().inflate(R.menu.main_menu, menu);
 		return true;
 	}
+	@Override
+	protected void onStart()
+	{
+		
+		
+		Parametr.getParametr().addListener(this);
+		try{
+				Double balance = Double.valueOf(Parametr.getParametr().getSvobprice());
+				List<CoinTool> listCoinTool = Parametr.getParametr().getListCoinTool();
+				lay_info_min.removeAllViews();
+				lay_info_col.removeAllViews();
+				lay_info_max.removeAllViews();
+				TextView textmininfo =  new TextView(Information.this);
+					textmininfo.setLayoutParams( new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT));
+					textmininfo.setText("min цена");
+					lay_info_min.addView(textmininfo);
+				TextView textmaxinfo =  new TextView(Information.this);
+					textmaxinfo.setLayoutParams( new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT));
+					textmaxinfo.setText("max цена");
+					lay_info_max.addView(textmaxinfo);
+				TextView textcolinfo =  new TextView(Information.this);
+					textcolinfo.setLayoutParams( new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT));
+					textcolinfo.setText("количество сейчас");
+					lay_info_col.addView(textcolinfo);
+				for (int i=0; i<listCoinTool.size(); i++){
+					CoinTool coinTool = listCoinTool.get(i);
+					drawView(coinTool,balance);
+				}
+		}catch(Exception e){};
+		// TODO: Implement this method
+		super.onStart();
+	}
+	@Override
+	protected void onStop()
+	{
+		
+		Parametr.getParametr().removeListener(this);
+		// TODO: Implement this method
+		super.onStop();
+	}
+	@Override
+	public void doUpdate(int argum){
+		//Toast.makeText(this, "doUpdate", Toast.LENGTH_SHORT).show();
+		
+		switch(argum){
+			case 4:
+			runOnUiThread(new Runnable(){
+			@Override
+			public void run(){
+				
+				
+				
+				Double balance = Double.valueOf(Parametr.getParametr().getSvobprice());
+				List<CoinTool> listCoinTool = Parametr.getParametr().getListCoinTool();
+				lay_info_min.removeAllViews();
+				lay_info_col.removeAllViews();
+				lay_info_max.removeAllViews();
+				TextView textmininfo =  new TextView(Information.this);
+					textmininfo.setLayoutParams( new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT));
+					textmininfo.setText("min цена");
+					lay_info_min.addView(textmininfo);
+				TextView textmaxinfo =  new TextView(Information.this);
+					textmaxinfo.setLayoutParams( new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT));
+					textmaxinfo.setText("max цена");
+					lay_info_max.addView(textmaxinfo);
+				TextView textcolinfo =  new TextView(Information.this);
+					textcolinfo.setLayoutParams( new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT));
+					textcolinfo.setText("количество сейчас");
+					lay_info_col.addView(textcolinfo);
+				for (int i=0; i<listCoinTool.size(); i++){
+					CoinTool coinTool = listCoinTool.get(i);
+					drawView(coinTool,balance);
+				}
+				
+			}
+			});
+			break;
+		}
+	}
+	public void drawView(CoinTool cointool, Double balance){
+		Double cena = Double.valueOf(cointool.getPrice());//цена коина
+		String name = cointool.getName();
+		Integer colcoin = (int) Math.floor(balance/cena); //количество коинов
+		Double mincen = balance/(colcoin+1);
+		String mincenstr = String.format(Locale.US, "%.4f",mincen);
+		Double maxcen = balance/(colcoin);
+		String maxcenstr = String.format(Locale.US, "%.4f",maxcen);
+		TextView textmininfo =  new TextView(Information.this);
+					textmininfo.setLayoutParams( new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT));
+					textmininfo.setText(mincenstr);
+					lay_info_min.addView(textmininfo);
+		TextView textmaxinfo =  new TextView(Information.this);
+					textmaxinfo.setLayoutParams( new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT));
+					textmaxinfo.setText(maxcenstr);
+					lay_info_max.addView(textmaxinfo);
+		TextView textcolinfo =  new TextView(Information.this);
+					textcolinfo.setLayoutParams( new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT,  LayoutParams.WRAP_CONTENT));
+					textcolinfo.setText(colcoin+""+name);
+					lay_info_col.addView(textcolinfo);
+				
+		
+	}
 	//  Слушатель для элементов списка в выдвижной панели
 	private class DrawerItemClickListener implements ListView.OnItemClickListener {
 		@Override
@@ -120,7 +193,8 @@ public class Information extends Activity
 
 
 				case 1:
-					intent = new Intent(Information.this, OpovActivity.class);
+					//intent = new Intent(Information.this, OpovActivity.class);
+					intent = new Intent(Information.this, HistoryActivity.class);
 					break;
 				case 2:
 					intent = new Intent(Information.this, Userfunction.class);
@@ -129,18 +203,14 @@ public class Information extends Activity
 					intent = new Intent(Information.this, Myzayvk_act.class);
 					break;
 				case 4:
-					editor.putInt("messflag", 1);
-					editor.commit();
 					intent = new Intent(Information.this, Chat.class);
 					break;
 
 				case 6:
 					intent = new Intent(Information.this, LoginActivity.class);
 					editor.putInt("verification", 0);
-					editor.putInt("col_tabl", 0);
-					editor.putInt("tabl_hight", 0);
 					editor.commit();
-					Intent i = new Intent(Information.this, PlayService.class);
+					Intent i = new Intent(Information.this, ServicePOST.class);
 					stopService(i);
 					break;
 				case 5:

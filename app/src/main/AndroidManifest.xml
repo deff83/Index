@@ -10,25 +10,17 @@
         android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
-		android:name=".MyApplication"
+		
 			
 		>
 		<service 
 			android:enabled="true" 
-			android:name=".PlayService"> 
+			android:name=".ServicePOST"> 
 		</service> 
 		<service
 			android:enabled="true" 
-			android:name=".Sirvice_widjet"> 
+			android:name=".WidjetPrice"> 
 		</service>
-		<receiver
-			android:name=".MessageReceiver"
-			android:enabled="true"
-			android:exported="true">
-			<intent-filter>
-				<action android:name="CAT" />
-			</intent-filter>
-		</receiver>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -38,30 +30,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity
-            android:name=".OpovActivity"
-            android:label="@string/opovesh" >
-		</activity>
-		<activity
-            android:name=".Chat"
-            android:label="@string/chat" >
-		</activity>
-		<activity
-            android:name=".Userfunction"
-            android:label="@string/app_name" >
-		</activity>
-		<activity
-            android:name=".Setting"
-            android:label="@string/setting" >
-		</activity>
-		<activity
-            android:name=".Information"
-            android:label="@string/app_name" >
-		</activity>
-		<activity
-            android:name=".Myzayvk_act"
-            android:label="@string/app_name" >
-		</activity>
 		<activity 
 			android:name=".Buy_dialog"
 			android:label="@string/buy_dialog"
@@ -69,7 +37,32 @@
 			android:excludeFromRecents="true"
 			>
 		</activity>
-			<activity 
+		<activity
+            android:name=".Myzayvk_act"
+            android:label="@string/app_name" >
+		</activity>
+		<activity 
+			android:name=".LoginActivity"
+			android:label="@string/login_activ"
+			android:theme="@style/App_Theme2"
+			android:excludeFromRecents="true"
+		>
+		</activity>
+		<activity 
+			android:name=".Functred_dialog"
+			android:label="@string/buy_dialog"
+			android:theme="@style/Dialog"
+			android:excludeFromRecents="true"
+		>
+		</activity>
+		<activity 
+				android:name=".Oproecte"
+				android:label="@string/oproecte"
+				
+				android:excludeFromRecents="true"
+			>
+		</activity>
+		<activity 
 				android:name=".Sps_dialog"
 				android:label="@string/sps1title"
 				android:theme="@style/Dialog"
@@ -90,28 +83,30 @@
 				android:excludeFromRecents="true"
 			>
 			</activity>
-		<activity 
-			android:name=".Functred_dialog"
-			android:label="@string/buy_dialog"
-			android:theme="@style/Dialog"
-			android:excludeFromRecents="true"
-		>
-		</activity>
-		
-		<activity 
-			android:name=".LoginActivity"
-			android:label="@string/login_activ"
-			android:theme="@style/App_Theme2"
-			android:excludeFromRecents="true"
-		>
-		</activity>
-			<activity 
-				android:name=".Oproecte"
-				android:label="@string/oproecte"
-				
-				android:excludeFromRecents="true"
-			>
+			<activity
+            android:name=".Setting"
+            android:label="@string/setting" >
 			</activity>
+			<activity
+				android:name=".Information"
+				android:label="@string/app_name" >
+			</activity>
+			<activity
+				android:name=".HistoryActivity"
+				android:label="@string/app_name" >
+			</activity>
+			<activity
+				android:name=".Chat"
+				android:label="@string/chat" >
+		</activity>
+		<activity
+				android:name=".MarketCap"
+				android:label="@string/market" >
+		</activity>
+		<activity
+            android:name=".Userfunction"
+            android:label="@string/app_name" >
+		</activity>
     </application>
 
 </manifest>

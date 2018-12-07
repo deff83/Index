@@ -23,8 +23,8 @@ public class Succefull_dialog extends Activity
 		@Override
 		public void onCreate(Bundle savedInstanceState)
 		{
-			//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-			pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+			pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+			
 			editor = pref.edit();
 
 			// TODO: Implement this method

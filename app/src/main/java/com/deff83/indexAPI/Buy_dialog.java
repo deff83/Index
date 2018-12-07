@@ -12,48 +12,35 @@ import android.preference.*;
 
 public class Buy_dialog extends Activity
 {
-	SharedPreferences pref;
-	Context context = null;
-	SharedPreferences.Editor editor = null;
+	private Parametr param = Parametr.getParametr();
+	
 	private LinearLayout interceptor;
-	Integer btn_z;
-	Integer zCoin;
-	EditText price_dialog;
-	EditText notes_dialog;
+	
+	private Integer zCoin;
+	private Integer btn_z;
+	private Integer kind;
+	private EditText price_dialog;
+	private EditText notes_dialog;
 	//алушатель кнопки
-	OnClickListener listbutton;
+	private OnClickListener listbutton;
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
-		editor = pref.edit();
-		editor.putInt("add", 0);
-		editor.commit();
-		zCoin = pref.getInt("zCoin", 60);
+		
+		zCoin = param.getzCoinMain();
+		btn_z = param.getBuysell();
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
-		//устанока титла окна
-		int i = pref.getInt("idCoin", 0);
-		String title = pref.getString("name_coin" + i, "");
-		setTitle(title);
+		
+		
+		setTitle("title");
 		setContentView(R.layout.buy_dialog);
 		//this.setFinishOnTouchOutside(false);
 		//инициализация едита цены
 		price_dialog = (EditText) findViewById(R.id.price_dialog);
 		notes_dialog = (EditText) findViewById(R.id.notes_dialog);
-		//запись при старте в edit нижняя цена
-		try {
-			if(pref.contains("price_dialog")){
-				price_dialog.setText(pref.getString("price_dialog", ""));
-			}
-		} catch (Exception e){}
-		//запись при старте в edit нижняя цена
-		try {
-			if(pref.contains("notes_dialog")){
-				notes_dialog.setText(String.valueOf( pref.getInt("notes_dialog", 0)));
-			}
-		} catch (Exception e){}
+		
 		//слушатель,  layot
 		interceptor = (LinearLayout) findViewById(R.id.lin_dialog);
 		interceptor.setOnTouchListener(new OnTouchListener() {
@@ -95,15 +82,19 @@ public class Buy_dialog extends Activity
 		but_ok.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					String price_dialog_str = price_dialog.getText().toString();
-					String notes_dialog_str = notes_dialog.getText().toString();
-					editor.putString("price_dialog", price_dialog_str);
-					editor.putInt("notes_dialog", Integer.parseInt(notes_dialog_str));
-					editor.putInt("coin_add", zCoin);
-					editor.putInt("add", 1);
-					editor.commit();
-					Toast.makeText(getBaseContext(), "подождите",
-								   Toast.LENGTH_SHORT).show();
+					String type = "false";
+					if(kind == 0){
+						
+					}else{type = "true";};
+					int notes = 0;
+					try{
+						notes = Integer.valueOf(notes_dialog.getText()+"");
+					}catch(Exception e){
+					}
+					AddOrder addorder = new AddOrder(type, zCoin, notes, price_dialog.getText()+"");
+					
+					param.addDeystvie(new Deystvie(addorder, 0, 1));
+					
 					finish();
 				}
 			});
@@ -153,32 +144,34 @@ public class Buy_dialog extends Activity
 		but_min.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					int btn_z = pref.getInt("btn_z", 0);
-					String price_dialog_str_min;
-					Double jk;
-		if (btn_z == 0){
+					OrdersPriceList ordersPriceList = Parametr.getParametr().getOrdersPriceList();
+					List<OrderPrice> listOrders;
+					
+					
+		if (kind == 1){
+			listOrders = ordersPriceList.getListbuy();
+			OrderPrice orderPrice = listOrders.get(0);
 			
-			price_dialog_str_min = pref.getString("tabl0", "0");
-			jk = Double.parseDouble(price_dialog_str_min)+0.0001;
+			Double jk = orderPrice.getPrice()+0.0001;
 			price_dialog.setText(String.format(Locale.US, "%.4f",jk));
 		}
-		if(btn_z == 1){
-			
-			price_dialog_str_min = pref.getString("tabl_prod0", "999");
-			jk = Double.parseDouble(price_dialog_str_min)-0.0001;
+		if(kind == 0){
+			listOrders = ordersPriceList.getListsell();
+			OrderPrice orderPrice = listOrders.get(0);
+			Double jk = orderPrice.getPrice()-0.0001;
 			price_dialog.setText(String.format(Locale.US, "%.4f",jk));
 		}
 				}
 			});
 		//переключатель
 		Switch switch_dialog = (Switch) findViewById(R.id.monitored_switch);
-		btn_z = pref.getInt("btn_z", 0);
+		
 		if (btn_z == 0){
-			editor.putInt("typ_oper",1);
+			kind = 1;
 			switch_dialog.setChecked(true);
 		}
 		if(btn_z == 1){
-			editor.putInt("typ_oper", 0);
+			kind = 0;
 			
 		}
 		if (switch_dialog != null) {
@@ -187,10 +180,9 @@ public class Buy_dialog extends Activity
 					@Override
 					public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
 						if(isChecked){
-							editor.putInt("typ_oper", 1);
-							editor.putInt("btn_z", 0);
-							editor.commit();
-						} else{editor.putInt("typ_oper",0); editor.putInt("btn_z", 1); editor.commit();}
+							kind = 1;
+							
+						} else{kind = 0; }
 					}
 			});
 		}
@@ -199,13 +191,7 @@ public class Buy_dialog extends Activity
 	@Override
 	public void finish()
 	{
-		String price_dialog_str = price_dialog.getText().toString();
-		String notes_dialog_str = notes_dialog.getText().toString();
-		editor.putString("price_dialog", price_dialog_str);
-		try {
-		editor.putInt("notes_dialog", Integer.parseInt(notes_dialog_str));
-		}catch(Exception e){editor.putInt("notes_dialog", 0);}
-		editor.commit();
+		
 		// TODO: Implement this method
 		super.finish();
 	}

@@ -25,8 +25,8 @@ public class Userfunction extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		
 		editor = pref.edit();
 		
 		
@@ -40,50 +40,56 @@ public class Userfunction extends Activity
         mDrawerListView.setAdapter(new ArrayAdapter<String>(this,
 															R.layout.draw_list_item, mCatTitles));
 		mDrawerListView.setOnItemClickListener(new DrawerItemClickListener());
+		final Button but_del_all = (Button) findViewById(R.id.button_del_all);
+		final Button but_sell_all = (Button) findViewById(R.id.sell_all);
+		
 		//слушатель кнопки убрать все заявки
 		listbutton = new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 						switch(v.getId()){
-							case R.id.func3:
-								/*Set<String> gtyj = pref.getStringSet("z_perest_id", new HashSet());
-								Set<String> o = new HashSet<String>();
-								for (String gb : gtyj){
-									o.add(gb+"");
-								}
-								gtyj.removeAll(o);
-								Toast.makeText(Userfunction.this, "рпсорорпс", Toast.LENGTH_SHORT).show();
-								editor.putStringSet("z_perest_id", gtyj);*/
-								editor.remove("z_perest_id");
-								editor.remove("z_perest_price");
-								editor.commit();
+							case R.id.sell_all:
+									List<MyZayvkiForTable> listMyZayvkiForTablef = Parametr.getParametr().getMyZayvkiForTable();
+									for (int i = 0; i < listMyZayvkiForTablef.size(); i++){
+										MyZayvkiForTable myZayvkiForTable = listMyZayvkiForTablef.get(i);
+										int idCoinz = myZayvkiForTable.getzCoin();
+										int offerid = myZayvkiForTable.getOfferId();
+										String name = myZayvkiForTable.getName();
+										int kind = myZayvkiForTable.getKind();
+										String price = myZayvkiForTable.getPrice();
+										int notes = myZayvkiForTable.getNotes();
+										if(kind==0){
+											Parametr.getParametr().addDeystvie(new Deystvie(null, offerid, 0));
+											AddOrder addorder = new AddOrder("false", idCoinz, notes, "0.0001");
+											Parametr.getParametr().addDeystvie(new Deystvie(addorder, 0, 1));
+										}
+									}
+									but_sell_all.setEnabled(false);
 								break;
+							case R.id.button_del_all:
+									List<MyZayvkiForTable> listMyZayvkiForTable = Parametr.getParametr().getMyZayvkiForTable();
+									for (int i = 0; i < listMyZayvkiForTable.size(); i++){
+										MyZayvkiForTable myZayvkiForTable = listMyZayvkiForTable.get(i);
+										int idCoinz = myZayvkiForTable.getzCoin();
+										int offerid = myZayvkiForTable.getOfferId();
+										String name = myZayvkiForTable.getName();
+										String kind = myZayvkiForTable.getKindstring();
+										String price = myZayvkiForTable.getPrice();
+										int notes = myZayvkiForTable.getNotes();
+										Parametr.getParametr().addDeystvie(new Deystvie(null, offerid, 0));
+									}
+									but_del_all.setEnabled(false);
+								break;						
 						}
-						int i = pref.getInt("col_z", 0);
-						//выполнение функции удаления заявок
-						if (i != 0){
-							switch(v.getId()){
-								case R.id.button_del_all:
-									editor.putInt("del_all", 1);
-									editor.commit();
-									break;
-								
-								
-									
-							}
-						}
-									
 			}
 		};
 		
 		
-		Button but_del_all = (Button) findViewById(R.id.button_del_all);
-		Button but_sell_all = (Button) findViewById(R.id.func2);
-		Button but_clen_data = (Button) findViewById(R.id.func3);
+		
 		but_del_all.setOnClickListener(listbutton);
 		but_sell_all.setOnClickListener(listbutton);
-		but_clen_data.setOnClickListener(listbutton);
-		but_sell_all.setEnabled(false);//неактивная кнопка
+		
+		//неактивная кнопка
 	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item)
@@ -134,7 +140,7 @@ public class Userfunction extends Activity
 
 
 					case 1:
-						intent = new Intent(Userfunction.this, OpovActivity.class);
+						intent = new Intent(Userfunction.this, HistoryActivity.class);
 						break;
 					case 2:
 						intent = new Intent(Userfunction.this, Myzayvk_act.class);
@@ -143,18 +149,14 @@ public class Userfunction extends Activity
 						intent = new Intent(Userfunction.this, Information.class);
 						break;
 					case 4:
-						editor.putInt("messflag", 1);
-						editor.commit();
 						intent = new Intent(Userfunction.this, Chat.class);
 						break;
 
 					case 6:
 						intent = new Intent(Userfunction.this, LoginActivity.class);
 						editor.putInt("verification", 0);
-						editor.putInt("col_tabl", 0);
-						editor.putInt("tabl_hight", 0);
 						editor.commit();
-						Intent i = new Intent(Userfunction.this, PlayService.class);
+						Intent i = new Intent(Userfunction.this, ServicePOST.class);
 						stopService(i);
 						break;
 					case 5:

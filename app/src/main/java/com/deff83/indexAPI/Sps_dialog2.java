@@ -26,8 +26,8 @@ public class Sps_dialog2 extends Activity
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
-		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		
 		editor = pref.edit();
 
 		// TODO: Implement this method
@@ -119,7 +119,7 @@ public class Sps_dialog2 extends Activity
 		super.onStop();
 	}
 	private OkHttpClient client;
-	private String descans; //сообщение ошибки
+	private String descans = "null"; //сообщение ошибки
 	public void post2_sps(String code){
 		 client = new OkHttpClient();
 		//Integer emulated_flag = 0; //флаг эмуляции
@@ -175,6 +175,7 @@ public class Sps_dialog2 extends Activity
 				break;
 		}
 		editor.putInt("flagerrorsps", 1);
+		
 		editor.putString("textmesdialog", textmesdialog);
 		editor.commit();
 	}

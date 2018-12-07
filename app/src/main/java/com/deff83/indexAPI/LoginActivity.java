@@ -22,8 +22,8 @@ public class LoginActivity extends Activity
 	public void onCreate(Bundle savedInstanceState)
 	{
 		
-		//pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
-		pref = PreferenceManager.getDefaultSharedPreferences(MyApplication.getApplication());
+		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
+		
 		editor = pref.edit();
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
@@ -88,8 +88,7 @@ public class LoginActivity extends Activity
 					editor.putString("wmid", wmid.getText().toString());
 					editor.putInt("verification", 1);
 					editor.commit();
-					Intent i = new Intent(getApplication(), PlayService.class);
-					startService(i);
+					
 					Intent iyu =  new Intent(getApplication(), MainActivity.class);
 					startActivity(iyu);
 				}
