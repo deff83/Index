@@ -16,9 +16,9 @@ android {
 
 		   release {
 			   storeFile file("C:/Users/1/Documents/GitHub/debug.keystore")
-			   storePassword "18819801s"
+			   storePassword "*********"
 			   keyAlias "androiddebugkey"
-			   keyPassword "18819801s"
+			   keyPassword "*********"
 		   }
 	}
     buildTypes {
