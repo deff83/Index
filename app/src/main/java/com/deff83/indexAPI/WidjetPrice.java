@@ -60,24 +60,28 @@ public class WidjetPrice extends Service
 				
 				rlay.addView(tr);
 				windowManager = (WindowManager)getSystemService(WINDOW_SERVICE);  
-				//here is all the science of params  
-				final LayoutParams myParams = new WindowManager.LayoutParams(  
+				//here is all the science of params
+				final LayoutParams myParams = new WindowManager.LayoutParams(
 					LayoutParams.WRAP_CONTENT,  
-					LayoutParams.WRAP_CONTENT,  
-					LayoutParams.TYPE_PHONE,  
+					LayoutParams.WRAP_CONTENT,
+					android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O ? LayoutParams.TYPE_APPLICATION_OVERLAY : LayoutParams.TYPE_PHONE,
 					LayoutParams.FLAG_NOT_FOCUSABLE,  
-					PixelFormat.TRANSLUCENT);  
+					PixelFormat.TRANSLUCENT);
 				myParams.gravity = Gravity.TOP | Gravity.LEFT;  
 				int xzap = pref.getInt("xzap", 0);
 				int yzap = pref.getInt("yzap", 100);
 				myParams.x=xzap;  
 				myParams.y=yzap;  
-				// add a floatingfacebubble icon in window  
-				windowManager.addView(rlay, myParams); 
+				// add a floatingfacebubble icon in window
+				try {
+					windowManager.addView(rlay, myParams);
+				}catch (Exception e){
+					System.out.println("bb"+e.getMessage());
+				}
 				
 				try{  
 					rlay.setOnTouchListener(new View.OnTouchListener() {  
-							WindowManager.LayoutParams paramsT = myParams;  
+							WindowManager.LayoutParams paramsT = myParams;
 							private int initialX;  
 							private int initialY;  
 							private float initialTouchX;  

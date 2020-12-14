@@ -382,7 +382,12 @@ public class Opiration  {
 						param.setBalance(price+"");
 						Double svobprice = balance.getDouble("wmz");
 						param.setSvobprice(svobprice+"");
-						JSONArray jsonarray = value.getJSONArray("portfolio");
+						JSONArray jsonarray = new JSONArray();
+						try {
+							jsonarray = value.getJSONArray("portfolio");
+						}catch (Exception e) {
+
+						}
 						int portfol_length = jsonarray.length();
 						
 						 List<MyCoin> listmyCoins = new ArrayList<>();
@@ -409,6 +414,7 @@ public class Opiration  {
 						return listmyCoins;
 						}
 						catch (JSONException e){
+							e.printStackTrace();
 							System.out.println("ошибка парсера Balance");
 						}
 					

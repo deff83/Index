@@ -172,7 +172,7 @@ public class Setting extends Activity
 		//переключатель widjet
 		Switch switch_sound_widjet = (Switch) findViewById(R.id.sound_switch_widjet);
 		flag_switch_sound_widget = 0;
-		flag_switch_sound_widget = pref.getInt("sound_widjet", 0);
+		flag_switch_sound_widget = pref.getInt("sound_widjet", 1);
 		if (flag_switch_sound_widget == 0){
 			switch_sound_widjet.setChecked(true);//вкл
 

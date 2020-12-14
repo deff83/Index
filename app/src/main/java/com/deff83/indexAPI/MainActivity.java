@@ -1,8 +1,11 @@
 package com.deff83.indexAPI;
 import android.app.*;
+import android.net.Uri;
 import android.os.*;
 import okhttp3.*;
 import java.io.*;
+
+import android.provider.Settings;
 import android.widget.*;
 import java.lang.Math;
 import org.w3c.dom.*;
@@ -28,6 +31,8 @@ import android.transition.*;
 import android.graphics.drawable.*;
 public class MainActivity extends Activity implements ISomeModel
 {
+	private int CommonVariables = 5463 & 0xffffff00;
+
 	//список в выдвижной панели
 	private String[] mCatTitles;
     private ListView mDrawerListView;
@@ -47,7 +52,12 @@ public class MainActivity extends Activity implements ISomeModel
 	@Override
     protected void onCreate(Bundle savedInstanceState)
     {
-		
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			checkDrawOverlayPermission();
+		}
+
+
 		pref = getSharedPreferences("CAT", Context.MODE_PRIVATE);
 		editor = pref.edit();
 		int verification = pref.getInt("verification", 0);
@@ -780,4 +790,24 @@ private void setColorImg(int colorim){
 	}
 }
 
+	public void checkDrawOverlayPermission() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (!Settings.canDrawOverlays(getApplicationContext())) {
+				Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + this.getPackageName()));
+				startActivityForResult(intent, CommonVariables);
+			} else {
+				//createView();
+			}
+		}
+	}
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == CommonVariables) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				if (Settings.canDrawOverlays(getApplicationContext())) {
+					//createView();
+				}
+			}
+		}
+	}
 }

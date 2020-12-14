@@ -62,10 +62,12 @@ public class ServicePOST extends Service {
 		int zCoinSave = pref.getInt("zCoinSave", 60);
 		Parametr.getParametr().setzCoinMain(zCoinSave);
 		opirat_chat.inicialisation(this);
-		int flag_switch_sound_widget = pref.getInt("sound_widjet", 0);
+		int flag_switch_sound_widget = pref.getInt("sound_widjet", 1);
 		if(flag_switch_sound_widget == 0){
-			Intent intentWidjet = new Intent(this, WidjetPrice.class);
-			startService(intentWidjet);
+			try {
+				Intent intentWidjet = new Intent(this, WidjetPrice.class);
+				startService(intentWidjet);
+			}catch (Exception e){}
 		}
 		context = this;
 		int colTable = pref.getInt("col_Table", 20);
@@ -246,7 +248,7 @@ public class ServicePOST extends Service {
         
     }
 	private void intentWidjet(int arg){
-		int flag_switch_sound_widget = pref.getInt("sound_widjet", 0);
+		int flag_switch_sound_widget = pref.getInt("sound_widjet", 1);
 		if(flag_switch_sound_widget == 0){
 			Intent intentWidjet = new Intent(context, WidjetPrice.class);
 			intentWidjet.putExtra("widjetintent", arg);
